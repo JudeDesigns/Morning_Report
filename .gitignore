@@ -11,6 +11,8 @@ build/
 
 # Virtual environment
 backend/venv/
+backend/.env
+backend/.env.example
 venv/
 .venv/
 env/

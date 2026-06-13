@@ -1,0 +1,512 @@
+[
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "36125",
+    "quantity": 23.0,
+    "description": "SLICED SWEET PLANTAINS FZ IQF (TAJADAS DE PL\u00c3\u0081TANO MADURO FZ) 4 BAG 5 LB IN CASE SABOR NUESTRO",
+    "reference": "Pampas:Pampas Grill Culver City x22; Silvio's House x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 759.0
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "2590012U",
+    "quantity": 1.0,
+    "description": "MID EAST TAHINI40#",
+    "reference": "Hummus Factory:Manhatten x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 85.25
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "1020075U",
+    "quantity": 2.0,
+    "description": "SOY BEAN OIL 100 % PURE 35 LBS. CHEFS QUALITY",
+    "reference": "Gengis Khan Torrance x2",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 73.78
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "CPTUNA001",
+    "quantity": 1.0,
+    "description": "CHUNK WHITE TUNA IN WATER LONG LINE 6 CAN 66.5 OZ EA. IN CASE -JACKPOT",
+    "reference": "Fantasy Burger x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 71.0
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "87914U",
+    "quantity": 2.0,
+    "description": "TOPO CHICO MINERAL WATER - 24/11.5 OZ CASE",
+    "reference": "Bennys Tacos Santa Monica x1; Pachanga Mexican Grill x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 67.36
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "25096",
+    "quantity": 1.0,
+    "description": "NATURAL RICE VINEGAR ORIGINAL 4 CT GALLON IN CASE - NAKANO",
+    "reference": "Pampas:Pampas Grill Culver City x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 44.42
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "1440205",
+    "quantity": 1.0,
+    "description": "CHEESE CHEDDAR FANCY SHRED 4/5 LBS BAG IN A CASE - JAMES FARM",
+    "reference": "Fantasy Burger x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 38.36
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "34399",
+    "quantity": 1.0,
+    "description": "IODIZED SALT 24/26 OZ CANS IN A CASE - MORTON",
+    "reference": "Hummus Factory:Downey x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 33.91
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "14588U",
+    "quantity": 1.0,
+    "description": "SOY SAUCE 5 GAL TUB - KIKKOMAN",
+    "reference": "Gengis Khan Torrance x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 33.16
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "79667U",
+    "quantity": 5.0,
+    "description": "BEEF XT TOP ROUNDS HALAL AVG 65 LBS CASE",
+    "reference": "Dolans Uyghur Cuisine Alhambra x2; Dolans Uyghur Cuisine Irvine x3",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 25.3
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "2550012",
+    "quantity": 1.0,
+    "description": "EGG YELLOW FOOD COLORING 4/1 GALLON IN A CASE - FELBRO",
+    "reference": "Gengis Khan Torrance x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 25.08
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "42709U",
+    "quantity": 2.0,
+    "description": "UNIT PD BELL PEPPERS GOLD 9 - LOS ANGELES PRODUCE",
+    "reference": "Hummus Factory:Downey x1; Pho Show x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 21.56
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "50624U",
+    "quantity": 3.0,
+    "description": "UNIT PD SHREDDED CARROTS 5 LB BAG FRESH-PACKER - LOS ANGELES PRODUCE",
+    "reference": "Silvio's House x3",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 20.67
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "33312U",
+    "quantity": 1.0,
+    "description": "LONG GRAIN RICE 4% BROKEN 50 LBS BAG - RICELAND",
+    "reference": "Gengis Khan Torrance x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 20.58
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "1070476U",
+    "quantity": 1.0,
+    "description": "UNIT BLACK PEPPER 25 MESH 3 LBS - TAURUS SPICE",
+    "reference": "Pampas:Pampas Grill Culver City x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 19.99
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "2280219U",
+    "quantity": 1.0,
+    "description": "MULTIFOLD TOWELS KRAFT (FITS ALL MULTIFOLD DISPENSERS) 4000 CT CASE - SUNSET",
+    "reference": "Pampas:Pampas Grill Culver City x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 19.14
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "42831U",
+    "quantity": 3.0,
+    "description": "UNIT PD CABBAGE RED 3CT 10 LB BAG FRESH - LOS ANGELES PRODUCE",
+    "reference": "Pachanga Mexican Grill x1; Silvio's House x2",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 18.6
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "2831915U",
+    "quantity": 4.0,
+    "description": "BREAD FRENCH DELI ROLL 8 INCH 8 CT IN CASE - LA JOLLA",
+    "reference": "Silvio's House x4",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 16.48
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "47644U",
+    "quantity": 5.0,
+    "description": "FROZEN PARTY ICE - 20LB BAG",
+    "reference": "Bennys Tacos Santa Monica x5",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 12.0
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "21034U",
+    "quantity": 3.0,
+    "description": "GROUND PORK 80/20% FROZEN AVG 15 LBS CASE - SEABOARD - Individual weight - (3)",
+    "reference": "Don Linos Mexican Food x3",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 7.2
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "2070193",
+    "quantity": 1.0,
+    "description": "(CUP) PAPER SOUFFLE CUPS 0.75 OZ 250 CT IN A CASE",
+    "reference": "Pampas:Pampas Grill Culver City x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 0.0
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Missing",
+    "item_code": "2010138U",
+    "quantity": 1.0,
+    "description": "MAYONNAISE 20 OZ SQUEEZE BOTTLE - BEST FOODS",
+    "reference": "Silvio's House x1",
+    "detail": "Ordered but not billed",
+    "_dollar_size": 0.0
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Missing",
+    "item_code": "G0031160087-01",
+    "quantity": "2250",
+    "description": "30 CS 22 HD CVP WOGS",
+    "reference": "Glen Rose Meat Company \u00b7 Inv 702325 \u00b7 PO 187794",
+    "detail": "Ordered on PO 187794 but not charged on invoice 702325. PO value ~$3037.50 (2250 @ $1.35).",
+    "_dollar_size": 3037.5
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Missing",
+    "item_code": "G0031110087-01",
+    "quantity": "975",
+    "description": "13 CS WOGS 3.5 CVP 20 HD AVG. 75 LBS CASE GOLDEN ROD",
+    "reference": "Glen Rose Meat Company \u00b7 Inv 702325 \u00b7 PO 187822",
+    "detail": "Ordered on PO 187822 but not charged on invoice 702325. PO value ~$1316.25 (975 @ $1.35).",
+    "_dollar_size": 1316.25
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Missing",
+    "item_code": "G0031190087-01",
+    "quantity": "450",
+    "description": "6 CS CHICKEN SPLIT HALAL 2.5 LBS 28 HD AVG 75 LBS CASE CVP - GOLDEN ROD",
+    "reference": "Glen Rose Meat Company \u00b7 Inv 702325 \u00b7 PO 187709",
+    "detail": "Ordered on PO 187709 but not charged on invoice 702325. PO value ~$760.50 (450 @ $1.69).",
+    "_dollar_size": 760.5
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Missing",
+    "item_code": "G0049011000-02",
+    "quantity": "100",
+    "description": "10 CS LAMB FAT CAPS LAYER AVG 10 LBS CASE",
+    "reference": "Glen Rose Meat Company \u00b7 Inv 702325 \u00b7 PO 187805",
+    "detail": "Ordered on PO 187805 but not charged on invoice 702325. PO value ~$449.00 (100 @ $4.49).",
+    "_dollar_size": 449.0
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Missing",
+    "item_code": "G0032003093-01",
+    "quantity": "120",
+    "description": "3 CS BONE IN BREAST JUMBO (HARRISON) (00822089349)",
+    "reference": "Glen Rose Meat Company \u00b7 Inv 702325 \u00b7 PO 187794",
+    "detail": "Ordered on PO 187794 but not charged on invoice 702325. PO value ~$165.60 (120 @ $1.38).",
+    "_dollar_size": 165.6
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Missing",
+    "item_code": "G0032135132-01",
+    "quantity": "120",
+    "description": "3 CS CHICKEN DRUMSTICKS WHITE FRESH 4/10# 40 LBS CASE - SANDERSON FARM",
+    "reference": "Glen Rose Meat Company \u00b7 Inv 702325 \u00b7 PO 187794",
+    "detail": "Ordered on PO 187794 but not charged on invoice 702325. PO value ~$80.40 (120 @ $0.67).",
+    "_dollar_size": 80.4
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "2010138",
+    "quantity": 1.0,
+    "description": "MAYO SQZ BESTFOODS",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 80.2
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "1451135",
+    "quantity": 1.0,
+    "description": "PRK GRND 80/20 FZ IBP",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 70.2
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "50396U",
+    "quantity": 1.0,
+    "description": "TOWEL M/F KRAFT PS",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 21.4
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "1451135U",
+    "quantity": 2.0,
+    "description": "PRK GRND 80/20 FZ IBP",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 20.4
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "760968",
+    "quantity": 1.0,
+    "description": "CUP SFL .75Z SNSET SP",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 16.49
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "190212",
+    "quantity": 1.0,
+    "description": "SALT IODIZED",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 15.07
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "2290146U",
+    "quantity": 2.0,
+    "description": "ECOCHOICE HAND SNITZR",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 12.12
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Extra",
+    "item_code": "2830811U",
+    "quantity": 4.0,
+    "description": "BRD FRENCH ROLL 8\"",
+    "reference": "",
+    "detail": "Billed but not in Jetro source",
+    "_dollar_size": 10.8
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Extra",
+    "item_code": "\u2014 (no PO code)",
+    "quantity": "12",
+    "description": "Mushroom White Med 10lbs Ctn",
+    "reference": "Go-Fresh Produce, Inc. \u00b7 Inv 671658 \u00b7 PO \u2014",
+    "detail": "Billed on invoice 671658 but not on PO. $336.00 (12 @ $28.00). Confirm intended / provide PO.",
+    "_dollar_size": 336.0
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Extra",
+    "item_code": "\u2014 (no PO code)",
+    "quantity": "1",
+    "description": "BELL PEPPER GREEN Product of USA",
+    "reference": "MAUI FRESH INTERNATIONAL \u00b7 Inv 01014010 \u00b7 PO \u2014",
+    "detail": "Billed on invoice 01014010 but not on PO. $18.00 (1 @ $18.00). Confirm intended / provide PO.",
+    "_dollar_size": 18.0
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "77024U",
+    "quantity": 450.0,
+    "description": "BF H/C TRIPE*FRZ R/W SP",
+    "reference": "Que Ricos Soto #2 x30",
+    "detail": "Ordered 450 lbs, billed 30.00 lbs",
+    "_dollar_size": 1927.8
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "77034U",
+    "quantity": 20.0,
+    "description": "BF GROUND 80% R/W",
+    "reference": "Bennys Tacos Culver City x1; Bennys Tacos Westchester x1",
+    "detail": "Ordered 20 lbs, billed 80.60 lbs",
+    "_dollar_size": 281.18099255583127
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "960056",
+    "quantity": 8.0,
+    "description": "YUCA CUT PEELED",
+    "reference": "Pampas:Pampas Grill Culver City x8",
+    "detail": "Ordered 8, billed 4.00",
+    "_dollar_size": 183.84
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "670417U",
+    "quantity": 7.0,
+    "description": "CHURRO BAV CRM 10\"",
+    "reference": "Bennys Tacos Culver City x1; Bennys Tacos West Los Angeles x3; Bennys Tacos Westchester x3",
+    "detail": "Ordered 7, billed 4.00",
+    "_dollar_size": 93.36
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "11586U",
+    "quantity": 5.0,
+    "description": "COCONUT WATER PRT 10.5Z",
+    "reference": "Pampas:Pampas Grill Culver City x5",
+    "detail": "Ordered 5, billed 3.00",
+    "_dollar_size": 38.24
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "1070477U",
+    "quantity": 3.0,
+    "description": "SPC GRAN ONION",
+    "reference": "Pampas:Pampas Grill Culver City x3",
+    "detail": "Ordered 3, billed 1.00",
+    "_dollar_size": 34.32
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "2061156U",
+    "quantity": 1.0,
+    "description": "CROUTON HOMESTYLE",
+    "reference": "Pampas:Pampas Grill Culver City x1",
+    "detail": "Ordered 1, billed 2.00",
+    "_dollar_size": 26.79
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "75168U",
+    "quantity": 3.0,
+    "description": "BAG 6# WHITE",
+    "reference": "Bennys Tacos Culver City x1; Bennys Tacos West Los Angeles x1; Bennys Tacos Westchester x1",
+    "detail": "Ordered 3, billed 2.00",
+    "_dollar_size": 18.18
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "2831197U",
+    "quantity": 6.0,
+    "description": "BRIOCHE BUN 4.5\"",
+    "reference": "Silvio's House x6",
+    "detail": "Ordered 6, billed 5.00",
+    "_dollar_size": 3.43
+  },
+  {
+    "source": "Jetro / Restaurant Depot",
+    "type": "Qty mismatch",
+    "item_code": "2270192U",
+    "quantity": 2.0,
+    "description": "PURELL SANI GL PMP",
+    "reference": "Pampas:Pampas Grill Culver City x2",
+    "detail": "Ordered 2, billed 0",
+    "_dollar_size": 0.0
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Qty mismatch",
+    "item_code": "G0715400209-02",
+    "quantity": "60",
+    "description": "2 CS BEEF SHORT RIB 3 BONE IN 3/8 INCH END TO END CUT DOMESTIC FROZEN AVG 30 LBS CASE",
+    "reference": "Glen Rose Meat Company \u00b7 Inv 702325 \u00b7 PO 187847",
+    "detail": "Invoice 702325 billed 2; PO ordered 60 (-58).",
+    "_dollar_size": 466.90000000000003
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Qty mismatch",
+    "item_code": "PD-42835U",
+    "quantity": "6",
+    "description": "PD MUSHROOM WHOLE WHITE MEDIUM 10 LBS CASE - FRESH LOS ANGELES PRODUCE",
+    "reference": "Go-Fresh Produce, Inc. \u00b7 Inv 671658 \u00b7 PO 187854",
+    "detail": "Invoice 671658 billed 1; PO ordered 6 (-5).",
+    "_dollar_size": 140.0
+  },
+  {
+    "source": "Vendor bills",
+    "type": "Qty mismatch",
+    "item_code": "44675U",
+    "quantity": "9",
+    "description": "PD SALAD SPRING MIX CONVENTIONAL 3/1 LBS FRESH - LOS ANGELES PRODUCE - TAYLOR FARMS (3022303690)",
+    "reference": "Go-Fresh Produce, Inc. \u00b7 Inv 671658 \u00b7 PO 187854",
+    "detail": "Invoice 671658 billed 1; PO ordered 9 (-8).",
+    "_dollar_size": 50.0
+  }
+]

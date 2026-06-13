@@ -1,0 +1,94 @@
+[
+  {
+    "id": "f504871e-a42a-4297-9c76-c8dc482061fe",
+    "bill_id": "859af682-f119-42ed-a6fd-b25731679d2b",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "invoice_number": "671658",
+    "invoice_date": null,
+    "email_subject": "Invoice Review \u2014 Go-Fresh Produce, Inc. 671658",
+    "email_body": "Dear Go-Fresh Produce, Inc. team,\n\nWe are writing regarding invoice #671658.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "qty_issue",
+        "has_qty_mismatch": true,
+        "item_code": "PD-42835U",
+        "item_description": "PD MUSHROOM WHOLE WHITE MEDIUM 10 LBS CASE - FRESH LOS ANGELES PRODUCE",
+        "po_rate": 28.0,
+        "invoice_rate": 28.0,
+        "qty": 1.0,
+        "po_qty": 6.0,
+        "bill_qty": 1.0,
+        "qty_diff": -5.0,
+        "po_ref_number": "187854",
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -5.00 units",
+        "bill_id": "859af682-f119-42ed-a6fd-b25731679d2b",
+        "vendor": "Go-Fresh Produce, Inc.",
+        "invoice_number": "671658"
+      },
+      {
+        "section": "qty_issue",
+        "has_qty_mismatch": true,
+        "item_code": "44675U",
+        "item_description": "PD SALAD SPRING MIX CONVENTIONAL 3/1 LBS FRESH - LOS ANGELES PRODUCE - TAYLOR FARMS (3022303690)",
+        "po_rate": 6.25,
+        "invoice_rate": 6.25,
+        "qty": 1.0,
+        "po_qty": 9.0,
+        "bill_qty": 1.0,
+        "qty_diff": -8.0,
+        "po_ref_number": "187854",
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -8.00 units",
+        "bill_id": "859af682-f119-42ed-a6fd-b25731679d2b",
+        "vendor": "Go-Fresh Produce, Inc.",
+        "invoice_number": "671658"
+      }
+    ]
+  },
+  {
+    "id": "a6a067f5-6445-4485-8948-4258a3b05d61",
+    "bill_id": "3961b013-d50d-41bf-a7d8-b6e33b4cbd98",
+    "vendor": "MAUI FRESH INTERNATIONAL",
+    "invoice_number": "01014010",
+    "invoice_date": null,
+    "email_subject": "Invoice Review \u2014 MAUI FRESH INTERNATIONAL 01014010",
+    "email_body": "Dear MAUI FRESH INTERNATIONAL team,\n\nWe are writing regarding invoice #01014010.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": false,
+    "items": []
+  },
+  {
+    "id": "7e7d7489-9006-4449-822a-831fee6fa98d",
+    "bill_id": "b131571f-f071-49bc-9bf4-5e15bfb66683",
+    "vendor": "Glen Rose Meat Company",
+    "invoice_number": "702325",
+    "invoice_date": null,
+    "email_subject": "Invoice Review \u2014 Glen Rose Meat Company 702325",
+    "email_body": "Dear Glen Rose Meat Company team,\n\nWe are writing regarding invoice #702325.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "qty_issue",
+        "has_qty_mismatch": true,
+        "item_code": "G0715400209-02",
+        "item_description": "2 CS BEEF SHORT RIB 3 BONE IN 3/8 INCH END TO END CUT DOMESTIC FROZEN AVG 30 LBS CASE",
+        "po_rate": 8.05,
+        "invoice_rate": 8.05,
+        "qty": 2.0,
+        "po_qty": 60.0,
+        "bill_qty": 2.0,
+        "qty_diff": -58.0,
+        "po_ref_number": "187847",
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -58.00 units",
+        "bill_id": "b131571f-f071-49bc-9bf4-5e15bfb66683",
+        "vendor": "Glen Rose Meat Company",
+        "invoice_number": "702325"
+      }
+    ]
+  }
+]

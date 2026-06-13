@@ -1,0 +1,195 @@
+[
+  {
+    "id": "13b41ea6-d624-446c-b57f-2a49f07f2db0",
+    "source_file_id": "bd836c96-3124-4089-96bd-2ce3d5202985",
+    "vendor_extracted": "Go-Fresh Produce, Inc.",
+    "vendor_confirmed": "Go-Fresh Produce, Inc.",
+    "invoice_number": "671658",
+    "invoice_date": "2026-06-11",
+    "bill_type": "invoice",
+    "extraction_status": "processed",
+    "header_confidence": {
+      "vendor": 0.95,
+      "invoice_number": 0.98,
+      "invoice_date": 0.98
+    },
+    "header_needs_review": [],
+    "lines": [
+      {
+        "id": "d172b422-004c-44e6-809a-75cb5e4354a4",
+        "source_line_number": 0,
+        "bill_item_code": null,
+        "description": "Mushroom White Sliced 10lbs Ctn",
+        "qty": 1.0,
+        "rate": 28.0,
+        "total": 28.0,
+        "is_credit": false,
+        "individual_weights": null,
+        "notes": null,
+        "confidence": 0.95,
+        "field_confidence": {
+          "bill_item_code": 0.0,
+          "description": 0.95,
+          "qty": 0.98,
+          "rate": 0.98,
+          "total": 0.98
+        },
+        "field_needs_review": [
+          "bill_item_code"
+        ],
+        "needs_review": true,
+        "user_confirmed": true,
+        "match_status": "matched",
+        "matched_po_id": "cbea649e-3095-4d87-8f8e-4989b05f4b5f"
+      },
+      {
+        "id": "337946a2-884a-4d4d-b6be-b9eb382377b1",
+        "source_line_number": 1,
+        "bill_item_code": null,
+        "description": "Springmix Pillow Pack Ctn 3#",
+        "qty": 1.0,
+        "rate": 6.25,
+        "total": 6.25,
+        "is_credit": false,
+        "individual_weights": null,
+        "notes": null,
+        "confidence": 0.95,
+        "field_confidence": {
+          "bill_item_code": 0.0,
+          "description": 0.93,
+          "qty": 0.98,
+          "rate": 0.98,
+          "total": 0.98
+        },
+        "field_needs_review": [
+          "bill_item_code"
+        ],
+        "needs_review": true,
+        "user_confirmed": true,
+        "match_status": "not_on_po"
+      },
+      {
+        "id": "ef9a14eb-08c7-419b-abb6-b92a456a4d36",
+        "source_line_number": 2,
+        "bill_item_code": null,
+        "description": "Mushroom White Med 10lbs Ctn",
+        "qty": 12.0,
+        "rate": 28.0,
+        "total": 336.0,
+        "is_credit": false,
+        "individual_weights": null,
+        "notes": null,
+        "confidence": 0.95,
+        "field_confidence": {
+          "bill_item_code": 0.0,
+          "description": 0.95,
+          "qty": 0.98,
+          "rate": 0.98,
+          "total": 0.98
+        },
+        "field_needs_review": [
+          "bill_item_code"
+        ],
+        "needs_review": true,
+        "user_confirmed": true,
+        "match_status": "not_on_po"
+      }
+    ],
+    "user_confirmed_at": "2026-06-11T22:55:32.554052+00:00"
+  },
+  {
+    "id": "451ab058-7c11-4f64-8d8f-7f096463b839",
+    "source_file_id": "b6c69cfc-c835-473b-893d-20fca2105d6e",
+    "vendor_extracted": "Glen Rose Meat Company",
+    "vendor_confirmed": "Glen Rose Meat Company",
+    "invoice_number": "702325",
+    "invoice_date": null,
+    "bill_type": "invoice",
+    "extraction_status": "processed",
+    "header_confidence": {
+      "vendor": 0.98,
+      "invoice_number": 0.98,
+      "invoice_date": 0.95
+    },
+    "header_needs_review": [],
+    "lines": [
+      {
+        "id": "2fac5b35-aa9e-4660-be32-b7b5e5f09839",
+        "source_line_number": 0,
+        "bill_item_code": "0715400209-02",
+        "description": "Beef Short Rib (3 Bone) 3/8\" Frozen, CW 30# BOXES",
+        "qty": 2.0,
+        "rate": 8.05,
+        "total": 489.44,
+        "is_credit": false,
+        "individual_weights": [
+          30.14,
+          30.66
+        ],
+        "notes": null,
+        "confidence": 0.95,
+        "field_confidence": {
+          "bill_item_code": 0.95,
+          "description": 0.95,
+          "qty": 0.98,
+          "rate": 0.98,
+          "total": 0.98
+        },
+        "field_needs_review": [],
+        "needs_review": false,
+        "user_confirmed": false,
+        "match_status": "matched",
+        "forced_po_id": "73e7226c-c61b-46da-b72b-6713b6c27c10",
+        "matched_po_id": "73e7226c-c61b-46da-b72b-6713b6c27c10"
+      }
+    ],
+    "user_confirmed_at": "2026-06-11T23:44:57.186637+00:00"
+  },
+  {
+    "id": "20c8d1b6-18ec-409c-9134-76c91d068f95",
+    "source_file_id": "39c5094f-3fdf-4dfc-b707-d652aba08c85",
+    "vendor_extracted": "MAUI FRESH INTERNATIONAL",
+    "vendor_confirmed": "MAUI FRESH INTERNATIONAL",
+    "invoice_number": "01014010",
+    "invoice_date": null,
+    "bill_type": "invoice",
+    "extraction_status": "processed",
+    "header_confidence": {
+      "vendor": 0.98,
+      "invoice_number": 0.95,
+      "invoice_date": 0.9
+    },
+    "header_needs_review": [],
+    "lines": [
+      {
+        "id": "4d87653f-5b92-45ef-a90d-c5acc2a7c8f3",
+        "source_line_number": 0,
+        "bill_item_code": null,
+        "description": "BELL PEPPER GREEN XLGE Product of USA",
+        "qty": 1.0,
+        "rate": 18.0,
+        "total": 18.0,
+        "is_credit": false,
+        "individual_weights": null,
+        "notes": null,
+        "confidence": 0.95,
+        "field_confidence": {
+          "bill_item_code": 0.0,
+          "description": 0.95,
+          "qty": 0.98,
+          "rate": 0.98,
+          "total": 0.98
+        },
+        "field_needs_review": [
+          "bill_item_code"
+        ],
+        "needs_review": true,
+        "user_confirmed": true,
+        "match_status": "matched",
+        "forced_po_id": "362e87df-1d2a-4a6a-896b-3420f6be1c34",
+        "matched_po_id": "362e87df-1d2a-4a6a-896b-3420f6be1c34"
+      }
+    ],
+    "user_confirmed_at": "2026-06-12T09:00:04.789605+00:00"
+  }
+]

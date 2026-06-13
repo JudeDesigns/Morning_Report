@@ -1,0 +1,12 @@
+{
+  "id": "6bb7ffa6-c047-4403-8d75-d7f899d53d24",
+  "workflow_type": "jetro_reconciliation",
+  "name": "Jetro / Restaurant Depot \u2014 2026-06-12",
+  "run_date": "2026-06-12",
+  "status": "exported",
+  "notes": null,
+  "created_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+  "created_at": "2026-06-12T17:41:54.592292+00:00",
+  "updated_at": "2026-06-12T17:43:05.403584+00:00",
+  "file_count": 3
+}

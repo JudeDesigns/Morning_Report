@@ -1,0 +1,72 @@
+[
+  {
+    "line": 1,
+    "bill_id": "13b41ea6-d624-446c-b57f-2a49f07f2db0",
+    "item_code": "PD-42835U",
+    "description": "PD MUSHROOM WHOLE WHITE MEDIUM 10 LBS CASE - FRESH LOS ANGELES PRODUCE\nMushroom White Sliced 10lbs Ctn",
+    "price": 28.0,
+    "qty": 1.0,
+    "total": 28.0,
+    "ref": "671658",
+    "date": "2026-06-11",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "type": "Inventory Part",
+    "highlight_status": null
+  },
+  {
+    "line": 2,
+    "bill_id": "13b41ea6-d624-446c-b57f-2a49f07f2db0",
+    "item_code": null,
+    "description": "Springmix Pillow Pack Ctn 3#",
+    "price": 6.25,
+    "qty": 1.0,
+    "total": 6.25,
+    "ref": "671658",
+    "date": "2026-06-11",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "type": "Inventory Part",
+    "highlight_status": "not_on_po"
+  },
+  {
+    "line": 3,
+    "bill_id": "13b41ea6-d624-446c-b57f-2a49f07f2db0",
+    "item_code": null,
+    "description": "Mushroom White Med 10lbs Ctn",
+    "price": 28.0,
+    "qty": 12.0,
+    "total": 336.0,
+    "ref": "671658",
+    "date": "2026-06-11",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "type": "Inventory Part",
+    "highlight_status": "not_on_po"
+  },
+  {
+    "line": 4,
+    "bill_id": "451ab058-7c11-4f64-8d8f-7f096463b839",
+    "item_code": "G0715400209-02",
+    "description": "2 CS BEEF SHORT RIB 3 BONE IN 3/8 INCH END TO END CUT DOMESTIC FROZEN AVG 30 LBS CASE\nBeef Short Rib (3 Bone) 3/8\" Frozen, CW 30# BOXES\nweights: 30.14+30.66",
+    "price": 8.05,
+    "qty": 2.0,
+    "total": 489.44,
+    "ref": "702325",
+    "date": null,
+    "vendor": "Glen Rose Meat Company",
+    "type": "Inventory Part",
+    "highlight_status": null
+  },
+  {
+    "line": 5,
+    "bill_id": "20c8d1b6-18ec-409c-9134-76c91d068f95",
+    "item_code": "M-BELLXL",
+    "description": "PD BELL PEPPERS GREEN EXTRA LARGE AVG 20 LBS - LOS ANGELES PRODUCE\nBELL PEPPER GREEN XLGE Product of USA",
+    "price": 18.0,
+    "qty": 1.0,
+    "total": 18.0,
+    "ref": "01014010",
+    "date": null,
+    "vendor": "MAUI FRESH INTERNATIONAL",
+    "type": "Inventory Part",
+    "highlight_status": null
+  }
+]

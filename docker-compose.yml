@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: br_user
+      POSTGRES_PASSWORD: br_password
+      POSTGRES_DB: br_food_services
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U br_user -d br_food_services"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://br_user:br_password@db:5432/br_food_services
+      SECRET_KEY: dev-secret-key-change-in-production
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      STORAGE_PATH: /app/storage
+      CORS_ORIGINS: '["http://localhost:3000"]'
+      ENVIRONMENT: development
+    volumes:
+      - ./backend:/app
+      - storage_data:/app/storage
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    command: npm run dev
+
+volumes:
+  postgres_data:
+  storage_data:

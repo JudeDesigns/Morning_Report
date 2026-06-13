@@ -1,0 +1,11 @@
+[
+  {
+    "id": "3f688b0b-978a-4a3a-80fc-ae0f8f111afe",
+    "run_id": "18fd3190-d1d9-46dd-bfdd-dd914ff7a1d6",
+    "event_type": "run_deleted",
+    "message": "Run deleted",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T19:25:26.684415+00:00"
+  }
+]

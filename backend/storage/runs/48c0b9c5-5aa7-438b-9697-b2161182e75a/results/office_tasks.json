@@ -1,0 +1,378 @@
+[
+  {
+    "vendor_name": "Jetro",
+    "ref_number": "186951",
+    "task_type": "order_header",
+    "item": null,
+    "need_review": "Jetro",
+    "task_instructions": "***OPEN PO FOR ALL JETRO MISSING ITEMS***"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187709",
+    "task_type": "order_header",
+    "item": "Glen Rose Meat Company",
+    "need_review": "Glen Rose Meat Company",
+    "task_instructions": "ORDER PLACED BY:FRANZ\n\nDRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187709",
+    "task_type": "item_task",
+    "item": "Glen Rose Meat Company",
+    "need_review": "ORDER PLACED BY:FRANZ",
+    "task_instructions": "DRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187709",
+    "task_type": "item_task",
+    "item": "G0031190087-01",
+    "need_review": "6 CS CHICKEN SPLIT HALAL 2.5 LBS 28 HD AVG 75 LBS CASE CVP - GOLDEN ROD",
+    "task_instructions": "***NOTE FOR THE DRIVER***\nMAKE SURE TO CHECK THAT THE ITEM WE RECEIVE ARE SPLIT CHICKEN HALAL"
+  },
+  {
+    "vendor_name": "Garden Banner Foods",
+    "ref_number": "187713",
+    "task_type": "order_header",
+    "item": "Garden Banner Foods",
+    "need_review": "Garden Banner Foods",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER CNFD BY:\nSHIPMENT TYPE: PICK UP"
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187734",
+    "task_type": "order_header",
+    "item": "R.W. Zant",
+    "need_review": "R.W. Zant",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER REVIEWED BY:\nORDER CONFIRMATION NUMBER:T3402183\nHOURS OF OPERATION 3AM-16:00\nOUR ACCOUNT NUMBER 17055"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187794",
+    "task_type": "order_header",
+    "item": "Glen Rose Meat Company",
+    "need_review": "Glen Rose Meat Company",
+    "task_instructions": "ORDER PLACED BY: FRANZ\n\nDRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187794",
+    "task_type": "item_task",
+    "item": "Glen Rose Meat Company",
+    "need_review": "ORDER PLACED BY: FRANZ",
+    "task_instructions": "DRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187794",
+    "task_type": "item_task",
+    "item": "G0031160087-01",
+    "need_review": "30 CS 22 HD CVP WOGS",
+    "task_instructions": "***WEIGHTS MUST BE BETWEEN 69 TO 75 LBS & PRODUCTION DATE NO MORE THAN 7 DAYS OLD*** \n***PRODUCT MUST BE GOLDEN ROD***"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187794",
+    "task_type": "item_task",
+    "item": "G0032003093-01",
+    "need_review": "3 CS BONE IN BREAST JUMBO (HARRISON) (00822089349)",
+    "task_instructions": "DATE _____-____-_____  DRIVER WILL CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187805",
+    "task_type": "order_header",
+    "item": "Glen Rose Meat Company",
+    "need_review": "Glen Rose Meat Company",
+    "task_instructions": "ORDER PLACED BY: FRANZ\n\nDRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187805",
+    "task_type": "item_task",
+    "item": "Glen Rose Meat Company",
+    "need_review": "ORDER PLACED BY: FRANZ",
+    "task_instructions": "DRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187822",
+    "task_type": "order_header",
+    "item": "Glen Rose Meat Company",
+    "need_review": "Glen Rose Meat Company",
+    "task_instructions": "ORDER PLACED BY: FRANZ\n\nDRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187822",
+    "task_type": "item_task",
+    "item": "Glen Rose Meat Company",
+    "need_review": "ORDER PLACED BY: FRANZ",
+    "task_instructions": "DRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187830",
+    "task_type": "order_header",
+    "item": "R.W. Zant",
+    "need_review": "R.W. Zant",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER REVIEWED BY:\nORDER CONFIRMATION NUMBER: R3404907\nHOURS OF OPERATION 3AM-16:00\nOUR ACCOUNT NUMBER 17055"
+  },
+  {
+    "vendor_name": "Toby Egg Farm",
+    "ref_number": "187831",
+    "task_type": "order_header",
+    "item": "Toby Egg Farm",
+    "need_review": "Toby Egg Farm",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER CONFIRMED BY:\nSHIPMENT TYPE: PICK UP"
+  },
+  {
+    "vendor_name": "AA Meat Products",
+    "ref_number": "187835",
+    "task_type": "order_header",
+    "item": "AA Meat Products",
+    "need_review": "AA Meat Products",
+    "task_instructions": "ORDER PLACED BY:  FRANZ\n\nPALLET EXCHANGE IS REQUIRED"
+  },
+  {
+    "vendor_name": "AA Meat Products",
+    "ref_number": "187835",
+    "task_type": "item_task",
+    "item": "AA Meat Products",
+    "need_review": "ORDER PLACED BY:  FRANZ",
+    "task_instructions": "PALLET EXCHANGE IS REQUIRED"
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187837",
+    "task_type": "order_header",
+    "item": "R.W. Zant",
+    "need_review": "R.W. Zant",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER REVIEWED BY:\nORDER CONFIRMATION NUMBER: R3405415\nHOURS OF OPERATION 3AM-16:00\nOUR ACCOUNT NUMBER 17055"
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187838",
+    "task_type": "order_header",
+    "item": "R.W. Zant",
+    "need_review": "R.W. Zant",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER REVIEWED BY:\nORDER CONFIRMATION NUMBER: R3405422\nHOURS OF OPERATION 3AM-16:00\nOUR ACCOUNT NUMBER 17055"
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187839",
+    "task_type": "order_header",
+    "item": "R.W. Zant",
+    "need_review": "R.W. Zant",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER REVIEWED BY:\nORDER CONFIRMATION NUMBER:R3405445\nHOURS OF OPERATION 3AM-16:00\nOUR ACCOUNT NUMBER 17055"
+  },
+  {
+    "vendor_name": "Los Angeles Poultry",
+    "ref_number": "187840",
+    "task_type": "order_header",
+    "item": "Los Angeles Poultry",
+    "need_review": "Los Angeles Poultry",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER CONFIRMED BY:\nSHIPMENT TYPE: PICK UP\n\nDRIVER TO CHECK FRESH POULTRY  BOXES LABELS THAT PRODUCTION  DATE IS SAME AS PICKUP DATE"
+  },
+  {
+    "vendor_name": "Los Angeles Poultry",
+    "ref_number": "187840",
+    "task_type": "item_task",
+    "item": "Los Angeles Poultry",
+    "need_review": "ORDER PLACED BY: FRANZ\nORDER CONFIRMED BY:\nSHIPMENT TYPE: PICK UP",
+    "task_instructions": "DRIVER TO CHECK FRESH POULTRY  BOXES LABELS THAT PRODUCTION  DATE IS SAME AS PICKUP DATE"
+  },
+  {
+    "vendor_name": "Los Angeles Poultry",
+    "ref_number": "187840",
+    "task_type": "item_task",
+    "item": "LAPC76172CA",
+    "need_review": "30 CS CHICKEN THIGH MEAT BONELESS SKINLESS JUMBO FRESH 4/10# LBS CASE - WAYNE FARMS",
+    "task_instructions": "PO NOTE: FOR THE PERSON ENTERING THE BILL: MUST BE ENTERED UNDER Z252738"
+  },
+  {
+    "vendor_name": "Cofoods",
+    "ref_number": "187841",
+    "task_type": "order_header",
+    "item": "Cofoods",
+    "need_review": "Cofoods",
+    "task_instructions": "ORDER PLACED BY: FRANZ\n\nLOT#\nPICK UP ADDRESS:\nSALES NO:\n\n***NEED TO BRING PALLET FOR EXCHANGE***"
+  },
+  {
+    "vendor_name": "Cofoods",
+    "ref_number": "187841",
+    "task_type": "item_task",
+    "item": "Cofoods",
+    "need_review": "ORDER PLACED BY: FRANZ",
+    "task_instructions": "LOT#\nPICK UP ADDRESS:\nSALES NO:\n\n***NEED TO BRING PALLET FOR EXCHANGE***"
+  },
+  {
+    "vendor_name": "Quirch Foods",
+    "ref_number": "187842",
+    "task_type": "order_header",
+    "item": "Quirch Foods",
+    "need_review": "Quirch Foods",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nSHIPMENT: DELIVERY OR PICK UP\n\nWarehouse receiving hours:\nMonday?Friday until 1:00?1:30 PM\nSaturday until 11:00 AM"
+  },
+  {
+    "vendor_name": "Quirch Foods",
+    "ref_number": "187842",
+    "task_type": "item_task",
+    "item": "Quirch Foods",
+    "need_review": "ORDER PLACED BY: FRANZ\nSHIPMENT: DELIVERY OR PICK UP",
+    "task_instructions": "Warehouse receiving hours:\nMonday?Friday until 1:00?1:30 PM\nSaturday until 11:00 AM"
+  },
+  {
+    "vendor_name": "H&J Food Distribution",
+    "ref_number": "187843",
+    "task_type": "order_header",
+    "item": "H&J Food Distribution",
+    "need_review": "H&J Food Distribution",
+    "task_instructions": "ORDER PLACED BY:\nORDER CONFIRMED BY:\nSHIPMENT TYPE: DELIVERY"
+  },
+  {
+    "vendor_name": "Unistar Foods, Inc.",
+    "ref_number": "187844",
+    "task_type": "order_header",
+    "item": "Unistar Foods, Inc.",
+    "need_review": "Unistar Foods, Inc.",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nSHIPMENT: DELIVERY\n\nWarehouse receiving hours:\nMonday?Friday until 1:00?1:30 PM\nSaturday until 11:00 AM\nMOQ: 300 LBS"
+  },
+  {
+    "vendor_name": "Unistar Foods, Inc.",
+    "ref_number": "187844",
+    "task_type": "item_task",
+    "item": "Unistar Foods, Inc.",
+    "need_review": "ORDER PLACED BY: FRANZ\nSHIPMENT: DELIVERY",
+    "task_instructions": "Warehouse receiving hours:\nMonday?Friday until 1:00?1:30 PM\nSaturday until 11:00 AM\nMOQ: 300 LBS"
+  },
+  {
+    "vendor_name": "Los Angeles Poultry",
+    "ref_number": "187846",
+    "task_type": "order_header",
+    "item": "Los Angeles Poultry",
+    "need_review": "Los Angeles Poultry",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER CONFIRMED BY:\nSHIPMENT TYPE: PICK UP\n\nDRIVER TO CHECK FRESH POULTRY  BOXES LABELS THAT PRODUCTION  DATE IS SAME AS PICKUP DATE"
+  },
+  {
+    "vendor_name": "Los Angeles Poultry",
+    "ref_number": "187846",
+    "task_type": "item_task",
+    "item": "Los Angeles Poultry",
+    "need_review": "ORDER PLACED BY: FRANZ\nORDER CONFIRMED BY:\nSHIPMENT TYPE: PICK UP",
+    "task_instructions": "DRIVER TO CHECK FRESH POULTRY  BOXES LABELS THAT PRODUCTION  DATE IS SAME AS PICKUP DATE"
+  },
+  {
+    "vendor_name": "Los Angeles Poultry",
+    "ref_number": "187846",
+    "task_type": "item_task",
+    "item": "LAPC5617227",
+    "need_review": "9 CS CHICKEN SPLIT 2.75 LB CUT IN HALF 48 COUNT 70 LBS CASE (DRIVER NEED CHECK WEIGHTS SHOULD BE BETWEEN 69-71 LBS)",
+    "task_instructions": "DRIVER NEEDS TO CHECK THE LABEL OF THE BOXES & VERIFY THT WE RCVD \"24 HEADS\". \nIF WE RCV LESS, WE MUST PICK UP THE MISSING PIECES FROM VENDOR."
+  },
+  {
+    "vendor_name": "Los Angeles Poultry",
+    "ref_number": "187846",
+    "task_type": "item_task",
+    "item": "LAPC5112003",
+    "need_review": "4 CS CHICKEN CUT 9 (WITH WINGS) 2.75 LBS 216 COUNT AVG 70 LBS CASE HAND CUT IN CALIFORNIA",
+    "task_instructions": "DRIVER NEEDS TO CHECK THE LABEL OF THE BOXES & VERIFY THT WE RCVD \"CUT 9\""
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187847",
+    "task_type": "order_header",
+    "item": "Glen Rose Meat Company",
+    "need_review": "Glen Rose Meat Company",
+    "task_instructions": "ORDER PLACED BY: MEENAKSHI\n\nDRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Glen Rose Meat Company",
+    "ref_number": "187847",
+    "task_type": "item_task",
+    "item": "Glen Rose Meat Company",
+    "need_review": "ORDER PLACED BY: MEENAKSHI",
+    "task_instructions": "DRIVER TO  CONTACT THE OFFICE IF PRODUCTION DATE IS OVER ONE WEEK\n\nNEED TO CHECK 1 DAY BEFORE PICKUP THAT THEY HAVE THE ORDER READY"
+  },
+  {
+    "vendor_name": "Rancho Foods",
+    "ref_number": "187848",
+    "task_type": "order_header",
+    "item": "Rancho Foods",
+    "need_review": "Rancho Foods",
+    "task_instructions": "ORDER PLACED BY: FRANZ\nORDER CONFIRM BY:\nSHIPMENT: PICK UP"
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187849",
+    "task_type": "item_task",
+    "item": "Z425596",
+    "need_review": "10 case GROUND TURKEY 85% LEAN FROZEN 2/10 # 20 LBS CASE - BUTTERBALL",
+    "task_instructions": "DRIVER MUST ENSURE THAT THERE ARE NO LEAKS AND THAT ALL CASES ARE IN PERFECT CONDITION AT THE TIME OF PICKUP. PERSON ENTERING THE BILL MUST CONFIRM THIS DIRECTLY WITH THE DRIVER."
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187849",
+    "task_type": "item_task",
+    "item": "Z501257",
+    "need_review": "10 case BEEF CHUCK TENDER BONELESS FROZEN AVG 70 LBS CASE - BONA PRIME",
+    "task_instructions": "***DELETE THIS NOTE BEFORE SENDING THE ORDER***\n\nNEED TO COMPARE THE PRICE FROM LARA'S MEAT"
+  },
+  {
+    "vendor_name": "R.W. Zant",
+    "ref_number": "187849",
+    "task_type": "item_task",
+    "item": "Z505437",
+    "need_review": "3 case BLACK ANGUS BEEF CHUCK ROLL NECK OFF USDA PRIME AVG 55 LBS CASE - WR RESERVE PREMIUM",
+    "task_instructions": "**DELETE BOTTOM PART**\nCOMPARE COST WITH QUIRCH FOODS (QF115032)"
+  },
+  {
+    "vendor_name": "D&N Produce Inc.",
+    "ref_number": "187850",
+    "task_type": "item_task",
+    "item": "42565U",
+    "need_review": "PD CILANTRO 30 CT FRESH - LOS ANGELES PRODUCE (2060042565)",
+    "task_instructions": "- CONTACT BARAK or LUIS/ADRIAN / GILBERTO & REMIND THEM TO REVIEW THE QUALITY OF \"CILANTRO\" \n- DO NOT FINALIZE (CLOSE) THE BILL BEFORE GETTING AN \"OKAY\" FOR ITEM"
+  },
+  {
+    "vendor_name": "D&N Produce Inc.",
+    "ref_number": "187850",
+    "task_type": "item_task",
+    "item": "42602U",
+    "need_review": "PD CARROTS 25 LB JUMBO FRESH - LOS ANGELES PRODUCE (2060059143)",
+    "task_instructions": "-The person picking up this item from vendor, needs to confirm it is the correct Jumbo Size (Thick carrots).\n\n**DELETE BEFORE SENDING:\nWhen placing order with Jalisco Fresh Produce Inc., we need to make sure we are requesting specifically for JUMBO size - Mario/Barak 08.08.24"
+  },
+  {
+    "vendor_name": "D&N Produce Inc.",
+    "ref_number": "187850",
+    "task_type": "item_task",
+    "item": "42638U",
+    "need_review": "PD ICEBERG LETTUCE LINER OR BULK 24 COUNT IN A CASE - LOS ANGELES PRODUCE (1060042638)(2060042638)(9884304061)",
+    "task_instructions": "**Delete Bottom Part**\nNeed to compare pricing with Jetro and other Produce Market vendors, including D&N and Maui, and source from the lowest-priced option."
+  },
+  {
+    "vendor_name": "D&N Produce Inc.",
+    "ref_number": "187850",
+    "task_type": "item_task",
+    "item": "AO-R24P",
+    "need_review": "PD CILANTRO 60 COUNT (BUNCH) FRESH - LOS ANGELES PRODUCE",
+    "task_instructions": "- CONTACT BARAK or LUIS/ADRIAN / GILBERTO & REMIND THEM TO REVIEW THE QUALITY OF \"CILANTRO\" AND SEND IMAGES OF THE PRODUCT, IT SHOULD NOT BE SMALL BUNCHES.\n- DO NOT FINALIZE (CLOSE) THE BILL BEFORE GETTING AN \"OKAY\" FOR ITEM"
+  },
+  {
+    "vendor_name": "Maui Fresh",
+    "ref_number": "187852",
+    "task_type": "item_task",
+    "item": "M-BELLXL",
+    "need_review": "PD BELL PEPPERS GREEN EXTRA LARGE AVG 20 LBS - LOS ANGELES PRODUCE",
+    "task_instructions": "**DRIVER NEEDS TO CHECK THE SIZE OF THE PRODUCT, MUST BE EXTRA LARGE.**\n-DO NOT FINALIZE THE BILL BEFORE GETTING AN \"OKAY\" FOR THE ITEM."
+  },
+  {
+    "vendor_name": "Jalisco Fresh Produce Inc.",
+    "ref_number": "187853",
+    "task_type": "item_task",
+    "item": "PD-42765U",
+    "need_review": "PD TOMATILLOS PEELED WB FRESH 38 LBS CASE - LOS ANGELES PRODUCE",
+    "task_instructions": "**BOTTOM PART TO BE DELETED**\n\nCOMPARE PRICES WITH:\nROMAS R US: $\nMAUI: $\nCOOSEMAN: $"
+  }
+]

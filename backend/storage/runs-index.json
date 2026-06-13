@@ -1,0 +1,66 @@
+[
+  {
+    "id": "0da21c54-a512-4162-a7e9-80842955016e",
+    "workflow_type": "web_orders_check",
+    "name": "Daily Web Orders Check \u2014 2026-06-12",
+    "run_date": "2026-06-12",
+    "status": "exported",
+    "updated_at": "2026-06-12T18:18:42.288151+00:00"
+  },
+  {
+    "id": "7094229d-a9b2-4492-9df7-c9884e1a22a5",
+    "workflow_type": "combined_price_changes",
+    "name": "Combined Price Changes \u2014 2026-06-12",
+    "run_date": "2026-06-12",
+    "status": "processed",
+    "updated_at": "2026-06-12T18:17:12.289327+00:00"
+  },
+  {
+    "id": "48c0b9c5-5aa7-438b-9697-b2161182e75a",
+    "workflow_type": "vendor_bill_po_bank",
+    "name": "Vendor Bills / PO Bank \u2014 2026-06-12",
+    "run_date": "2026-06-12",
+    "status": "exported",
+    "updated_at": "2026-06-12T17:59:34.535632+00:00"
+  },
+  {
+    "id": "6bb7ffa6-c047-4403-8d75-d7f899d53d24",
+    "workflow_type": "jetro_reconciliation",
+    "name": "Jetro / Restaurant Depot \u2014 2026-06-12",
+    "run_date": "2026-06-12",
+    "status": "exported",
+    "updated_at": "2026-06-12T17:43:05.403584+00:00"
+  },
+  {
+    "id": "da400177-b2de-4e71-871e-33d67d7eff7d",
+    "workflow_type": "combined_price_changes",
+    "name": "Combined Price Changes \u2014 2026-06-11",
+    "run_date": "2026-06-11",
+    "status": "draft",
+    "updated_at": "2026-06-11T23:51:51.962552+00:00"
+  },
+  {
+    "id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "workflow_type": "vendor_bill_po_bank",
+    "name": "Vendor Bills / PO Bank \u2014 2026-06-11",
+    "run_date": "2026-06-11",
+    "status": "exported",
+    "updated_at": "2026-06-12T14:06:55.274076+00:00"
+  },
+  {
+    "id": "cfa12c83-ea3b-4df8-9bc4-cdce9a800aab",
+    "workflow_type": "jetro_reconciliation",
+    "name": "Jetro / Restaurant Depot \u2014 2026-06-11",
+    "run_date": "2026-06-11",
+    "status": "processed",
+    "updated_at": "2026-06-12T17:57:43.229662+00:00"
+  },
+  {
+    "id": "8a5965d3-5f95-4b6d-abbd-38cc82446b2b",
+    "workflow_type": "web_orders_check",
+    "name": "Daily Web Orders Check \u2014 2026-06-11",
+    "run_date": "2026-06-11",
+    "status": "exported",
+    "updated_at": "2026-06-11T19:26:06.327938+00:00"
+  }
+]

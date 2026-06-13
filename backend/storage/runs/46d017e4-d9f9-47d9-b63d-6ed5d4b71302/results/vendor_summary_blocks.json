@@ -1,0 +1,137 @@
+[
+  {
+    "id": "e3fcd9d8-1352-4849-8eba-27e1fa038518",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "invoice_number": "671658",
+    "invoice_date": "2026-06-11",
+    "email_subject": "Invoice Review \u2014 Go-Fresh Produce, Inc. 671658",
+    "email_body": "Dear Go-Fresh Produce, Inc. team,\n\nWe are writing regarding invoice #671658.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "qty_issue",
+        "item_code": "PD-42835U",
+        "item_description": "PD MUSHROOM WHOLE WHITE MEDIUM 10 LBS CASE - FRESH LOS ANGELES PRODUCE",
+        "po_rate": 28.0,
+        "invoice_rate": 28.0,
+        "qty": 1.0,
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -5.00 units"
+      }
+    ]
+  },
+  {
+    "id": "b7d7d61c-eb9b-4695-866a-7feefc17b97a",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "invoice_number": "671658",
+    "invoice_date": "2026-06-11",
+    "email_subject": "Invoice Review \u2014 Go-Fresh Produce, Inc. 671658",
+    "email_body": "Dear Go-Fresh Produce, Inc. team,\n\nWe are writing regarding invoice #671658.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "qty_issue",
+        "item_code": "PD-42835U",
+        "item_description": "PD MUSHROOM WHOLE WHITE MEDIUM 10 LBS CASE - FRESH LOS ANGELES PRODUCE",
+        "po_rate": 28.0,
+        "invoice_rate": 28.0,
+        "qty": 1.0,
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -5.00 units"
+      }
+    ]
+  },
+  {
+    "id": "41677e92-56a0-4224-b5f6-ae2fd6897ec5",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "invoice_number": "671658",
+    "invoice_date": "2026-06-11",
+    "email_subject": "Invoice Review \u2014 Go-Fresh Produce, Inc. 671658",
+    "email_body": "Dear Go-Fresh Produce, Inc. team,\n\nWe are writing regarding invoice #671658.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "qty_issue",
+        "item_code": "PD-42835U",
+        "item_description": "PD MUSHROOM WHOLE WHITE MEDIUM 10 LBS CASE - FRESH LOS ANGELES PRODUCE",
+        "po_rate": 28.0,
+        "invoice_rate": 28.0,
+        "qty": 1.0,
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -5.00 units"
+      }
+    ]
+  },
+  {
+    "id": "ee7bf0bd-6bf7-405e-a401-ebe811ef2e0c",
+    "bill_id": "13b41ea6-d624-446c-b57f-2a49f07f2db0",
+    "vendor": "Go-Fresh Produce, Inc.",
+    "invoice_number": "671658",
+    "invoice_date": "2026-06-11",
+    "email_subject": "Invoice Review \u2014 Go-Fresh Produce, Inc. 671658",
+    "email_body": "Dear Go-Fresh Produce, Inc. team,\n\nWe are writing regarding invoice #671658.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "qty_issue",
+        "item_code": "PD-42835U",
+        "item_description": "PD MUSHROOM WHOLE WHITE MEDIUM 10 LBS CASE - FRESH LOS ANGELES PRODUCE",
+        "po_rate": 28.0,
+        "invoice_rate": 28.0,
+        "qty": 1.0,
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -5.00 units"
+      }
+    ]
+  },
+  {
+    "id": "94408dd5-82e9-4e9b-b388-b8509116f7bb",
+    "bill_id": "451ab058-7c11-4f64-8d8f-7f096463b839",
+    "vendor": "Glen Rose Meat Company",
+    "invoice_number": "702325",
+    "invoice_date": null,
+    "email_subject": "Invoice Review \u2014 Glen Rose Meat Company 702325",
+    "email_body": "Dear Glen Rose Meat Company team,\n\nWe are writing regarding invoice #702325.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "qty_issue",
+        "item_code": "G0715400209-02",
+        "item_description": "2 CS BEEF SHORT RIB 3 BONE IN 3/8 INCH END TO END CUT DOMESTIC FROZEN AVG 30 LBS CASE",
+        "po_rate": 8.05,
+        "invoice_rate": 8.05,
+        "qty": 2.0,
+        "difference_per_unit": 0.0,
+        "total_impact": 0.0,
+        "action_needed": "Quantity difference of -58.00 units"
+      }
+    ]
+  },
+  {
+    "id": "3a970d6a-ec20-4b40-b997-a40b82ea314a",
+    "bill_id": "20c8d1b6-18ec-409c-9134-76c91d068f95",
+    "vendor": "MAUI FRESH INTERNATIONAL",
+    "invoice_number": "01014010",
+    "invoice_date": null,
+    "email_subject": "Invoice Review \u2014 MAUI FRESH INTERNATIONAL 01014010",
+    "email_body": "Dear MAUI FRESH INTERNATIONAL team,\n\nWe are writing regarding invoice #01014010.\nPlease review the items listed below and confirm the following:\n\nFor overcharged items: Please issue a credit for the difference.\nFor undercharged items: Please confirm whether the lower price is correct.\n\nThank you for your prompt attention.\n\nBest regards,\nB&R Food Services",
+    "has_reportable_issue": true,
+    "items": [
+      {
+        "section": "undercharged",
+        "item_code": "M-BELLXL",
+        "item_description": "PD BELL PEPPERS GREEN EXTRA LARGE AVG 20 LBS - LOS ANGELES PRODUCE",
+        "po_rate": 26.0,
+        "invoice_rate": 18.0,
+        "qty": 1.0,
+        "difference_per_unit": -8.0,
+        "total_impact": -8.0,
+        "action_needed": "Please confirm if lower price $8.0000/unit is correct"
+      }
+    ]
+  }
+]

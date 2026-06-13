@@ -1,0 +1,50 @@
+[
+  {
+    "id": "30fb808a-c15c-4bee-9526-2bfd24a0efce",
+    "run_id": "48c0b9c5-5aa7-438b-9697-b2161182e75a",
+    "file_type": "quickbooks_po_export",
+    "original_filename": "All POs June -11.xlsx",
+    "storage_path": "storage/48c0b9c5-5aa7-438b-9697-b2161182e75a/quickbooks_po_export/49cd2f60-1c93-48f3-ac41-3cab68780b64.xlsx",
+    "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "sha256": "a0b04c6e7b92a2b24edf079c6e75931c5c2ef3e93510573ef0b5682e71bcea1c",
+    "uploaded_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "uploaded_at": "2026-06-12T17:49:02.159875+00:00",
+    "parse_status": "pending"
+  },
+  {
+    "id": "08e2cd53-993a-4fc2-8d20-10f80bde348d",
+    "run_id": "48c0b9c5-5aa7-438b-9697-b2161182e75a",
+    "file_type": "vendor_bill_image",
+    "original_filename": "WhatsApp Image 2026-06-11 at 20.55.39.jpeg",
+    "storage_path": "storage/48c0b9c5-5aa7-438b-9697-b2161182e75a/vendor_bill_image/5781c80a-9143-475d-98a5-903a3d8f1014.jpeg",
+    "mime_type": "image/jpeg",
+    "sha256": "10fe7e15d6da6774eaaa138b827bedb35992a373f29a8f2988966d981f7684cd",
+    "uploaded_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "uploaded_at": "2026-06-12T17:49:17.913230+00:00",
+    "parse_status": "pending"
+  },
+  {
+    "id": "74c909f4-bb86-4094-9912-5f11780a54c0",
+    "run_id": "48c0b9c5-5aa7-438b-9697-b2161182e75a",
+    "file_type": "vendor_bill_image",
+    "original_filename": "WhatsApp Image 2026-06-11 at 20.55.41.jpeg",
+    "storage_path": "storage/48c0b9c5-5aa7-438b-9697-b2161182e75a/vendor_bill_image/f5a29045-dfc0-472c-879e-056d827f8f0f.jpeg",
+    "mime_type": "image/jpeg",
+    "sha256": "7848c05a9b947c309afa8380055d0dd6ab799f6fb42191c4cf4f720366c5c862",
+    "uploaded_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "uploaded_at": "2026-06-12T17:53:29.868444+00:00",
+    "parse_status": "pending"
+  },
+  {
+    "id": "a38da447-5443-492f-a8ad-d8616822c4ea",
+    "run_id": "48c0b9c5-5aa7-438b-9697-b2161182e75a",
+    "file_type": "vendor_bill_image",
+    "original_filename": "WhatsApp Image 2026-06-11 at 20.55.42.jpeg",
+    "storage_path": "storage/48c0b9c5-5aa7-438b-9697-b2161182e75a/vendor_bill_image/7196d5a0-14f8-474b-b319-69c7f9d601fe.jpeg",
+    "mime_type": "image/jpeg",
+    "sha256": "dfe4922373d4d00034b6f8de7b037d919cfa5e3624b3705a3a62490f9a50d35f",
+    "uploaded_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "uploaded_at": "2026-06-12T17:56:16.781038+00:00",
+    "parse_status": "pending"
+  }
+]

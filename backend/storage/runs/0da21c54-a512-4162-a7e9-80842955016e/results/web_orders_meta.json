@@ -1,0 +1,29 @@
+{
+  "source_headers": [
+    "Product Name",
+    "Code",
+    "Bin",
+    "Description",
+    "Vender",
+    "Address",
+    "Qty",
+    "Weight",
+    "Individual Weight",
+    "Price",
+    "Total",
+    "Name",
+    "Ref",
+    "Status",
+    "Transaction Date",
+    "Driver",
+    "Route",
+    "Transaction ID",
+    "Remark"
+  ],
+  "warnings": [],
+  "reference_sheets": {
+    "item_list": true,
+    "inventory": true,
+    "shopping_history": true
+  }
+}

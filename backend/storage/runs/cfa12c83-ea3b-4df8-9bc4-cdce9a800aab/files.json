@@ -1,0 +1,38 @@
+[
+  {
+    "id": "8e4a94e1-b295-429b-bf17-cde374d10491",
+    "run_id": "cfa12c83-ea3b-4df8-9bc4-cdce9a800aab",
+    "file_type": "jetro_source",
+    "original_filename": "jetro_source_routed.xlsx",
+    "storage_path": "storage/cfa12c83-ea3b-4df8-9bc4-cdce9a800aab/jetro_source/d0e30111-3750-429f-b67f-231724e8608b.xlsx",
+    "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "sha256": "1227e7bb7fe9fcd532c0cd98df3213f708aae68cdc7f1de0c40aadd3d35de197",
+    "uploaded_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "uploaded_at": "2026-06-11T19:58:25.322884+00:00",
+    "parse_status": "pending"
+  },
+  {
+    "id": "91d19f99-f34b-47e1-a1cb-f9461c969a07",
+    "run_id": "cfa12c83-ea3b-4df8-9bc4-cdce9a800aab",
+    "file_type": "sales_per_week",
+    "original_filename": "upload.xlsx",
+    "storage_path": "storage/cfa12c83-ea3b-4df8-9bc4-cdce9a800aab/sales_per_week/0c9b00c8-c73f-4112-961b-1c78531e28f4.xlsx",
+    "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "sha256": "af5460a1560a2eea292e1880e339e4a48eedab77d5ae2f60ae6a00b66a54a50b",
+    "uploaded_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "uploaded_at": "2026-06-11T19:58:42.888334+00:00",
+    "parse_status": "pending"
+  },
+  {
+    "id": "4b78f4d5-271f-4cbb-91ee-950d9d9a48c6",
+    "run_id": "cfa12c83-ea3b-4df8-9bc4-cdce9a800aab",
+    "file_type": "restaurant_depot_invoice_xlsx",
+    "original_filename": "INVOICE 6.11.26.xlsx",
+    "storage_path": "storage/cfa12c83-ea3b-4df8-9bc4-cdce9a800aab/restaurant_depot_invoice_xlsx/5f32f806-9a2c-4a22-bf81-0f2bdb671425.xlsx",
+    "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "sha256": "7207789502bb37fecf739361e72e47b51fc176cf4f4cea5a6e7384cf26daee1b",
+    "uploaded_by": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "uploaded_at": "2026-06-11T20:00:58.903197+00:00",
+    "parse_status": "pending"
+  }
+]

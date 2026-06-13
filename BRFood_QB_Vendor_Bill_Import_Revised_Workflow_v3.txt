@@ -1,0 +1,456 @@
+B&R Food Services Inc.
+Revised Vendor Bills to QuickBooks Import — Accumulating Workflow
+Professional SOP | New QB PO Export Format | PO Bank Reference Method | Image-by-Image Bill Processing | Office-Ready
+Vendor Summary | All Issues Consolidated View | Updated 06/2026 — v3
+
+================================================================================
+Purpose
+================================================================================
+
+This revised workflow defines how vendor bill images are processed during the
+workday against one QuickBooks PO export. The PO file is used as a
+bank/reference only. Working sheets are populated only after the related vendor
+bill image is received and processed. Effective 06/2026 the PO export is
+delivered in a new structured format, defined in Section 1. This v3 also folds
+the All Issues consolidated view in as a built-in sheet (Section 10) — it is no
+longer a separate document.
+
+Critical correction: The Summary Vendor & Warehouse sheet is not a raw
+discrepancy table. It is an office-ready vendor email preparation sheet used to
+communicate price increases, price decreases, overcharges, undercharges,
+quantity issues, missing items, and ETA requests.
+
+
+================================================================================
+1. QuickBooks PO Export Format
+================================================================================
+
+New — effective 06/2026. The QuickBooks PO export is delivered in the structured
+format below. This section defines the export and how it loads into the PO Bank.
+All later steps are unchanged.
+
+1.1 Export Columns
+------------------
+Col  Field                Notes / Use
+A    Terms                Vendor payment terms.
+B    RefNumber            PO number. Groups all lines of one PO.
+C    TxnDate              PO date.
+D    Vendor               QB vendor name.
+E    Memo                 PO memo.
+F    Total Amount         PO total.
+G    TxnLine Cost         PO unit cost. Use as PO Cost in Cost Comparison.
+H    TxnLine Description  Product description; may carry a driver/office task
+                          below a blank line (see 1.3).
+I    TxnLine Item         QB item code. Use for Bill Import and Cost Comparison
+                          matching. Retain in PO Bank.
+J    TxnLine Quantity     Weight-priced = total lbs shipped; else case/unit
+                          count. Feeds Bill Import qty.
+K    Name                 QB class / category.
+L    CASE AVG WEIGHT      Average lbs per case, when applicable.
+M    UNIT AVG WEIGHT      Average lbs per unit, when applicable.
+
+1.2 Row Types Within Each PO (grouped by RefNumber)
+----------------------------------------------------
+Row type       How to identify                                    Handling
+Order header   First row(s). Description begins ORDER PLACED BY   Extract once per PO to Office
+               or a print/availability note (***...***, NEED TO   and Driver's tasks. Do not load
+               CHECK AVAILABILITY). Item code blank or = vendor   into PO Bank.
+               name; cost 0.
+Spacer         Description and item code both empty (qty often 1). Ignore.
+Product line   Real item code in col I (not the vendor name);      Load into PO Bank.
+               cost in G; qty in J; desc in H.
+
+1.3 Embedded Driver / Office Tasks
+-----------------------------------
+- A product description (col H) may include a task below a blank line.
+- Split at the first blank line: text above = product description;
+  text below = driver/office task.
+- Product description -> PO Bank and Bill Import description.
+  Task -> Office and Driver's tasks.
+- Product/compliance notes with no blank line (e.g. a PROP 12 advisory)
+  stay with the product description.
+
+1.4 Office and Driver's Tasks Reference Sheet
+----------------------------------------------
+Built at intake so the PO Bank stays clean. Columns: vendor name, ref #,
+type (Order header / Item task), item, need review, task / instructions.
+Order-header rows: need review = vendor name; task = order note.
+Item-task rows: need review = first part of product description;
+task = the task (second part). Reference only — it does not feed Bill Import,
+Cost Comparison, Summary, or All Issues.
+
+1.5 Intake Rule
+---------------
+On load, parse the export: product lines populate the PO Bank (retain
+RefNumber, Vendor, item code, description, PO cost, qty/lbs); order headers
+and embedded item tasks populate Office and Driver's tasks. Then wait for a
+vendor bill image before processing any working sheet.
+
+
+================================================================================
+2. Workbook Structure
+================================================================================
+
+Sheet                        Purpose                                        When Updated
+--------------------------------------------------------------------------------------------
+Original PO / PO Bank        Stores remaining unprocessed PO rows.          Loaded at start; matched rows
+                             The bank/reference.                             removed after each bill.
+
+Office and Driver's tasks    Order-placed-by instructions and item-level     Built at intake. Not a working
+                             tasks from the export. Reference only.          sheet.
+
+Bill Import                  QuickBooks vendor bill import in exact          After a vendor bill image is
+                             11-column format.                               received and processed.
+
+Summary Vendor &             Office-ready vendor email content for           When the processed bill creates
+Warehouse                    price/qty/missing issues and ETA requests.      real vendor-facing issues.
+
+All Issues (NEW)             Consolidated, office-scannable view of all      Updated whenever a bill is
+                             Missing / Extra / Qty-mismatch issues across    processed; accumulates.
+                             every processed invoice. Reporting only.        See Section 10.
+
+PO Items Not Charged         Register of actual PO items ordered but not     When the bill proves an ordered
+                             charged/provided.                               item was missing/not charged.
+
+Individual Weights           Verified catch-weight detail only.              When individual weights are
+                                                                             shown and sum to billed weight.
+
+Cost Comparison              Clean factual PO cost vs vendor bill cost        For matched PO-vs-bill items
+                             comparison.                                     after a bill is processed.
+
+
+================================================================================
+3. Core Processing Rule
+================================================================================
+
+- The PO Excel is the bank/reference file only.
+- Wait for a vendor bill image before extracting related PO rows.
+- Only the vendor/items connected to the received bill are processed;
+  unrelated PO rows are not added to any working sheet.
+- After a bill is processed, remove the matched/processed PO rows from the
+  PO Bank.
+- If a vendor has not submitted a bill image yet, do not create rows for
+  that vendor anywhere except the PO Bank.
+
+
+================================================================================
+4. Step-by-Step Workday Process
+================================================================================
+
+Step  Action                                                         Output
+----  -------------------------------------------------------------  ----------------------------------------
+1     Load & parse the PO export: product lines -> PO Bank;         PO Bank holds unprocessed product rows;
+      order headers & item tasks -> Office and Driver's tasks.       tasks captured. No working sheets yet.
+
+2     User uploads a vendor bill image during the workday.           Begin processing only that bill.
+
+3     Extract bill data: vendor, invoice #, date, items, qty,        Clean bill-line dataset.
+      rate, total, credits, weights, relevant driver notes.
+
+4     Search the PO Bank for matching vendor/item/PO rows.           Related PO data pulled only now.
+
+5     Create Bill Import rows using bill figures + PO item           Bill Import updated for that bill.
+      codes/vendor names where matched.
+
+6     Compare matched lines to PO rows for qty & rate differences.   Cost Comparison & Summary updated where
+                                                                     required.
+
+7     Identify actual PO items for that order not billed/provided.   PO Items Not Charged rows when items
+                                                                     are missing.
+
+8     Record individual weights only if shown and verified to        Individual Weights updated.
+      equal billed weight.
+
+9     Update the All Issues sheet: append this invoice's Missing /   All Issues reflects this invoice;
+      Extra / Qty-mismatch rows, then re-sort (Section 10).          accumulates.
+
+10    Remove processed/matched PO rows from PO Bank.                 PO Bank retains only unprocessed rows.
+
+
+================================================================================
+5. Bill Import Sheet Rules
+================================================================================
+
+#   Column       Rule
+--  -----------  ---------------------------------------------------------------
+1   Line         Sequential; restart at 1 for each invoice.
+2   UPC          UPC from bill if printed; else blank.
+3   Item Code    Use QB PO item code when matched; blank if bill item is not
+                 on PO.
+4   Description  PO description, blank line, vendor description. PO notes only
+                 here, only when relevant.
+5   Price        Vendor billed unit rate exactly as shown.
+6   Qty          Vendor billed quantity; weight items = total lbs. Use 0 only
+                 for actual PO items not billed.
+7   Total        Vendor billed line total exactly as shown.
+8   Ref          Vendor invoice or credit memo number.
+9   Date         Date on the vendor bill.
+10  Vendor       Vendor name exactly as in the QB PO when matched.
+11  Type         Always Inventory Part.
+
+Dollar impact belongs in Description only when there is a rate difference.
+If individual weights are shown and verified, add a final line:
+weights: xx.xx+xx.xx+xx.xx. Do not copy PO notes into Summary or Cost
+Comparison.
+
+
+================================================================================
+6. Summary Vendor & Warehouse Sheet Rules
+================================================================================
+
+Office-ready vendor email content — clean enough to copy, paste, and send.
+Not a row-by-row raw discrepancy log.
+
+Required structure:
+  - Header (vendor, invoice #, date, subject, type)
+  - Copy/Paste email body
+  - Overcharged items (first)
+  - Undercharged / price decrease (second)
+  - Quantity issues (third, only when a real shortage/extra exists)
+  - Missing / not billed (last, with ETA when applicable)
+  - Optional short Office Note
+
+Rules:
+- Do not add a vendor block if there is nothing to report.
+- Do not write "nothing missing", "no discrepancies", or status notes.
+- Do not add internal PO notes, buyer reminders, or instructions like
+  "contact Barak" unless requested.
+- No interpretation or assumptions beyond the actual discrepancy.
+
+
+================================================================================
+7. PO Items Not Charged Sheet Rules
+================================================================================
+
+- Only actual PO items ordered but not charged/provided after the related
+  bill was processed.
+- If nothing is missing for a processed bill, add nothing. No status notes.
+- Do not use this sheet for billed-not-on-PO items; those go in Bill Import
+  (blank item code, red highlight).
+
+
+================================================================================
+8. Individual Weights Sheet Rules
+================================================================================
+
+- Merged block header: Vendor Name - Invoice # - Invoice Date.
+- Columns: Item Code (PO), Item Code (Bill), Product Name (PO), W1, W2,
+  W3, ... Total.
+- One row per item; each weight in its own cell, final total cell.
+- Only include weights when they sum exactly to the billed weight.
+- No blocks/notes when there are no weights.
+
+
+================================================================================
+9. Cost Comparison Sheet Rules
+================================================================================
+
+Column           Rule
+---------------  ---------------------------------------------------------------
+Item Code        QB PO item code.
+Description      Short PO item description only. No internal PO notes.
+Vendor           QB PO vendor name.
+PO Cost          Current cost from the matched PO row.
+Vendor Bill Cost Actual vendor bill unit rate.
+Difference       Vendor Bill Cost minus PO Cost.
+% Change         Difference / PO Cost. Blank when PO cost is zero/unusable.
+
+Matched PO-vs-bill items only. Sort by Vendor, then Item Code/Description.
+No notes, no interpretation. Mark VERIFY only when a rate is unreadable.
+
+
+================================================================================
+10. All Issues Sheet Rules (merged from the All Issues guide)
+================================================================================
+
+A single sheet named All Issues, positioned immediately after Summary Vendor &
+Warehouse, that consolidates every actionable PO-vs-bill discrepancy across all
+processed invoices into one scannable table — modeled on the Restaurant Depot
+(Jetro) reconciliation's All Issues sheet, adapted to the purchase-order
+subject. It is a reporting view only: it never feeds Bill Import or QuickBooks,
+and it pulls from sheets the workflow already produces (PO Items Not Charged,
+Bill Import billed-not-on-PO rows, Summary, with PO Bank / Cost Comparison
+for context).
+
+10.1 The Three Issue Types
+---------------------------
+Type           Definition                                             Source
+-------------  -----------------------------------------------------  ------------------------------------
+Missing        PO item ordered but not charged/provided on the        PO Items Not Charged
+               received bill.
+Extra          Item billed on the invoice but not on any PO           Bill Import red rows / Summary
+               ("billed not on PO").                                  "Billed Not on PO"
+Qty mismatch   Billed a different quantity than the PO ordered        Billed qty vs PO qty
+               (LBS compared in pounds, cases in cases).
+
+10.2 Columns
+-------------
+Col  Field                    How it is built
+A    Type                     Missing / Extra / Qty mismatch.
+B    Item Code                QB PO item code when known; for an Extra with no PO code use
+                              "— (no PO code)".
+C    Quantity Ordered         (PO) qty for Missing & Qty mismatch; billed qty for Extra.
+                              Carry the unit (lb / cs).
+D    Item Description         Short product name from the PO / bill.
+E    Vendor (Invoice / PO#)   Vendor + source invoice + PO number — who the office contacts
+                              (replaces Jetro "Used by").
+F    Detail                   Plain-language reason naming the source invoice/PO
+                              (templates below).
+
+10.3 Detail Templates / Sort / Format
+--------------------------------------
+Templates:
+  - Missing:
+    "Ordered on PO {po} but not charged on invoice {inv}.
+     PO value ~${amt} ({qty} @ ${cost})."
+
+  - Extra:
+    "Billed on invoice {inv} but not on PO {po}.
+     ${amt} ({qty} @ ${rate}). Confirm intended / provide PO."
+
+  - Qty mismatch:
+    "Invoice {inv} billed {billed}; PO ordered {ordered} ({delta})."
+     Pointer to Cost Comparison if the line also moved on rate.
+
+Sort:
+  Missing -> Extra -> Qty mismatch; within each, by dollar size, largest first.
+  Dollar size = PO Qty x PO Cost (Missing); billed total (Extra);
+  |billed-ordered| x rate (Qty mismatch).
+
+Format:
+  Navy header, freeze it; shade the Type cell —
+    Missing:      light blue   (#DDEBF7)
+    Extra:        light orange (#FCE4D6)
+    Qty mismatch: amber        (#FFF2CC)
+
+10.4 Exclusions & Accumulation
+--------------------------------
+- Price-only differences (over/undercharge with no qty or presence problem)
+  stay in Cost Comparison and the Summary price sections. A line may still
+  appear here for a qty/presence reason and carry a pointer to its rate move.
+- No internal PO notes/driver tasks; no status notes ("nothing missing");
+  a pure return/credit alone does not generate an All Issues row.
+- Cumulative: each processed invoice's issues append, every row is tagged by
+  invoice/PO, and the sheet is re-sorted after each addition. One workbook,
+  never a new file.
+
+
+================================================================================
+11. Handling Credits and Returns
+================================================================================
+
+- Process bill credits only when the credit image is received; use the credit
+  memo number as Ref.
+- Use negative qty/total (or the exact credit structure the QB import method
+  requires).
+- If the credited item is not in the processed PO Bank, enter it in Bill
+  Import as a credit not on PO (blank item code, red highlight).
+- Do not create unrelated PO Items Not Charged rows — or All Issues rows —
+  from a credit memo alone.
+
+
+================================================================================
+12. Vendor Matching Rules
+================================================================================
+
+Vendor                    Matching Method
+------------------------  -------------------------------------------------------
+D&N Produce Inc.          Usually no invoice item code. Match by vendor and
+                          product description.
+Jalisco Fresh Produce Inc. Match by Jalisco short code and/or description to QB
+                          PO code mapping.
+Maui Fresh                Invoice may show Maui Fresh International; QB vendor
+                          name stays Maui Fresh. Match by description.
+Glen Rose Meat Company    Use invoice product code when possible; weight items
+                          use total lbs in Bill Import qty.
+La Palma Foods            Match by description; if no PO match, enter as billed
+                          not on PO with blank item code.
+
+
+================================================================================
+13. Row Highlighting Rules
+================================================================================
+
+Situation                       Sheet                         Required Handling
+------------------------------  ----------------------------  ----------------------------
+Matched normal bill item        Bill Import / Cost Comparison No red unless rate/cost rules
+                                                              require color.
+Vendor billed item not on PO    Bill Import                   Light red; item code blank;
+                                                              description identifies
+                                                              "not on PO".
+PO item ordered but not billed  Bill Import + PO Items Not    Light red; Bill Import qty 0;
+                                Charged                       record the missing item on PO
+                                                              Items Not Charged.
+Verified individual weights     Bill Import + Individual       Weights line in Bill Import
+                                Weights                       description; detailed row in
+                                                              Individual Weights.
+No issues / weights /           Any sheet                     Add nothing. No status notes.
+discrepancies
+
+
+================================================================================
+14. Strict Do-Not-Add List
+================================================================================
+
+- No vendor rows saying nothing was missing; no "no individual weights" notes.
+- No internal PO notes in Summary, Cost Comparison, or All Issues.
+- No internal PO notes or driver tasks anywhere except Office and Driver's
+  tasks.
+- No pre-filled PO rows in any working sheet before the bill image is
+  received; no unrelated PO Bank rows.
+- No interpretation or long notes in Cost Comparison; no raw repeated Summary
+  rows.
+- All Issues: no price-only rows, no status notes, no credit-only rows.
+
+
+================================================================================
+15. Verification Checklist Before Delivering Workbook
+================================================================================
+
+- PO export parsed correctly: product lines in PO Bank, order headers &
+  item tasks in Office and Driver's tasks; PO Bank rows retain the QB item
+  code.
+- Every processed invoice total matches the sum of extracted bill lines;
+  only vendors with uploaded bills appear in working sheets.
+- Bill Import uses exact 11-column format; Summary is office-ready email
+  content; PO Items Not Charged holds only real missing items; Individual
+  Weights only verified weights; Cost Comparison sorted, clean, factual.
+- All Issues: every Missing row exists in PO Items Not Charged; every Extra
+  is a billed-not-on-PO line; every Qty mismatch shows billed vs ordered in
+  the correct unit; groups in order and sorted by dollar size; each row
+  tagged by vendor/invoice/PO; no price-only or status rows.
+- No status notes for empty results; no internal PO notes copied outside
+  Bill Import description.
+
+
+================================================================================
+16. File Naming
+================================================================================
+
+- Accumulating workbook:
+  QB_Vendor_Bill_Import_MMDDYYYY_Accumulating.xlsx
+  (the All Issues sheet sits after Summary)
+
+- Workflow PDF (this document, All Issues now merged in):
+  BRFood_QB_Vendor_Bill_Import_Revised_Workflow_v3.pdf
+
+- The standalone BRFood_QB_AllIssues_Sheet_Workflow.pdf is superseded by
+  Section 10 here.
+
+
+================================================================================
+17. Operating Summary
+================================================================================
+
+Load and parse the new-format PO export (product lines -> PO Bank; order
+headers & item tasks -> Office and Driver's tasks). Receive a bill image,
+extract bill data, match only related PO Bank rows, fill only the related
+working rows, update the All Issues consolidated view, remove processed PO
+rows from the PO Bank, and wait for the next image. Nothing is added merely
+because it exists in the PO; nothing is written just to say there is nothing
+to report. Summary is office-ready vendor communication; All Issues is the
+one-screen issue dashboard for management.
+
+================================================================================
+B&R Food Services Inc. — Revised QB Vendor Bill Import Workflow (v3, All Issues merged)
+================================================================================

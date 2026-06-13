@@ -1,0 +1,353 @@
+[
+  {
+    "id": "5c2a1257-c3c7-4c4f-b1b0-8107f3725676",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "run_created",
+    "message": "Run 'Vendor Bills / PO Bank \u2014 2026-06-11' created",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T20:49:06.835632+00:00"
+  },
+  {
+    "id": "0ffd97dc-7d62-4609-86cd-66b384e19882",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "file_uploaded",
+    "message": "quickbooks_po_export: All POs June -11.xlsx",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:03:34.747601+00:00"
+  },
+  {
+    "id": "f8d50615-e7d8-4540-a524-9cc85fa9346c",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "file_uploaded",
+    "message": "vendor_bill_image: WhatsApp Image 2026-06-11 at 20.55.39.jpeg",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:22:01.694829+00:00"
+  },
+  {
+    "id": "a75701a4-87e1-41ef-8ef7-b5411d1546b9",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:22:08.434212+00:00"
+  },
+  {
+    "id": "fa1e2cef-52eb-4176-b3b6-b48996384845",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_extracted",
+    "message": "Bill extracted from file bd836c96-3124-4089-96bd-2ce3d5202985",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:26:23.946255+00:00"
+  },
+  {
+    "id": "d10522ab-5c80-4ae0-aff4-b31b55ebf662",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:26:28.411665+00:00"
+  },
+  {
+    "id": "4551f486-0335-4a19-9af0-a48b88df4553",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_header_confirmed",
+    "message": "Bill 13b41ea6-d624-446c-b57f-2a49f07f2db0 confirmed",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:27:20.706983+00:00"
+  },
+  {
+    "id": "4aa71294-574a-4e86-87fc-77384948b9dd",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_header_confirmed",
+    "message": "Bill 13b41ea6-d624-446c-b57f-2a49f07f2db0 confirmed",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:31:20.078954+00:00"
+  },
+  {
+    "id": "cc8f296a-e8f8-43ff-824e-87f4b7a9e8d9",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_line_updated",
+    "message": "Line d172b422-004c-44e6-809a-75cb5e4354a4 updated",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:31:20.096681+00:00"
+  },
+  {
+    "id": "e0fc291a-8671-4e56-aeea-a83d5ad1256e",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_line_updated",
+    "message": "Line 337946a2-884a-4d4d-b6be-b9eb382377b1 updated",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:31:20.107665+00:00"
+  },
+  {
+    "id": "41268240-6e8d-4cd5-a520-1f353e435832",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_line_updated",
+    "message": "Line ef9a14eb-08c7-419b-abb6-b92a456a4d36 updated",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:31:20.116918+00:00"
+  },
+  {
+    "id": "7fd5b2e6-e81a-453a-be12-6601069d105b",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_header_confirmed",
+    "message": "Bill 13b41ea6-d624-446c-b57f-2a49f07f2db0 confirmed",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:31:26.238210+00:00"
+  },
+  {
+    "id": "b21174b3-7ebb-4073-997f-98326e3d9ae0",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_processed",
+    "message": "Bill 13b41ea6-d624-446c-b57f-2a49f07f2db0 matched to PO Bank",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:31:27.719154+00:00"
+  },
+  {
+    "id": "f0c1e9b1-68c2-4b69-a8e4-96193ee56121",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T21:31:33.289247+00:00"
+  },
+  {
+    "id": "42ba8f2e-9aac-444a-b30f-89487a9c328f",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:33:53.994733+00:00"
+  },
+  {
+    "id": "20ace45b-d3eb-4bc8-81a9-c318b19d7a2a",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_processed",
+    "message": "Bill 13b41ea6-d624-446c-b57f-2a49f07f2db0 matched to PO Bank",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:33:59.599282+00:00"
+  },
+  {
+    "id": "447a8bc0-67b7-4c25-b1c7-5ecc4bcf1a15",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:34:06.014293+00:00"
+  },
+  {
+    "id": "2049f022-69fe-402b-8c3c-2576227457c9",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:34:15.003951+00:00"
+  },
+  {
+    "id": "8abef10a-fac3-4241-86f6-837327ff4fee",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:34:24.818228+00:00"
+  },
+  {
+    "id": "7b263001-47e5-46d2-8ca4-dcadd4c5434e",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_processed",
+    "message": "Bill 13b41ea6-d624-446c-b57f-2a49f07f2db0 matched to PO Bank",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:39:36.510554+00:00"
+  },
+  {
+    "id": "bca16f01-f038-469b-929a-b913cda3895c",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_processed",
+    "message": "Bill 13b41ea6-d624-446c-b57f-2a49f07f2db0 matched to PO Bank",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:55:32.563019+00:00"
+  },
+  {
+    "id": "ccdc47dc-e605-4188-91d2-6e4a9fb20eef",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T22:55:47.118755+00:00"
+  },
+  {
+    "id": "a3274492-517c-46ee-87b3-789de30aa560",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "file_uploaded",
+    "message": "vendor_bill_image: WhatsApp Image 2026-06-11 at 20.55.42.jpeg",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T23:42:15.737044+00:00"
+  },
+  {
+    "id": "5be6cb78-2c18-43a2-a0db-e679942b5f31",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_extracted",
+    "message": "Bill extracted from file b6c69cfc-c835-473b-893d-20fca2105d6e",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T23:42:26.068060+00:00"
+  },
+  {
+    "id": "7166d032-c2c0-4be4-b4ec-bf58f33b93ff",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_header_confirmed",
+    "message": "Bill 451ab058-7c11-4f64-8d8f-7f096463b839 confirmed",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T23:44:52.455178+00:00"
+  },
+  {
+    "id": "0a927af3-d2ed-499b-b2eb-fb735cb1a2dd",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_line_updated",
+    "message": "Line 2fac5b35-aa9e-4660-be32-b7b5e5f09839 updated",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T23:44:52.470022+00:00"
+  },
+  {
+    "id": "2fc52722-b709-48bd-986e-fc2d285dbb4d",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_processed",
+    "message": "Bill 451ab058-7c11-4f64-8d8f-7f096463b839 matched to PO Bank",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-11T23:44:57.194076+00:00"
+  },
+  {
+    "id": "67e726f0-2ae0-41c7-8b0d-9985e9184448",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "po_loaded",
+    "message": "PO bank loaded: 70 rows",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T00:00:48.446654+00:00"
+  },
+  {
+    "id": "18a29bbc-1907-4b06-9fe5-5f94867c9a44",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "run_finalized",
+    "message": "Run finalized; 2 bill(s) matched",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T08:18:12.424017+00:00"
+  },
+  {
+    "id": "ddf6ddf0-4181-46e4-882d-4fc94f3895e6",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "run_finalized",
+    "message": "Run finalized; 2 bill(s) matched",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T08:18:58.905555+00:00"
+  },
+  {
+    "id": "bd9acf41-0109-4d55-b99c-09a7f1e29892",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "exported",
+    "message": "Vendor bills workbook exported",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T08:21:12.081974+00:00"
+  },
+  {
+    "id": "0bee2236-92f9-4d7f-9f8e-6e0a1716388c",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "run_reopened",
+    "message": "Run reopened; 9 PO(s) restored to unprocessed",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T08:57:38.469690+00:00"
+  },
+  {
+    "id": "a2babb39-a1cb-4b91-8bdc-76b85912c360",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "file_uploaded",
+    "message": "vendor_bill_image: WhatsApp Image 2026-06-11 at 20.55.41.jpeg",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T08:58:07.847868+00:00"
+  },
+  {
+    "id": "6b4ca2c7-b38d-4148-9884-52e480fa6772",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_extracted",
+    "message": "Bill extracted from file 39c5094f-3fdf-4dfc-b707-d652aba08c85",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T08:58:19.774689+00:00"
+  },
+  {
+    "id": "28f0da89-801d-462a-b729-a811fcbd553b",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_header_confirmed",
+    "message": "Bill 20c8d1b6-18ec-409c-9134-76c91d068f95 confirmed",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T09:00:01.114222+00:00"
+  },
+  {
+    "id": "a70506fd-6f5a-40fd-aa8c-e48da51993d5",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_line_updated",
+    "message": "Line 4d87653f-5b92-45ef-a90d-c5acc2a7c8f3 updated",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T09:00:01.136290+00:00"
+  },
+  {
+    "id": "7ffd555f-44f3-41ad-9cfa-5fed0cafdd36",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "bill_processed",
+    "message": "Bill 20c8d1b6-18ec-409c-9134-76c91d068f95 matched to PO Bank",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T09:00:04.797625+00:00"
+  },
+  {
+    "id": "97df4ddb-69c2-495d-a384-bd4e8730f24e",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "run_finalized",
+    "message": "Run finalized; 3 bill(s) matched",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T14:06:46.177544+00:00"
+  },
+  {
+    "id": "5b1a24d7-dd24-458e-bc03-b5056eeaad73",
+    "run_id": "46d017e4-d9f9-47d9-b63d-6ed5d4b71302",
+    "event_type": "exported",
+    "message": "Vendor bills workbook exported",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T14:06:55.276108+00:00"
+  }
+]

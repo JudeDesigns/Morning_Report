@@ -1,0 +1,1271 @@
+[
+  {
+    "item_code": "441862U",
+    "qty_charged": 1.0,
+    "item_description": "JARRITOS VP GLASS 12.5Z",
+    "old_cost": 26.05,
+    "new_cost": 22.19,
+    "cost_change_old_minus_new": 3.86,
+    "used_by": "Don Linos Mexican Food x1"
+  },
+  {
+    "item_code": "441544U",
+    "qty_charged": 2.0,
+    "item_description": "COKE ZERO 12Z",
+    "old_cost": 23.08,
+    "new_cost": 20.44,
+    "cost_change_old_minus_new": 2.64,
+    "used_by": "Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "441541U",
+    "qty_charged": 5.0,
+    "item_description": "COKE CLASSIC 12Z",
+    "old_cost": 23.0,
+    "new_cost": 20.44,
+    "cost_change_old_minus_new": 2.56,
+    "used_by": "Don Linos Mexican Food x1; Pampas:Pampas Grill Culver City x4"
+  },
+  {
+    "item_code": "441543U",
+    "qty_charged": 1.0,
+    "item_description": "SPRITE 12Z",
+    "old_cost": 23.0,
+    "new_cost": 20.44,
+    "cost_change_old_minus_new": 2.56,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "441542U",
+    "qty_charged": 4.0,
+    "item_description": "DIET COKE 12Z",
+    "old_cost": 22.89,
+    "new_cost": 20.44,
+    "cost_change_old_minus_new": 2.45,
+    "used_by": "Bodega Wine Bar x1; Pampas:Pampas Grill Culver City x2; Tacos & Carnitas Sahuayo Hawaiian Gardens x1"
+  },
+  {
+    "item_code": "43415U",
+    "qty_charged": 1.0,
+    "item_description": "PD YAM GARNET JBO",
+    "old_cost": 36.08,
+    "new_cost": 33.81,
+    "cost_change_old_minus_new": 2.27,
+    "used_by": "Hummus Factory:Manhatten x1"
+  },
+  {
+    "item_code": "42943U",
+    "qty_charged": 1.0,
+    "item_description": "PD LETT GRN LEAF",
+    "old_cost": 46.84,
+    "new_cost": 44.76,
+    "cost_change_old_minus_new": 2.08,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "56266U",
+    "qty_charged": 2.0,
+    "item_description": "PD CUCUMBER HH BLK",
+    "old_cost": 30.16,
+    "new_cost": 28.27,
+    "cost_change_old_minus_new": 1.89,
+    "used_by": "Hummus Factory:Downey x1; Pho Show x1"
+  },
+  {
+    "item_code": "1140393U",
+    "qty_charged": 1.0,
+    "item_description": "PLA KIT 6PC",
+    "old_cost": 27.49,
+    "new_cost": 25.9,
+    "cost_change_old_minus_new": 1.59,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "42578U",
+    "qty_charged": 1.0,
+    "item_description": "PD BEET SK 25 LB",
+    "old_cost": 16.69,
+    "new_cost": 15.52,
+    "cost_change_old_minus_new": 1.17,
+    "used_by": "Hummus Factory:Manhatten x1"
+  },
+  {
+    "item_code": "1440203",
+    "qty_charged": 1.0,
+    "item_description": "CHZ JACK/CHED FNCY 5#",
+    "old_cost": 39.14,
+    "new_cost": 38.0,
+    "cost_change_old_minus_new": 1.14,
+    "used_by": "Bodega Wine Bar x1"
+  },
+  {
+    "item_code": "1440208",
+    "qty_charged": 10.0,
+    "item_description": "CHZ JACK SHRED 5#",
+    "old_cost": 38.85,
+    "new_cost": 37.95,
+    "cost_change_old_minus_new": 0.9,
+    "used_by": "Bennys Tacos Culver City x2; Bennys Tacos Westchester x2; Hummus Factory:Downey x0; Que Ricos #1 x4; Que Ricos Soto #2 x1; Tacos & Carnitas Sahuayo Hawaiian Gardens x1"
+  },
+  {
+    "item_code": "43858U",
+    "qty_charged": 1.0,
+    "item_description": "PD LETT ROMAINE HT",
+    "old_cost": 9.68,
+    "new_cost": 8.93,
+    "cost_change_old_minus_new": 0.75,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "1020081U",
+    "qty_charged": 20.0,
+    "item_description": "OIL CANOLA CLEAR 35#",
+    "old_cost": 36.38,
+    "new_cost": 36.02,
+    "cost_change_old_minus_new": 0.36,
+    "used_by": "CaCao Mexicatessen x9; Don Linos Mexican Food x1; Pampas:Pampas Grill Culver City x4; Que Ricos #1 x2; Que Ricos Soto #2 x2; Silvio's House x2"
+  },
+  {
+    "item_code": "1440208U",
+    "qty_charged": 2.0,
+    "item_description": "CHZ JACK SHRED 5#",
+    "old_cost": 10.39,
+    "new_cost": 10.08,
+    "cost_change_old_minus_new": 0.31,
+    "used_by": "Hummus Factory:Downey x2"
+  },
+  {
+    "item_code": "1440203U",
+    "qty_charged": 1.0,
+    "item_description": "CHZ JACK/CHED FNCY 5#",
+    "old_cost": 10.39,
+    "new_cost": 10.1,
+    "cost_change_old_minus_new": 0.29,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "1070477U",
+    "qty_charged": 1.0,
+    "item_description": "SPC GRAN ONION",
+    "old_cost": 17.32,
+    "new_cost": 17.16,
+    "cost_change_old_minus_new": 0.16,
+    "used_by": "Pampas:Pampas Grill Culver City x3"
+  },
+  {
+    "item_code": "77034U",
+    "qty_charged": 20.0,
+    "item_description": "BF GROUND 80% R/W",
+    "old_cost": 4.64,
+    "new_cost": 4.639950372208436,
+    "cost_change_old_minus_new": 4.9627791563275434e-05,
+    "used_by": "Bennys Tacos Culver City x1; Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "2270192U",
+    "qty_charged": 0.0,
+    "item_description": "PURELL SANI GL PMP",
+    "old_cost": 18.32,
+    "new_cost": null,
+    "cost_change_old_minus_new": null,
+    "used_by": "Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "64077U",
+    "qty_charged": 2.0,
+    "item_description": "BTR PLUGRA SWT",
+    "old_cost": 3.36,
+    "new_cost": 3.45,
+    "cost_change_old_minus_new": -0.09,
+    "used_by": "Bodega Wine Bar x2"
+  },
+  {
+    "item_code": "2550012U",
+    "qty_charged": 1.0,
+    "item_description": "COLORING EGG YELOW",
+    "old_cost": 7.15,
+    "new_cost": 7.37,
+    "cost_change_old_minus_new": -0.22,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "2010014",
+    "qty_charged": 1.0,
+    "item_description": "JUICE LIME CQ 1GL",
+    "old_cost": 26.63,
+    "new_cost": 27.3,
+    "cost_change_old_minus_new": -0.67,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "30802",
+    "qty_charged": 1.0,
+    "item_description": "TOMATILLO WHOLE",
+    "old_cost": 29.16,
+    "new_cost": 30.0,
+    "cost_change_old_minus_new": -0.84,
+    "used_by": "Bennys Tacos Culver City x1"
+  },
+  {
+    "item_code": "450038U",
+    "qty_charged": 1.0,
+    "item_description": "BUT SOLID NS JF 30#",
+    "old_cost": 66.66,
+    "new_cost": 67.87,
+    "cost_change_old_minus_new": -1.21,
+    "used_by": "Bennys Tacos West Los Angeles x1"
+  },
+  {
+    "item_code": "30803",
+    "qty_charged": 2.0,
+    "item_description": "TOMATILLO CRUSHED",
+    "old_cost": 32.0,
+    "new_cost": 33.33,
+    "cost_change_old_minus_new": -1.33,
+    "used_by": "Que Ricos #1 x2"
+  },
+  {
+    "item_code": "1220215U",
+    "qty_charged": 3.0,
+    "item_description": "PURE LIFE 40PK .5LTR",
+    "old_cost": 7.56,
+    "new_cost": 7.56,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Boys Burgers x2; Johns Hamburger x1"
+  },
+  {
+    "item_code": "41385U",
+    "qty_charged": 1.0,
+    "item_description": "SPC CHILI DRK PWD 1LB",
+    "old_cost": 10.3,
+    "new_cost": 10.3,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Boys Burgers x1"
+  },
+  {
+    "item_code": "12856U",
+    "qty_charged": 1.0,
+    "item_description": "PKL DCHIP 3/16 SM SS",
+    "old_cost": 25.44,
+    "new_cost": 25.44,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Boys Burgers x1"
+  },
+  {
+    "item_code": "370204U",
+    "qty_charged": 13.0,
+    "item_description": "MILK WHL TWNPK",
+    "old_cost": 7.95,
+    "new_cost": 7.95,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Johns Hamburger x1; Pampas:Pampas Grill Culver City x12"
+  },
+  {
+    "item_code": "25960",
+    "qty_charged": 2.0,
+    "item_description": "OIL OLIVE X-VIRGIN 3LTR",
+    "old_cost": 85.02,
+    "new_cost": 85.02,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Johns Hamburger x1; Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "1520056U",
+    "qty_charged": 1.0,
+    "item_description": "LIQ EGG WHITE JF",
+    "old_cost": 4.02,
+    "new_cost": 4.02,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Johns Hamburger x1"
+  },
+  {
+    "item_code": "30241U",
+    "qty_charged": 1.0,
+    "item_description": "RICE KOKUHO CLROSE",
+    "old_cost": 33.07,
+    "new_cost": 33.07,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Johns Hamburger x1"
+  },
+  {
+    "item_code": "1000074U",
+    "qty_charged": 1.0,
+    "item_description": "OLIVE LRG PTD CALA",
+    "old_cost": 10.76,
+    "new_cost": 10.76,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Johns Hamburger x1"
+  },
+  {
+    "item_code": "19523",
+    "qty_charged": 1.0,
+    "item_description": "LR TURKEY BACON 12Z",
+    "old_cost": 57.88,
+    "new_cost": 57.88,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Sanest Sunset x1"
+  },
+  {
+    "item_code": "2000040U",
+    "qty_charged": 1.0,
+    "item_description": "CFFMATE ORIGNAL 180CT1",
+    "old_cost": 11.69,
+    "new_cost": 11.69,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Que Ricos Soto #2 x1"
+  },
+  {
+    "item_code": "77024U",
+    "qty_charged": 450.0,
+    "item_description": "BF H/C TRIPE*FRZ R/W SP",
+    "old_cost": 4.59,
+    "new_cost": 4.59,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Que Ricos Soto #2 x30"
+  },
+  {
+    "item_code": "13092",
+    "qty_charged": 1.0,
+    "item_description": "JUAN HOMINY MEX #10",
+    "old_cost": 27.54,
+    "new_cost": 27.54,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Que Ricos Soto #2 x1"
+  },
+  {
+    "item_code": "2050616U",
+    "qty_charged": 1.0,
+    "item_description": "CHOC CHIP SEMI SWT 1K",
+    "old_cost": 44.51,
+    "new_cost": 44.51,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x1"
+  },
+  {
+    "item_code": "62050U",
+    "qty_charged": 1.0,
+    "item_description": "SCE SBR BBQ OG",
+    "old_cost": 14.56,
+    "new_cost": 14.56,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x1"
+  },
+  {
+    "item_code": "26946U",
+    "qty_charged": 1.0,
+    "item_description": "MUSTARD GRY POUPON 48Z",
+    "old_cost": 23.56,
+    "new_cost": 23.56,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x1"
+  },
+  {
+    "item_code": "320019U",
+    "qty_charged": 4.0,
+    "item_description": "CHORIZO SOY 11Z REY",
+    "old_cost": 1.65,
+    "new_cost": 1.65,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x4"
+  },
+  {
+    "item_code": "1160019U",
+    "qty_charged": 1.0,
+    "item_description": "FILM 18X2000",
+    "old_cost": 20.17,
+    "new_cost": 20.17,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Santa Monica x1"
+  },
+  {
+    "item_code": "24211",
+    "qty_charged": 1.0,
+    "item_description": "BAG SAND W/FLP QLT",
+    "old_cost": 21.64,
+    "new_cost": 21.64,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x1"
+  },
+  {
+    "item_code": "16200",
+    "qty_charged": 2.0,
+    "item_description": "BEAN GARBANZO CQ #10",
+    "old_cost": 23.99,
+    "new_cost": 23.99,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x1; Ready Fit Go x1"
+  },
+  {
+    "item_code": "1180055U",
+    "qty_charged": 1.0,
+    "item_description": "TISSUE BATH 2PLY",
+    "old_cost": 20.39,
+    "new_cost": 20.39,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x1"
+  },
+  {
+    "item_code": "36243",
+    "qty_charged": 3.0,
+    "item_description": "MAYO CHEFS QUALITY 1GL",
+    "old_cost": 39.18,
+    "new_cost": 39.18,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bodega Wine Bar x1; Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "2190005U",
+    "qty_charged": 4.0,
+    "item_description": "4ACES DISH DET 5GL GREEN SP",
+    "old_cost": 26.49,
+    "new_cost": 26.49,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x2; Bennys Tacos Santa Monica x1; Bennys Tacos West Los Angeles x1"
+  },
+  {
+    "item_code": "440186U",
+    "qty_charged": 1.0,
+    "item_description": "MEXICAN COKE 355ML",
+    "old_cost": 40.55,
+    "new_cost": 40.55,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Santa Monica x1"
+  },
+  {
+    "item_code": "1260111U",
+    "qty_charged": 3.0,
+    "item_description": "BLEACH AROCEP GERM 128Z",
+    "old_cost": 4.49,
+    "new_cost": 4.49,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Downey x1; Hummus Factory:Manhatten x1; Pho Show x1"
+  },
+  {
+    "item_code": "167251U",
+    "qty_charged": 3.0,
+    "item_description": "GYROCNE BF&LB 1/20 SANTOR",
+    "old_cost": 68.64,
+    "new_cost": 68.64,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Manhatten x3"
+  },
+  {
+    "item_code": "34550U",
+    "qty_charged": 1.0,
+    "item_description": "TZATIKI SAUCE",
+    "old_cost": 8.33,
+    "new_cost": 8.33,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Manhatten x1"
+  },
+  {
+    "item_code": "2040052U",
+    "qty_charged": 1.0,
+    "item_description": "NONFAT MILK FF 5#",
+    "old_cost": 16.6,
+    "new_cost": 16.6,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Manhatten x1"
+  },
+  {
+    "item_code": "1020419U",
+    "qty_charged": 2.0,
+    "item_description": "OIL CASETTI 90/10",
+    "old_cost": 12.0,
+    "new_cost": 12.0,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Downey x1; Hummus Factory:Manhatten x1"
+  },
+  {
+    "item_code": "1000136U",
+    "qty_charged": 2.0,
+    "item_description": "ATHENA GRAPE LVS 6/2KG",
+    "old_cost": 9.24,
+    "new_cost": 9.24,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Manhatten x2"
+  },
+  {
+    "item_code": "14562U",
+    "qty_charged": 1.0,
+    "item_description": "MID EAST CUCUMBERS #10",
+    "old_cost": 9.16,
+    "new_cost": 9.16,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Manhatten x1"
+  },
+  {
+    "item_code": "32831",
+    "qty_charged": 3.0,
+    "item_description": "F/R MARINARA SAUCE #10",
+    "old_cost": 36.85,
+    "new_cost": 36.85,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Ready Fit Go x3"
+  },
+  {
+    "item_code": "30644",
+    "qty_charged": 1.0,
+    "item_description": "TOM DICED ISABELLA",
+    "old_cost": 20.26,
+    "new_cost": 20.26,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Ready Fit Go x1"
+  },
+  {
+    "item_code": "960225",
+    "qty_charged": 1.0,
+    "item_description": "PITA PERFECT 7\" KRONOS",
+    "old_cost": 32.28,
+    "new_cost": 32.28,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Manhatten x1"
+  },
+  {
+    "item_code": "30097",
+    "qty_charged": 1.0,
+    "item_description": "BEAN BLACK CQ #10",
+    "old_cost": 27.33,
+    "new_cost": 27.33,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Ready Fit Go x1"
+  },
+  {
+    "item_code": "53262U",
+    "qty_charged": 1.0,
+    "item_description": "SPC BAY LVS WHL 1LB",
+    "old_cost": 15.77,
+    "new_cost": 15.77,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Santa Monica x1"
+  },
+  {
+    "item_code": "33314U",
+    "qty_charged": 1.0,
+    "item_description": "RICE PARBOIL CUBE 1/50#",
+    "old_cost": 27.0,
+    "new_cost": 27.0,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pachanga Mexican Grill x1"
+  },
+  {
+    "item_code": "870386U",
+    "qty_charged": 2.0,
+    "item_description": "BEAN PINTO 3XC HLD",
+    "old_cost": 27.13,
+    "new_cost": 27.13,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Don Linos Mexican Food x1; Pachanga Mexican Grill x1"
+  },
+  {
+    "item_code": "1520057",
+    "qty_charged": 1.0,
+    "item_description": "LIQUID EGG CIT JF",
+    "old_cost": 53.47,
+    "new_cost": 53.47,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pachanga Mexican Grill x1"
+  },
+  {
+    "item_code": "1530439",
+    "qty_charged": 1.0,
+    "item_description": "CRM H&H JF 64Z",
+    "old_cost": 19.2,
+    "new_cost": 19.2,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pachanga Mexican Grill x1"
+  },
+  {
+    "item_code": "670416U",
+    "qty_charged": 1.0,
+    "item_description": "CHURRO CAJETA 10\"",
+    "old_cost": 32.01,
+    "new_cost": 32.01,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Que Ricos #1 x1"
+  },
+  {
+    "item_code": "30655U",
+    "qty_charged": 2.0,
+    "item_description": "LARD VIVA 48#",
+    "old_cost": 64.99,
+    "new_cost": 64.99,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Que Ricos #1 x1; Tacos & Carnitas Sahuayo Hawaiian Gardens x1"
+  },
+  {
+    "item_code": "69846U",
+    "qty_charged": 2.0,
+    "item_description": "FF 5/16\" BIG C",
+    "old_cost": 27.92,
+    "new_cost": 27.92,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Que Ricos #1 x2"
+  },
+  {
+    "item_code": "1440319U",
+    "qty_charged": 1.0,
+    "item_description": "CHZ MOZZ SHRD WMSI 5# SP",
+    "old_cost": 13.3,
+    "new_cost": 13.3,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "22876U",
+    "qty_charged": 1.0,
+    "item_description": "CHZ PARM GT SPR IT SP",
+    "old_cost": 20.45,
+    "new_cost": 20.45,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "1530438U",
+    "qty_charged": 4.0,
+    "item_description": "CRM WHP 40% JF 64Z",
+    "old_cost": 7.18,
+    "new_cost": 7.18,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x4"
+  },
+  {
+    "item_code": "120005U",
+    "qty_charged": 1.0,
+    "item_description": "C&H SUGAR 4#",
+    "old_cost": 4.0,
+    "new_cost": 4.0,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "42664U",
+    "qty_charged": 1.0,
+    "item_description": "PDU PARSLEY CRL6CT",
+    "old_cost": 4.62,
+    "new_cost": 4.62,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "32923U",
+    "qty_charged": 1.0,
+    "item_description": "C&H LT BROWN SUGAR 25LB",
+    "old_cost": 22.16,
+    "new_cost": 22.16,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "23126U",
+    "qty_charged": 1.0,
+    "item_description": "COKE CLASSIC BIB 5GAL",
+    "old_cost": 120.53,
+    "new_cost": 120.53,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "50103",
+    "qty_charged": 1.0,
+    "item_description": "REG ROLL 200 7313",
+    "old_cost": 56.75,
+    "new_cost": 56.75,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x1"
+  },
+  {
+    "item_code": "2950008U",
+    "qty_charged": 3.0,
+    "item_description": "BEAN BLACK 25#",
+    "old_cost": 13.86,
+    "new_cost": 13.86,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x2; Silvio's House x1"
+  },
+  {
+    "item_code": "2831197U",
+    "qty_charged": 5.0,
+    "item_description": "BRIOCHE BUN 4.5\"",
+    "old_cost": 3.43,
+    "new_cost": 3.43,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x6"
+  },
+  {
+    "item_code": "85272U",
+    "qty_charged": 4.0,
+    "item_description": "FF BIG C 3/8 COATD",
+    "old_cost": 40.68,
+    "new_cost": 40.68,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Silvio's House x4"
+  },
+  {
+    "item_code": "49088U",
+    "qty_charged": 2.0,
+    "item_description": "RICE BASMATI ROYAL 1/20#",
+    "old_cost": 19.27,
+    "new_cost": 19.27,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Downey x2"
+  },
+  {
+    "item_code": "19367U",
+    "qty_charged": 1.0,
+    "item_description": "JALAP NACHO SLICED 1GL",
+    "old_cost": 7.57,
+    "new_cost": 7.57,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Hummus Factory:Downey x1"
+  },
+  {
+    "item_code": "1440900U",
+    "qty_charged": 1.0,
+    "item_description": "CHZ COTIJA GRAT FU",
+    "old_cost": 18.91,
+    "new_cost": 18.91,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Tacos & Carnitas Sahuayo Hawaiian Gardens x1"
+  },
+  {
+    "item_code": "55536",
+    "qty_charged": 1.0,
+    "item_description": "TISSUE WAX 10X10 500CT",
+    "old_cost": 54.1,
+    "new_cost": 54.1,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Tacos & Carnitas Sahuayo Hawaiian Gardens x1"
+  },
+  {
+    "item_code": "27505U",
+    "qty_charged": 2.0,
+    "item_description": "FLOUR CRN MSCA #1P 50#",
+    "old_cost": 26.82,
+    "new_cost": 26.82,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Tacos & Carnitas Sahuayo Hawaiian Gardens x2"
+  },
+  {
+    "item_code": "24514U",
+    "qty_charged": 4.0,
+    "item_description": "RICE LONG GRAIN AA 50#",
+    "old_cost": 21.61,
+    "new_cost": 21.61,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1; Bennys Tacos West Los Angeles x1; Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "630130U",
+    "qty_charged": 2.0,
+    "item_description": "FF BIGC 5/16 CLRCT",
+    "old_cost": 35.58,
+    "new_cost": 35.58,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos West Los Angeles x2"
+  },
+  {
+    "item_code": "670417U",
+    "qty_charged": 4.0,
+    "item_description": "CHURRO BAV CRM 10\"",
+    "old_cost": 31.12,
+    "new_cost": 31.12,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1; Bennys Tacos West Los Angeles x3; Bennys Tacos Westchester x3"
+  },
+  {
+    "item_code": "1440319",
+    "qty_charged": 6.0,
+    "item_description": "CHZ MOZZ SHRD WMSI 5# SP",
+    "old_cost": 41.0,
+    "new_cost": 41.0,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos West Los Angeles x0; Bennys Tacos West Los Angeles x5; Fantasy Burger x1"
+  },
+  {
+    "item_code": "75168U",
+    "qty_charged": 2.0,
+    "item_description": "BAG 6# WHITE",
+    "old_cost": 18.18,
+    "new_cost": 18.18,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1; Bennys Tacos West Los Angeles x1; Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "41380U",
+    "qty_charged": 1.0,
+    "item_description": "SPC THYME WHOLE 2LB",
+    "old_cost": 18.91,
+    "new_cost": 18.91,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos West Los Angeles x1"
+  },
+  {
+    "item_code": "1070085U",
+    "qty_charged": 1.0,
+    "item_description": "KNORR CALDO TOMATE",
+    "old_cost": 14.81,
+    "new_cost": 14.81,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos West Los Angeles x1"
+  },
+  {
+    "item_code": "14623U",
+    "qty_charged": 3.0,
+    "item_description": "KIKO TEMPURA BATTR",
+    "old_cost": 7.73,
+    "new_cost": 7.73,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1; Bennys Tacos West Los Angeles x1; Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "1070452U",
+    "qty_charged": 2.0,
+    "item_description": "SPC PAPRIKA 5#",
+    "old_cost": 13.6,
+    "new_cost": 13.6,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos West Los Angeles x1; Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "20302",
+    "qty_charged": 1.0,
+    "item_description": "SPC TACO SEASON",
+    "old_cost": 53.76,
+    "new_cost": 53.76,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos West Los Angeles x1"
+  },
+  {
+    "item_code": "41402U",
+    "qty_charged": 1.0,
+    "item_description": "SPC GARLIC GRAN 7#",
+    "old_cost": 34.52,
+    "new_cost": 34.52,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Don Linos Mexican Food x1"
+  },
+  {
+    "item_code": "630159U",
+    "qty_charged": 1.0,
+    "item_description": "FF SHOESTRING RS",
+    "old_cost": 22.46,
+    "new_cost": 22.46,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Don Linos Mexican Food x1"
+  },
+  {
+    "item_code": "1070232U",
+    "qty_charged": 3.0,
+    "item_description": "SALT GRANULATED DC 25#",
+    "old_cost": 6.11,
+    "new_cost": 6.11,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Don Linos Mexican Food x1; Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "32565U",
+    "qty_charged": 2.0,
+    "item_description": "PC KETCHUP CHF QLT 1000CT",
+    "old_cost": 16.94,
+    "new_cost": 16.94,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Fantasy Burger x2"
+  },
+  {
+    "item_code": "14634",
+    "qty_charged": 1.0,
+    "item_description": "KIKO BD CRUMB JAPN",
+    "old_cost": 25.84,
+    "new_cost": 25.84,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Fantasy Burger x1"
+  },
+  {
+    "item_code": "760054U",
+    "qty_charged": 2.0,
+    "item_description": "CONT HG CHC8X2",
+    "old_cost": 41.99,
+    "new_cost": 41.99,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Fantasy Burger x2"
+  },
+  {
+    "item_code": "442106U",
+    "qty_charged": 1.0,
+    "item_description": "SANGRIA SENORIAL 11.16Z",
+    "old_cost": 28.4,
+    "new_cost": 28.4,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "49807U",
+    "qty_charged": 1.0,
+    "item_description": "ARIZ GREEN TEA 22Z",
+    "old_cost": 16.59,
+    "new_cost": 16.59,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "2680023U",
+    "qty_charged": 1.0,
+    "item_description": "LABEL 2\" USE FIRST",
+    "old_cost": 8.36,
+    "new_cost": 8.36,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "760055U",
+    "qty_charged": 1.0,
+    "item_description": "CONT HG CHC9X3",
+    "old_cost": 45.83,
+    "new_cost": 45.83,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Fantasy Burger x1"
+  },
+  {
+    "item_code": "1310142",
+    "qty_charged": 2.0,
+    "item_description": "FABULOSO LAV 169Z",
+    "old_cost": 46.64,
+    "new_cost": 46.64,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Westchester x1; Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "84085U",
+    "qty_charged": 2.0,
+    "item_description": "BAG SAND #18 WHITE 2000CT",
+    "old_cost": 35.02,
+    "new_cost": 35.02,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1; Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "442104U",
+    "qty_charged": 1.0,
+    "item_description": "JARRITOS PINEAPPLE 12.5Z",
+    "old_cost": 28.41,
+    "new_cost": 28.41,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "442107U",
+    "qty_charged": 2.0,
+    "item_description": "JARRITOS LIME 12.5Z",
+    "old_cost": 28.43,
+    "new_cost": 28.43,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1; Bennys Tacos Westchester x1"
+  },
+  {
+    "item_code": "13042",
+    "qty_charged": 3.0,
+    "item_description": "TOTAL HD DEGREASER 1GL",
+    "old_cost": 24.0,
+    "new_cost": 24.0,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1; Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "1260111",
+    "qty_charged": 1.0,
+    "item_description": "BLEACH AROCEP GERM 128Z",
+    "old_cost": 25.19,
+    "new_cost": 25.19,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1"
+  },
+  {
+    "item_code": "442111U",
+    "qty_charged": 1.0,
+    "item_description": "JARRITOS TAMARINDO 12.5Z",
+    "old_cost": 28.41,
+    "new_cost": 28.41,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1"
+  },
+  {
+    "item_code": "442109U",
+    "qty_charged": 1.0,
+    "item_description": "JARRITOS MANDARIN 12.5Z",
+    "old_cost": 28.4,
+    "new_cost": 28.4,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Bennys Tacos Culver City x1"
+  },
+  {
+    "item_code": "1120153",
+    "qty_charged": 1.0,
+    "item_description": "GLOVE VNL MD PF",
+    "old_cost": 33.99,
+    "new_cost": 33.99,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "11586U",
+    "qty_charged": 3.0,
+    "item_description": "COCONUT WATER PRT 10.5Z",
+    "old_cost": 19.12,
+    "new_cost": 19.12,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x5"
+  },
+  {
+    "item_code": "11062U",
+    "qty_charged": 4.0,
+    "item_description": "MAISON PERR GLASS 11Z",
+    "old_cost": 24.07,
+    "new_cost": 24.07,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x4"
+  },
+  {
+    "item_code": "1020418",
+    "qty_charged": 1.0,
+    "item_description": "OIL CASETTI 75/25",
+    "old_cost": 65.46,
+    "new_cost": 65.46,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "16641",
+    "qty_charged": 2.0,
+    "item_description": "SUNKIST ORANGE 12Z",
+    "old_cost": 15.87,
+    "new_cost": 15.87,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "440136U",
+    "qty_charged": 1.0,
+    "item_description": "LIPTON BRISK 12Z",
+    "old_cost": 19.94,
+    "new_cost": 19.94,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "960056",
+    "qty_charged": 4.0,
+    "item_description": "YUCA CUT PEELED",
+    "old_cost": 45.96,
+    "new_cost": 45.96,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x8"
+  },
+  {
+    "item_code": "2360162U",
+    "qty_charged": 2.0,
+    "item_description": "CAKE MOUSSE OREO CQ",
+    "old_cost": 23.97,
+    "new_cost": 23.97,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "65629",
+    "qty_charged": 1.0,
+    "item_description": "DRES CAESAR SP",
+    "old_cost": 67.8,
+    "new_cost": 67.8,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "86526",
+    "qty_charged": 1.0,
+    "item_description": "VEG PEA/CAROT JFRM 2.5#",
+    "old_cost": 30.31,
+    "new_cost": 30.31,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "1000276",
+    "qty_charged": 2.0,
+    "item_description": "OLIVE PITTED CASTE 4.4#",
+    "old_cost": 69.22,
+    "new_cost": 69.22,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x2"
+  },
+  {
+    "item_code": "2061156U",
+    "qty_charged": 2.0,
+    "item_description": "CROUTON HOMESTYLE",
+    "old_cost": 26.79,
+    "new_cost": 26.79,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "88588",
+    "qty_charged": 10.0,
+    "item_description": "HEARTS OF PALM 28Z",
+    "old_cost": 50.76,
+    "new_cost": 50.76,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x10"
+  },
+  {
+    "item_code": "10960",
+    "qty_charged": 1.0,
+    "item_description": "KETCHUP HEINZ #10",
+    "old_cost": 45.69,
+    "new_cost": 45.69,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "11248U",
+    "qty_charged": 1.0,
+    "item_description": "MILK SWT CNDS FILL 14Z",
+    "old_cost": 31.6,
+    "new_cost": 31.6,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "67958U",
+    "qty_charged": 3.0,
+    "item_description": "PASTA LINGUINE FIN",
+    "old_cost": 24.73,
+    "new_cost": 24.73,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x3"
+  },
+  {
+    "item_code": "21051U",
+    "qty_charged": 1.0,
+    "item_description": "C&H SUGAR GRAN 25#",
+    "old_cost": 16.97,
+    "new_cost": 16.97,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "31404",
+    "qty_charged": 1.0,
+    "item_description": "MUSTARD CHEF YEL 1GAL 1",
+    "old_cost": 19.97,
+    "new_cost": 19.97,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "25079",
+    "qty_charged": 1.0,
+    "item_description": "VINEGAR CIDER 4% 1GL",
+    "old_cost": 29.88,
+    "new_cost": 29.88,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pampas:Pampas Grill Culver City x1"
+  },
+  {
+    "item_code": "50461U",
+    "qty_charged": 1.0,
+    "item_description": "CHZ CREAM SOFT TUB 5#",
+    "old_cost": 11.69,
+    "new_cost": 11.69,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "2050414U",
+    "qty_charged": 2.0,
+    "item_description": "PECAN HALVES 24Z",
+    "old_cost": 14.6,
+    "new_cost": 14.6,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x2"
+  },
+  {
+    "item_code": "24211U",
+    "qty_charged": 1.0,
+    "item_description": "BAG SAND W/FLP QLT",
+    "old_cost": 11.38,
+    "new_cost": 11.38,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "31293U",
+    "qty_charged": 1.0,
+    "item_description": "PEPPER LEMON-SHKR",
+    "old_cost": 21.95,
+    "new_cost": 21.95,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "13422U",
+    "qty_charged": 1.0,
+    "item_description": "SCE SWEET CHILI 32Z",
+    "old_cost": 3.45,
+    "new_cost": 3.45,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "25079U",
+    "qty_charged": 1.0,
+    "item_description": "VINEGAR CIDER 4% 1GL",
+    "old_cost": 7.76,
+    "new_cost": 7.76,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "23055U",
+    "qty_charged": 2.0,
+    "item_description": "SAUCE OYSTER PANDA 6/5#",
+    "old_cost": 8.13,
+    "new_cost": 8.13,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x2"
+  },
+  {
+    "item_code": "2620279U",
+    "qty_charged": 1.0,
+    "item_description": "KIKO PONZU SCE",
+    "old_cost": 8.73,
+    "new_cost": 8.73,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "30351U",
+    "qty_charged": 1.0,
+    "item_description": "OIL SEASAME PURE 56Z",
+    "old_cost": 23.18,
+    "new_cost": 23.18,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  },
+  {
+    "item_code": "1020079U",
+    "qty_charged": 3.0,
+    "item_description": "OIL CANOLA SALAD 1/35#",
+    "old_cost": 36.6,
+    "new_cost": 36.6,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x3"
+  },
+  {
+    "item_code": "1030164U",
+    "qty_charged": 1.0,
+    "item_description": "CANE STAR SUGAR 50LB",
+    "old_cost": 27.46,
+    "new_cost": 27.46,
+    "cost_change_old_minus_new": 0.0,
+    "used_by": "Pho Show x1"
+  }
+]

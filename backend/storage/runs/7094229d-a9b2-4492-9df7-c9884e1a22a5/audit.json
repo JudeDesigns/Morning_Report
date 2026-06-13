@@ -1,0 +1,38 @@
+[
+  {
+    "id": "f4e075da-9493-4bb1-82bc-67a269aa5559",
+    "run_id": "7094229d-a9b2-4492-9df7-c9884e1a22a5",
+    "event_type": "run_created",
+    "message": "Run 'Combined Price Changes \u2014 2026-06-12' created",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T18:03:34.006627+00:00"
+  },
+  {
+    "id": "3c432dbe-48e5-4758-947a-971c0628968c",
+    "run_id": "7094229d-a9b2-4492-9df7-c9884e1a22a5",
+    "event_type": "processing_started",
+    "message": "Combined price processing started",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T18:03:46.251644+00:00"
+  },
+  {
+    "id": "a7b157ba-6403-425b-ad9e-22b52e007c6a",
+    "run_id": "7094229d-a9b2-4492-9df7-c9884e1a22a5",
+    "event_type": "processing_complete",
+    "message": "23 price changes found",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T18:03:46.257512+00:00"
+  },
+  {
+    "id": "837f9a81-d083-4ebd-b990-be3ffc70e47b",
+    "run_id": "7094229d-a9b2-4492-9df7-c9884e1a22a5",
+    "event_type": "exported",
+    "message": "Combined price workbook exported",
+    "user_id": "f69f0ef4-2fc3-4d44-8ea1-3d749c276acb",
+    "entity_type": "",
+    "created_at": "2026-06-12T18:03:50.013808+00:00"
+  }
+]

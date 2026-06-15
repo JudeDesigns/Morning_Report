@@ -111,6 +111,46 @@ HOW TO EXTRACT CORRECTLY:
 3. For each AMOUNT, the product name is the LAST product-name text printed ABOVE the continuation line. Concatenate the product name with the origin/pack text on the numbers line into one description string.
 4. NO two entries may share the same (qty, rate, total) triple. If you find yourself writing the same three numbers twice, you have misaligned — go back, re-read the AMOUNT column row by row, and fix it.
 
+STEP 3c — CATCH-WEIGHT / WEIGHT-PRICED LINES (poultry, meat, seafood, cheese — many wholesale food bills):
+
+Some bills price by POUND, not by case. The columns typically look like:
+    PRODUCT CODE | DESCRIPTION | ORDERED | SHIPPED | (WEIGHT or LBS or SHIPPED-LBS) | RATE | AMOUNT
+
+For these lines the arithmetic is **weight × rate = amount**, NOT qty × rate = amount.
+
+Example (verbatim layout from a real chicken bill):
+
+    PRODUCT CODE     DESCRIPTION                          ORDERED   SHIPPED   LBS       RATE    AMOUNT
+    0031110087-01    Chicken Wog 20HD 3.5 up (CVP)             18       10    761.00    1.35    1,027.35
+                     Golden Rod
+                     77.00, 76.00, 76.00, 78.00, 75.00,
+                     73.00, 77.00, 78.00, 75.00, 76.00
+    0031125087-01    Chicken Wog 28hd 2.50 (CVP) 8 Cut          5        5    380.00    1.64      623.20
+                     Golden Rod
+                     77.00, 76.00, 75.00, 75.00, 77.00
+    0031190087-01    Chicken Wog 28HD 2.50up (CVP) Split        6      OUT      0.00    1.69        0.00
+                     Golden Rod   HALAL
+
+CORRECT extraction for those three rows:
+  1. {bill_item_code: "0031110087-01", description: "Chicken Wog 20HD 3.5 up (CVP) Golden Rod",
+      qty: 10, rate: 1.35, total: 1027.35,
+      individual_weights: [77.00, 76.00, 76.00, 78.00, 75.00, 73.00, 77.00, 78.00, 75.00, 76.00]}
+  2. {bill_item_code: "0031125087-01", description: "Chicken Wog 28hd 2.50 (CVP) 8 Cut Golden Rod",
+      qty:  5, rate: 1.64, total:  623.20,
+      individual_weights: [77.00, 76.00, 75.00, 75.00, 77.00]}
+  3. {bill_item_code: "0031190087-01", description: "Chicken Wog 28HD 2.50up (CVP) Split Golden Rod HALAL",
+      qty:  0, rate: 1.69, total:    0.00, individual_weights: null, notes: "OUT — not shipped"}
+
+KEY RULES for catch-weight lines:
+- qty is the SHIPPED CASE COUNT (10, 5, 0 in the example) — not the ordered count, not the total pounds.
+- rate is the per-pound price ($1.35, $1.64, $1.69).
+- total is the line amount as printed on the bill.
+- individual_weights captures the per-piece weights listed under the description, IF they are printed (e.g. "77.00, 76.00, 76.00, ..."). If no per-piece list is printed BUT a single total-weight number is printed in the LBS/WEIGHT column (e.g. "80.00" alongside qty 2 and rate 0.72), put that single number into individual_weights as a one-element list (e.g. [80.00]) so downstream math validates. Only leave individual_weights null when there is no weight column at all (standard case-priced bills).
+- Brand names like "Golden Rod", grade tags like "HALAL", and pack notations belong in the description string — they are NOT origin tags and must NOT be dropped.
+- Ignore handwritten ink (dates, checkmarks, initials) overlaying cells unless that is the only source for a printed-but-unreadable value.
+- A "SHIPPED" cell reading "OUT", "0", or blank means qty=0 and total=0. Keep the line so the office sees it; put "OUT — not shipped" in notes.
+- For catch-weight lines, qty × rate will NOT equal total. Do NOT drop the line for that reason. The line is valid when (weight × rate ≈ total) where weight is the printed LBS total or sum(individual_weights).
+
 STEP 4 — RETURN ONLY VALID JSON in this exact structure (no prose, no markdown fences):
 {
   "vendor": "string",
@@ -149,11 +189,17 @@ FIELD RULES:
 - Return null for any field you cannot read clearly — never guess
 
 FINAL SANITY CHECKS before returning — do all of these:
-1. Every entry in "lines" must have description AND qty AND rate. If any of those three is missing, drop that entry.
-2. For each line, qty × rate should approximately equal total (within $0.05 or 1%). If they do not, you likely pulled the description from the wrong row — re-check and fix or drop.
-3. The "description" of each line must be a real product name (e.g. "BELL PEPPER GREEN", "HONEYDEW MELON", "CHICKEN BREAST"). Drop any line whose description is just a country, an origin tag ("Product of …", "Grown in …"), or a packaging word with no product noun.
-4. Compare your line count to the printed AMOUNT count from STEP 3b. They MUST match. If you have too many, the most likely cause is a wrap line emitted as its own row — find it and merge it back.
-5. NO TWO ENTRIES may share the same (qty, rate, total) triple. If two share, the lower one is wrong — you reused numbers from the row above. Re-read the AMOUNT column carefully, find the correct numbers for the second entry, and fix it. NEVER ship an extraction with duplicate numeric triples.
+1. Every entry in "lines" must have description AND rate. qty is also required UNLESS the line is a zero-shipped/OUT line (qty=0, total=0).
+2. For each line, the arithmetic must be consistent with ONE of the following — pick whichever applies to that line:
+   (a) Case/each-priced lines:  qty × rate ≈ total  (within $0.05 or 1%).
+   (b) Catch-weight lines (poultry/meat/seafood/cheese, see STEP 3c):
+       sum(individual_weights) × rate ≈ total  (within $0.05 or 1%),
+       or the printed LBS/WEIGHT column × rate ≈ total.
+   (c) OUT / not-shipped lines:  qty=0 and total=0.
+   If NONE of (a)(b)(c) hold, you likely pulled the description from the wrong row — re-check and fix or drop.
+3. The "description" of each line must be a real product name (e.g. "BELL PEPPER GREEN", "HONEYDEW MELON", "CHICKEN WOG 20HD"). Drop any line whose description is just a country, an origin tag ("Product of …", "Grown in …"), or a packaging word with no product noun. Brand names ("Golden Rod") and grade tags ("HALAL", "CHOICE") attached to a real product noun are valid — keep them.
+4. Compare your line count to the printed AMOUNT count from STEP 3b. They MUST match. If you have too many, the most likely cause is a wrap line emitted as its own row — find it and merge it back. OUT / zero-amount rows still count as one line each.
+5. NO TWO ENTRIES may share the same (qty, rate, total) triple — UNLESS both are catch-weight lines with distinct individual_weights (very rare). If two share, the lower one is almost certainly wrong — re-read the AMOUNT column carefully, find the correct numbers for the second entry, and fix it.
 6. Every printed AMOUNT in the table must appear as the `total` of exactly one entry. If an AMOUNT is missing from your output, find which entry should carry it and add it back."""
 
 

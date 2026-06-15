@@ -1,11 +1,19 @@
 [
   {
+    "id": "7227b480-ce2b-46e7-9ae5-4218d44b46bb",
+    "workflow_type": "combined_price_changes",
+    "name": "Combined Price Changes \u2014 2026-06-15",
+    "run_date": "2026-06-15",
+    "status": "exported",
+    "updated_at": "2026-06-15T12:35:42.079291+00:00"
+  },
+  {
     "id": "f4aaca89-954c-421a-b175-aa9f9d638ebf",
     "workflow_type": "vendor_bill_po_bank",
     "name": "Vendor Bills / PO Bank \u2014 2026-06-15",
     "run_date": "2026-06-15",
-    "status": "files_uploaded",
-    "updated_at": "2026-06-15T11:57:27.499025+00:00"
+    "status": "exported",
+    "updated_at": "2026-06-15T12:34:36.315841+00:00"
   },
   {
     "id": "0d6b12e0-82c7-4f80-a533-31dd50edc279",

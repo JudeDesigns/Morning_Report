@@ -360,6 +360,7 @@ export default function RunDetailPage() {
               fileType={ft}
               onUploaded={refresh}
               accept={ft.includes("image") ? "image/*" : ft.includes("pdf") ? ".pdf" : ".xlsx,.xls,.csv"}
+              multiple={BILL_FILE_TYPES.has(ft)}
             />
           ))}
         </div>

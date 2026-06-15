@@ -34,15 +34,16 @@ _ORIGIN_ONLY_RE = _re.compile(
 def _is_junk_line(line: dict) -> bool:
     """Reject rows the AI may have hallucinated from non-product content.
 
-    Catches: empty rows, country-of-origin annotations ("Product of USA"),
-    and rows where qty × rate is wildly out of line with the stated total
-    (a strong signal the description and numbers came from different visual
-    rows on the bill).
+    Hard-junk only: empty rows, country-of-origin annotations
+    ("Product of USA"), and rows too sparse to be a real product line.
+    Arithmetic-sanity checks live in `_line_math_warning` so a math mismatch
+    flags the row for review rather than silently dropping it (catch-weight
+    bills may not print the per-piece weights that would make the math
+    validate).
     """
     desc = (line.get("description") or "").strip()
     qty = line.get("qty")
     rate = line.get("rate")
-    total = line.get("total")
 
     # Completely empty
     if not desc and qty in (None, 0) and rate in (None, 0):
@@ -56,20 +57,59 @@ def _is_junk_line(line: dict) -> bool:
     if len(desc) < 3 and not (line.get("bill_item_code") or "").strip():
         return True
 
-    # Arithmetic sanity: if qty, rate, and total are all present and
-    # qty*rate disagrees with total by more than 5% AND $0.50, the row is
-    # likely a column-misalignment artefact (description from row N, numbers
-    # from row N+1).
+    return False
+
+
+def _line_math_warning(line: dict) -> str | None:
+    """Return a human-readable warning if the line's printed total cannot be
+    explained by any plausible pricing basis, otherwise None.
+
+    Accepts:
+      - case/each-priced lines:  qty × rate ≈ total
+      - catch-weight lines:      sum(individual_weights) × rate ≈ total
+      - OUT / zero-amount lines: qty=0 and total=0
+    """
+    qty = line.get("qty")
+    rate = line.get("rate")
+    total = line.get("total")
+    if rate is None or total is None:
+        return None
     try:
-        if qty is not None and rate is not None and total is not None:
-            expected = float(qty) * float(rate)
-            diff = abs(expected - float(total))
-            if diff > 0.5 and (expected == 0 or diff / max(abs(expected), 0.01) > 0.05):
-                return True
+        total_f = float(total)
+        rate_f = float(rate)
+    except (TypeError, ValueError):
+        return None
+
+    # OUT / unshipped row — legitimately zero.
+    try:
+        if (qty is None or float(qty) == 0) and total_f == 0:
+            return None
     except (TypeError, ValueError):
         pass
 
-    return False
+    candidates: list[float] = []
+    if qty is not None:
+        try:
+            candidates.append(float(qty) * rate_f)
+        except (TypeError, ValueError):
+            pass
+    weights = line.get("individual_weights") or []
+    if weights:
+        try:
+            candidates.append(sum(float(w) for w in weights) * rate_f)
+        except (TypeError, ValueError):
+            pass
+    if not candidates:
+        return None
+
+    best_diff = min(abs(c - total_f) for c in candidates)
+    best_base = max(abs(c) for c in candidates)
+    if best_diff > 0.5 and (best_base == 0 or best_diff / max(best_base, 0.01) > 0.05):
+        return (
+            f"Line total ${total_f:.2f} does not match qty×rate "
+            f"(={candidates[0]:.2f}) or weight×rate — please verify."
+        )
+    return None
 
 
 async def process_po_upload(run_id: str) -> dict:
@@ -161,12 +201,19 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
         qty_v = _f(line.get("qty"))
         rate_v = _f(line.get("rate"))
         total_v = _f(line.get("total"))
+        weights_v = line.get("individual_weights") or []
         triple = (qty_v, rate_v, total_v)
+        # Skip the duplicate check for legitimately-repeatable rows:
+        #   - OUT / zero-total lines (multiple unshipped items on one bill)
+        #   - Catch-weight lines (distinct individual_weights make the qty/rate/total
+        #     triple a weak fingerprint; the per-piece weights are the real key)
         is_dup = (
             triple in seen_triples
             and qty_v is not None
             and rate_v is not None
             and total_v is not None
+            and total_v != 0
+            and not weights_v
         )
         if not is_dup:
             seen_triples[triple] = i
@@ -174,6 +221,8 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
         weights = line.get("individual_weights")
         field_needs_review = list(line.get("field_needs_review") or [])
         needs_review = bool(line.get("needs_review"))
+        math_warning = _line_math_warning(line)
+        warnings: list[str] = []
         if is_dup:
             # Mark every numeric field on the duplicate row so the reviewer
             # sees red highlights on the cells that were almost certainly
@@ -182,6 +231,16 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
                 if field not in field_needs_review:
                     field_needs_review.append(field)
             needs_review = True
+            warnings.append(
+                "Duplicate qty/rate/total from a previous row — likely "
+                "misaligned with the bill image; please verify."
+            )
+        if math_warning:
+            for field in ("qty", "rate", "total"):
+                if field not in field_needs_review:
+                    field_needs_review.append(field)
+            needs_review = True
+            warnings.append(math_warning)
 
         lines.append({
             "id": str(_uuid_mod.uuid4()),
@@ -200,10 +259,7 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
             "needs_review": needs_review,
             "user_confirmed": False,
             "match_status": None,
-            "extraction_warning": (
-                "Duplicate qty/rate/total from a previous row — likely "
-                "misaligned with the bill image; please verify."
-            ) if is_dup else None,
+            "extraction_warning": " ".join(warnings) if warnings else None,
         })
 
     bill = {

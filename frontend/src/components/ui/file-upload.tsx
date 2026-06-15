@@ -11,51 +11,82 @@ interface FileUploadProps {
   fileType: string;
   onUploaded?: () => void;
   accept?: string;
+  multiple?: boolean;
 }
 
 type UploadState = "idle" | "uploading" | "done" | "error";
+interface FailedItem { name: string; message: string; }
 
-export function FileUpload({ runId, fileType, onUploaded, accept }: FileUploadProps) {
+export function FileUpload({ runId, fileType, onUploaded, accept, multiple }: FileUploadProps) {
   const [state, setState] = useState<UploadState>("idle");
   const [fileName, setFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number }>({ done: 0, total: 0 });
+  const [okCount, setOkCount] = useState(0);
+  const [failed, setFailed] = useState<FailedItem[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  async function handleFile(file: File) {
-    setFileName(file.name);
+  async function handleFiles(fileList: File[]) {
+    if (fileList.length === 0) return;
     setState("uploading");
     setError(null);
-    try {
-      await filesApi.upload(runId, fileType, file);
-      setState("done");
-      onUploaded?.();
-    } catch (err) {
+    setFailed([]);
+    setOkCount(0);
+    setProgress({ done: 0, total: fileList.length });
+
+    // Upload one file at a time. Backend sha256 dedupe + Anthropic rate
+    // guarantees are easier to reason about when requests are serialized.
+    let ok = 0;
+    const errs: FailedItem[] = [];
+    for (let i = 0; i < fileList.length; i++) {
+      const f = fileList[i];
+      setFileName(f.name);
+      setProgress({ done: i, total: fileList.length });
+      try {
+        await filesApi.upload(runId, fileType, f);
+        ok++;
+        onUploaded?.();
+      } catch (err) {
+        errs.push({ name: f.name, message: err instanceof Error ? err.message : "Upload failed" });
+      }
+    }
+
+    setOkCount(ok);
+    setFailed(errs);
+    setProgress({ done: fileList.length, total: fileList.length });
+    if (ok === 0) {
       setState("error");
-      setError(err instanceof Error ? err.message : "Upload failed");
+      setError(errs[0]?.message ?? "Upload failed");
+    } else {
+      setState("done");
     }
   }
 
   function onInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0];
-    if (f) handleFile(f);
+    const list = e.target.files;
+    if (list && list.length > 0) handleFiles(Array.from(list));
   }
 
   function onDrop(e: DragEvent) {
     e.preventDefault();
     setDragging(false);
-    const f = e.dataTransfer.files?.[0];
-    if (f) handleFile(f);
+    const list = e.dataTransfer.files;
+    if (list && list.length > 0) handleFiles(Array.from(list));
   }
 
   function reset() {
     setState("idle");
     setFileName(null);
     setError(null);
+    setFailed([]);
+    setOkCount(0);
+    setProgress({ done: 0, total: 0 });
     if (inputRef.current) inputRef.current.value = "";
   }
 
   const label = FILE_TYPE_LABELS[fileType] ?? fileType;
+  const isMulti = progress.total > 1;
 
   return (
     <div className="space-y-1.5">
@@ -83,22 +114,40 @@ export function FileUpload({ runId, fileType, onUploaded, accept }: FileUploadPr
           <>
             <UploadCloud className="size-5 text-muted-foreground" aria-hidden />
             <p className="text-xs text-muted-foreground">
-              Click or drag &amp; drop
+              Click or drag &amp; drop{multiple ? " (one or more)" : ""}
             </p>
           </>
         )}
         {state === "uploading" && (
           <>
             <Loader2 className="size-5 animate-spin text-primary" aria-hidden />
-            <p className="max-w-full truncate text-xs text-muted-foreground">{fileName}</p>
+            {isMulti ? (
+              <p className="text-xs text-muted-foreground">
+                Uploading {Math.min(progress.done + 1, progress.total)} of {progress.total}
+                {fileName ? <span className="block max-w-full truncate text-[11px] opacity-80">{fileName}</span> : null}
+              </p>
+            ) : (
+              <p className="max-w-full truncate text-xs text-muted-foreground">{fileName}</p>
+            )}
           </>
         )}
         {state === "done" && (
           <>
             <CheckCircle2 className="size-5 text-emerald-600" aria-hidden />
-            <p className="max-w-full truncate text-xs font-medium text-emerald-700 dark:text-emerald-300">
-              {fileName}
-            </p>
+            {isMulti ? (
+              <p className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                Uploaded {okCount} of {progress.total}
+                {failed.length > 0 && (
+                  <span className="mt-1 block text-[10px] font-normal text-rose-600 dark:text-rose-400">
+                    {failed.length} failed: {failed.map((f) => f.name).join(", ")}
+                  </span>
+                )}
+              </p>
+            ) : (
+              <p className="max-w-full truncate text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                {fileName}
+              </p>
+            )}
             <button
               onClick={(e) => { e.stopPropagation(); reset(); }}
               aria-label="Reset upload"
@@ -126,6 +175,7 @@ export function FileUpload({ runId, fileType, onUploaded, accept }: FileUploadPr
           type="file"
           className="sr-only"
           accept={accept}
+          multiple={multiple}
           onChange={onInputChange}
         />
       </div>

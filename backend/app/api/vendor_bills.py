@@ -118,6 +118,25 @@ async def update_bill_line(
     return {"success": True}
 
 
+@router.delete("/{run_id}/bills/{bill_id}/lines/{line_id}")
+async def delete_bill_line(
+    run_id: str, bill_id: str, line_id: str,
+    current_user: dict = Depends(get_current_user),
+):
+    _resolve(run_id, current_user)
+    bills = result_store.load(run_id, "vendor_bills", [])
+    bill = next((b for b in bills if b["id"] == bill_id), None)
+    if not bill:
+        raise HTTPException(404, "Bill not found")
+    original = len(bill.get("lines", []))
+    bill["lines"] = [l for l in bill.get("lines", []) if l["id"] != line_id]
+    if len(bill["lines"]) == original:
+        raise HTTPException(404, "Line not found")
+    result_store.save(run_id, "vendor_bills", bills)
+    audit_store.log(run_id, "bill_line_deleted", f"Line {line_id} deleted", current_user["id"])
+    return {"success": True}
+
+
 @router.post("/{run_id}/bills/{bill_id}/confirm")
 async def confirm_bill_header(
     run_id: str, bill_id: str,
@@ -137,6 +156,33 @@ async def confirm_bill_header(
     result_store.save(run_id, "vendor_bills", bills)
     audit_store.log(run_id, "bill_header_confirmed", f"Bill {bill_id} confirmed", current_user["id"])
     return {"success": True}
+
+
+@router.post("/{run_id}/bills/{bill_id}/ai-match")
+async def ai_match_bill(
+    run_id: str, bill_id: str,
+    current_user: dict = Depends(require_roles(*_PROCESS_ROLES)),
+):
+    """Use Claude to suggest the best PO match for each line of this bill."""
+    _resolve(run_id, current_user)
+    outcome = await vb_service.ai_match_bill_lines(run_id, bill_id)
+    if not outcome.get("success"):
+        raise HTTPException(422, detail=outcome.get("errors"))
+    audit_store.log(run_id, "ai_match_requested", f"AI match requested for bill {bill_id}", current_user["id"])
+    return outcome
+
+
+@router.delete("/{run_id}/bills/{bill_id}", status_code=204)
+async def delete_bill(
+    run_id: str, bill_id: str,
+    current_user: dict = Depends(require_roles(*_PROCESS_ROLES)),
+):
+    """Delete an extracted bill and restore any matched PO rows to unprocessed."""
+    _resolve(run_id, current_user)
+    outcome = vb_service.delete_bill(run_id, bill_id)
+    if not outcome.get("success"):
+        raise HTTPException(404, detail=outcome.get("errors"))
+    audit_store.log(run_id, "bill_deleted", f"Bill {bill_id} deleted", current_user["id"])
 
 
 @router.get("/{run_id}/import-rows")

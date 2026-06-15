@@ -1,5 +1,21 @@
 [
   {
+    "id": "f4aaca89-954c-421a-b175-aa9f9d638ebf",
+    "workflow_type": "vendor_bill_po_bank",
+    "name": "Vendor Bills / PO Bank \u2014 2026-06-15",
+    "run_date": "2026-06-15",
+    "status": "files_uploaded",
+    "updated_at": "2026-06-15T11:57:27.499025+00:00"
+  },
+  {
+    "id": "0d6b12e0-82c7-4f80-a533-31dd50edc279",
+    "workflow_type": "jetro_reconciliation",
+    "name": "Jetro / Restaurant Depot \u2014 2026-06-15",
+    "run_date": "2026-06-15",
+    "status": "exported",
+    "updated_at": "2026-06-15T09:05:04.628111+00:00"
+  },
+  {
     "id": "0da21c54-a512-4162-a7e9-80842955016e",
     "workflow_type": "web_orders_check",
     "name": "Daily Web Orders Check \u2014 2026-06-12",

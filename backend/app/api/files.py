@@ -1,3 +1,4 @@
+import hashlib
 import re
 from pathlib import Path
 from typing import List
@@ -64,6 +65,23 @@ async def upload_file(
         raise HTTPException(400, "Empty file")
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(413, f"File too large (max {MAX_FILE_SIZE // 1024 // 1024} MB)")
+
+    # Hash the bytes before writing anything to disk so we can dedupe early.
+    # Same sha256 already present in this run ⇒ refuse; the user must delete
+    # the existing copy first. Prevents duplicate vendor bills from going
+    # through extraction + matching and double-counting in the export.
+    content_sha256 = hashlib.sha256(content).hexdigest()
+    existing_dup = next(
+        (f for f in file_store.list_files(run_id) if f.get("sha256") == content_sha256),
+        None,
+    )
+    if existing_dup:
+        raise HTTPException(
+            409,
+            f"This exact file was already uploaded as "
+            f"'{existing_dup.get('original_filename')}'. Delete that file first "
+            "if you need to re-upload it.",
+        )
 
     safe_name = _safe_filename(file.filename or "upload")
     mime_type = detect_mime_type(safe_name, content)

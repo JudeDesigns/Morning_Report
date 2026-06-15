@@ -17,6 +17,7 @@ import {
   RefreshCw,
   TableProperties,
   FlagTriangleRight,
+  Trash2,
 } from "lucide-react";
 
 const BILL_FILE_TYPES = new Set(["vendor_bill_image", "vendor_bill_pdf"]);
@@ -140,6 +141,23 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
       onChange?.();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Processing failed");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function handleDeleteBill(billId: string) {
+    if (!confirm("Delete this extracted bill? If it was already matched, the PO rows will be restored.")) return;
+    setBills((prev) => prev.filter((b) => b.id !== billId));
+    setBusyId(billId);
+    setError(null);
+    try {
+      await vbApi.deleteBill(runId, billId);
+      await refresh();
+      onChange?.();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Delete failed");
+      await refresh(); // restore on error
     } finally {
       setBusyId(null);
     }
@@ -269,6 +287,7 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
               busy={busyId === b.id}
               onReview={() => setReviewBillId(b.id)}
               onProcess={() => handleProcess(b.id)}
+              onDelete={() => handleDeleteBill(b.id)}
             />
           ))}
         </ul>
@@ -365,11 +384,13 @@ function BillRow({
   busy,
   onReview,
   onProcess,
+  onDelete,
 }: {
   bill: VendorBill;
   busy: boolean;
   onReview: () => void;
   onProcess: () => void;
+  onDelete: () => void;
 }) {
   const status = bill.extraction_status ?? "review";
   const needsReview =
@@ -442,6 +463,15 @@ function BillRow({
             {busy ? <Loader2 className="size-3.5 animate-spin" /> : "Match to POs"}
           </Button>
         )}
+        <button
+          onClick={onDelete}
+          disabled={busy}
+          title="Delete this extracted bill"
+          aria-label="Delete bill"
+          className="rounded p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive disabled:opacity-50"
+        >
+          <Trash2 className="size-3.5" />
+        </button>
       </div>
     </li>
   );

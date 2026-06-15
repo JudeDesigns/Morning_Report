@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
-import { X, Loader2, Sparkles } from "lucide-react";
+import { X, Loader2, Sparkles, ChevronDown, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConfidenceBadge } from "@/components/ui/confidence-badge";
 import { vendorBills as vbApi } from "@/lib/api";
@@ -53,6 +53,16 @@ export function BillReviewDialog({ runId, billId, open, onOpenChange, onSaved }:
 
   function patchLine(idx: number, patch: Partial<VendorBillLine>) {
     setLines((prev) => prev.map((l, i) => (i === idx ? { ...l, ...patch, _dirty: true } : l)));
+  }
+
+  async function handleDeleteLine(lineId: string) {
+    if (!confirm("Remove this line from the bill?")) return;
+    try {
+      await vbApi.deleteLine(runId, billId, lineId);
+      setLines((prev) => prev.filter((l) => l.id !== lineId));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to delete line");
+    }
   }
 
   function toggleConfirm(idx: number) {
@@ -182,11 +192,12 @@ export function BillReviewDialog({ runId, billId, open, onOpenChange, onSaved }:
                         <th className="px-2 py-2 text-right font-medium">Total</th>
                         <th className="px-2 py-2 text-left font-medium min-w-[180px]">PO Match</th>
                         <th className="px-2 py-2 text-center font-medium">OK</th>
+                        <th className="px-2 py-2 text-center font-medium">Del</th>
                       </tr>
                     </thead>
                     <tbody>
                       {lines.map((l, i) => (
-                        <LineRow key={l.id} line={l} availablePos={availablePos} onChange={(p) => patchLine(i, p)} onToggle={() => toggleConfirm(i)} />
+                        <LineRow key={l.id} line={l} availablePos={availablePos} onChange={(p) => patchLine(i, p)} onToggle={() => toggleConfirm(i)} onDelete={() => handleDeleteLine(l.id)} />
                       ))}
                     </tbody>
                   </table>
@@ -215,6 +226,126 @@ export function BillReviewDialog({ runId, billId, open, onOpenChange, onSaved }:
         </Dialog.Popup>
       </Dialog.Portal>
     </Dialog.Root>
+  );
+}
+
+// ── Searchable PO combobox ────────────────────────────────────────────────────
+
+function PoSearchSelect({
+  value,
+  onChange,
+  availablePos,
+  matchedPoId,
+  matchStatus,
+}: {
+  value: string | null;
+  onChange: (v: string | null) => void;
+  availablePos: PoRow[];
+  matchedPoId?: string | null;
+  matchStatus?: string | null;
+}) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const effectiveId = value && value !== "NOT_ON_PO" ? value : (matchedPoId ?? null);
+  const isNotOnPo = value === "NOT_ON_PO" || (!value && matchStatus === "not_on_po");
+  const isMatched = !isNotOnPo && !!effectiveId;
+
+  const selectedPo = availablePos.find((p) => p.id === effectiveId);
+  const displayLabel = isNotOnPo
+    ? "🔴 Not on PO"
+    : selectedPo
+    ? `${selectedPo.item_code ? `[${selectedPo.item_code}] ` : ""}${(selectedPo.description ?? "").slice(0, 50)}`
+    : "— No match found —";
+
+  const searchLower = search.toLowerCase();
+  const unprocessed = availablePos.filter((p) => p.status === "unprocessed");
+  const filtered = searchLower
+    ? unprocessed.filter(
+        (p) =>
+          (p.description ?? "").toLowerCase().includes(searchLower) ||
+          (p.item_code ?? "").toLowerCase().includes(searchLower),
+      )
+    : unprocessed;
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => { setOpen((o) => !o); setSearch(""); }}
+        className={cn(
+          "flex w-full items-center justify-between gap-1 rounded border px-1.5 py-1 text-left text-xs outline-none transition-colors focus:ring-1 focus:ring-ring/40 bg-background",
+          isMatched
+            ? "border-emerald-400 text-emerald-700 dark:text-emerald-300"
+            : isNotOnPo
+            ? "border-rose-400 text-rose-700 dark:text-rose-300"
+            : "border-amber-300 text-amber-700 dark:text-amber-300",
+        )}
+      >
+        <span className="block truncate">{displayLabel}</span>
+        <ChevronDown className="size-3 shrink-0 opacity-50" />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 z-50 mt-1 w-72 rounded-lg border border-border bg-card shadow-xl">
+          <div className="p-1.5 border-b border-border">
+            <input
+              autoFocus
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by description or code…"
+              className="w-full rounded border border-input bg-background px-2 py-1 text-xs outline-none focus:border-ring focus:ring-1 focus:ring-ring/30"
+            />
+          </div>
+          <div className="max-h-52 overflow-y-auto py-1">
+            <button
+              type="button"
+              onClick={() => { onChange(null); setOpen(false); }}
+              className="w-full px-2.5 py-1.5 text-left text-xs text-muted-foreground hover:bg-muted"
+            >
+              — Clear match —
+            </button>
+            <button
+              type="button"
+              onClick={() => { onChange("NOT_ON_PO"); setOpen(false); }}
+              className="w-full px-2.5 py-1.5 text-left text-xs text-rose-600 dark:text-rose-400 hover:bg-muted"
+            >
+              🔴 Not on PO
+            </button>
+            {filtered.length === 0 ? (
+              <p className="px-2.5 py-2 text-xs italic text-muted-foreground">No POs match your search</p>
+            ) : (
+              filtered.map((po) => (
+                <button
+                  key={po.id}
+                  type="button"
+                  onClick={() => { onChange(po.id); setOpen(false); }}
+                  className={cn(
+                    "w-full px-2.5 py-1.5 text-left text-xs hover:bg-muted",
+                    effectiveId === po.id && "bg-primary/10 font-medium text-primary",
+                  )}
+                >
+                  {po.item_code && (
+                    <span className="mr-1 font-mono text-[10px] text-muted-foreground">[{po.item_code}]</span>
+                  )}
+                  {(po.description ?? po.id).slice(0, 65)}
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -259,11 +390,13 @@ function LineRow({
   availablePos,
   onChange,
   onToggle,
+  onDelete,
 }: {
   line: LineDraft;
   availablePos: PoRow[];
   onChange: (p: Partial<VendorBillLine>) => void;
   onToggle: () => void;
+  onDelete: () => void;
 }) {
   const reviewSet = new Set(line.field_needs_review ?? []);
   const cellCls = (field: string) =>
@@ -334,50 +467,14 @@ function LineRow({
         />
       </td>
       {/* PO Match selector */}
-      <td className="px-1 py-1 min-w-[200px]">
-        <select
-          value={forced ?? (line.match_status === "not_on_po" ? "NOT_ON_PO" : (line.matched_po_id ?? ""))}
-          onChange={(e) => {
-            // If user picked the auto-matched PO explicitly, store it as forced so it's visible
-            onChange({ forced_po_id: e.target.value === "" ? null : e.target.value });
-          }}
-          title="Override the auto-match, or mark as Not on PO"
-          className={cn(
-            "w-full rounded border px-1.5 py-1 text-xs outline-none transition-colors focus:ring-1 focus:ring-ring/40 bg-background",
-            isMatched
-              ? "border-emerald-400 text-emerald-700 dark:text-emerald-300"
-              : isNotOnPo
-              ? "border-rose-400 text-rose-700 dark:text-rose-300"
-              : "border-amber-300 text-amber-700 dark:text-amber-300",
-          )}
-        >
-          <option value="">— let engine decide —</option>
-          <option value="NOT_ON_PO">🔴 Not on PO</option>
-          {/* Available (unprocessed) POs */}
-          {availablePos.filter((p) => p.status === "unprocessed").length > 0 && (
-            <optgroup label="Available POs">
-              {availablePos
-                .filter((p) => p.status === "unprocessed")
-                .map((po) => (
-                  <option key={po.id} value={po.id}>
-                    {po.item_code ? `[${po.item_code}] ` : ""}{(po.description ?? po.id).slice(0, 60)}
-                  </option>
-                ))}
-            </optgroup>
-          )}
-          {/* Already-matched PO — show so user can see what was auto-picked */}
-          {line.matched_po_id && availablePos.some((p) => p.id === line.matched_po_id && p.status !== "unprocessed") && (
-            <optgroup label="Auto-matched (already used)">
-              {availablePos
-                .filter((p) => p.id === line.matched_po_id)
-                .map((po) => (
-                  <option key={po.id} value={po.id}>
-                    ✅ {po.item_code ? `[${po.item_code}] ` : ""}{(po.description ?? po.id).slice(0, 55)}
-                  </option>
-                ))}
-            </optgroup>
-          )}
-        </select>
+      <td className="px-1 py-1 min-w-[220px]">
+        <PoSearchSelect
+          value={forced ?? (line.match_status === "not_on_po" ? "NOT_ON_PO" : (line.matched_po_id ?? null))}
+          matchedPoId={line.matched_po_id}
+          matchStatus={line.match_status}
+          availablePos={availablePos}
+          onChange={(v) => onChange({ forced_po_id: v })}
+        />
       </td>
       <td className="px-1 py-1 text-center">
         <input
@@ -387,6 +484,16 @@ function LineRow({
           aria-label="Confirm line"
           className="size-4 accent-primary cursor-pointer"
         />
+      </td>
+      <td className="px-1 py-1 text-center">
+        <button
+          type="button"
+          onClick={onDelete}
+          aria-label="Delete line"
+          className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+        >
+          <Trash2 className="size-3.5" />
+        </button>
       </td>
     </tr>
   );

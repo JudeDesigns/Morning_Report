@@ -18,6 +18,12 @@ function getToken(): string | null {
 
 function detailToMessage(detail: unknown): string {
   if (typeof detail === "string") return detail;
+  if (Array.isArray(detail)) {
+    const parts = detail
+      .map((d) => (typeof d === "string" ? d : typeof d === "object" && d && "msg" in d ? String((d as { msg: unknown }).msg) : ""))
+      .filter(Boolean);
+    if (parts.length) return parts.join("; ");
+  }
   if (detail && typeof detail === "object") {
     const d = detail as Record<string, unknown>;
     if (typeof d.message === "string") return d.message;
@@ -193,6 +199,15 @@ export const vendorBills = {
     request<{ reverted_pos: number }>(`/api/v1/vendor-bills/${runId}/reopen`, {
       method: "POST",
     }),
+  deleteBill: (runId: string, billId: string) =>
+    request<void>(`/api/v1/vendor-bills/${runId}/bills/${billId}`, { method: "DELETE" }),
+  deleteLine: (runId: string, billId: string, lineId: string) =>
+    request<{ success: boolean }>(`/api/v1/vendor-bills/${runId}/bills/${billId}/lines/${lineId}`, { method: "DELETE" }),
+  aiMatch: (runId: string, billId: string) =>
+    request<{ success: boolean; matches: { line_id: string; po_id: string | null; confidence: number; reason: string }[] }>(
+      `/api/v1/vendor-bills/${runId}/bills/${billId}/ai-match`,
+      { method: "POST" },
+    ),
 };
 
 export const combinedPrice = {

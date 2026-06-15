@@ -194,6 +194,7 @@ export default function RunDetailPage() {
   }
 
   async function handleDeleteFile(fileId: string) {
+    setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
     await filesApi.delete(id, fileId);
     await refresh();
   }
@@ -235,6 +236,11 @@ export default function RunDetailPage() {
     run.workflow_type === "vendor_bill_po_bank" &&
     run.status === "exported" &&
     canOverride;
+
+  // Jetro runs can be reprocessed after export (new invoice files added to the same run)
+  const canReprocessJetro =
+    run.workflow_type === "jetro_reconciliation" &&
+    ["processed", "exported"].includes(run.status);
 
   // Pre-export confirmation counts (vendor-bill only)
   const billFiles = uploadedFiles.filter((f) => BILL_FILE_TYPES.has(f.file_type));
@@ -407,6 +413,16 @@ export default function RunDetailPage() {
               <><Loader2 className="size-3.5 animate-spin" />Processing…</>
             ) : (
               <><Play className="size-3.5" />Run Processing</>
+            )}
+          </Button>
+        )}
+        {canReprocessJetro && (
+          <Button variant="outline" onClick={handleProcess} disabled={actionLoading !== null} size="lg"
+            title="Upload additional RD invoice files above, then click to re-reconcile with all files in this run">
+            {actionLoading === "process" ? (
+              <><Loader2 className="size-3.5 animate-spin" />Reprocessing…</>
+            ) : (
+              <><RefreshCw className="size-3.5" />Reprocess with New Files</>
             )}
           </Button>
         )}

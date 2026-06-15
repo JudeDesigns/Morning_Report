@@ -13,12 +13,15 @@ from typing import Optional
 import difflib
 
 # ── Vendor rules (PRD §10.9) ──────────────────────────────────────────────────
-VENDOR_MATCH_BY_DESC = {"D&N Produce Inc.", "Jalisco Fresh Produce Inc.", "Maui Fresh", "La Palma Foods"}
+# Values are the canonical form produced by normalize_vendor() (lowercase, no
+# punctuation, no business suffixes) so cross-source comparisons survive minor
+# spelling variations like "Inc." vs "Inc" or stray commas.
+VENDOR_MATCH_BY_DESC = {"d n produce", "jalisco fresh produce", "maui fresh", "la palma foods"}
 VENDOR_ALIASES = {
     "Maui Fresh International": "Maui Fresh",
     "Jalisco Fresh Produce Inc": "Jalisco Fresh Produce Inc.",
 }
-VENDOR_WEIGHT_BASED = {"Glen Rose Meat Company"}
+VENDOR_WEIGHT_BASED = {"glen rose meat"}
 
 # ── Token normalisation tables ────────────────────────────────────────────────
 
@@ -63,7 +66,35 @@ _ABBREV: dict[str, str] = {
 def normalize_vendor(name: str) -> str:
     if not name:
         return name
-    return VENDOR_ALIASES.get(name.strip(), name.strip())
+    stripped = name.strip()
+    aliased = VENDOR_ALIASES.get(stripped, stripped)
+    # Aggressive comparable form: lowercase, drop punctuation and common business suffixes.
+    # Used for cross-source vendor matching where commas, periods, "Inc." vs "Inc" diverge.
+    canon = aliased.lower()
+    canon = re.sub(r"[,\.&'\"/]", " ", canon)
+    canon = re.sub(r"\b(inc|llc|ltd|co|corp|company|corporation|incorporated|limited)\b", " ", canon)
+    canon = re.sub(r"\s+", " ", canon).strip()
+    return canon
+
+
+def vendors_match(a: str, b: str) -> bool:
+    """Loose cross-source vendor equality.
+
+    Bills often carry the full legal name ("Maui Fresh International") while the
+    PO Bank uses a shortened trading name ("Maui Fresh"), so strict equality of
+    the canonical forms drops legitimate candidates. Treat two names as the
+    same vendor when their normalised forms are equal OR one is contained
+    inside the other.
+    """
+    na, nb = normalize_vendor(a or ""), normalize_vendor(b or "")
+    if not na or not nb:
+        return False
+    if na == nb:
+        return True
+    # Require at least 4 chars of overlap on the shorter side to avoid
+    # accidental matches on very short tokens.
+    shorter, longer = (na, nb) if len(na) <= len(nb) else (nb, na)
+    return len(shorter) >= 4 and shorter in longer
 
 
 # ── Token extraction ──────────────────────────────────────────────────────────
@@ -178,24 +209,29 @@ def match_bill_line_to_po(
     bill_code = (bill_line.get("bill_item_code") or "").strip()
     bill_desc = (bill_line.get("description") or "").strip()
 
-    # Restrict to same vendor, unprocessed rows only
+    # Restrict to same vendor, unprocessed rows only — use loose match so
+    # "Maui Fresh" (PO Bank) ≡ "Maui Fresh International" (bill).
     vendor_pos = [
         r for r in po_rows
-        if normalize_vendor(r.get("vendor") or "") == vendor_norm
+        if vendors_match(r.get("vendor") or "", vendor_name)
         and r.get("status") == "unprocessed"
     ]
 
     if not vendor_pos:
         return (None, 0.0, "No unprocessed PO rows for this vendor")
 
+    # Use loose containment so e.g. "maui fresh international" still triggers
+    # the description-only path defined for the canonical "maui fresh".
+    desc_only_vendor = any(vendors_match(vendor_name, v) for v in VENDOR_MATCH_BY_DESC)
+
     # ── Strategy 1: Exact item code ───────────────────────────────────────────
-    if bill_code and vendor_norm not in VENDOR_MATCH_BY_DESC:
+    if bill_code and not desc_only_vendor:
         for po in vendor_pos:
             if (po.get("item_code") or "").strip().upper() == bill_code.upper():
                 return (po, 0.99, f"Exact item code: {bill_code}")
 
     # ── Strategy 2: Fuzzy item code (prefix/contained) ───────────────────────
-    if bill_code and vendor_norm not in VENDOR_MATCH_BY_DESC:
+    if bill_code and not desc_only_vendor:
         best_code_po, best_code_score = None, 0.0
         for po in vendor_pos:
             score = _code_fuzzy(bill_code, po.get("item_code") or "")

@@ -1,4 +1,5 @@
 """Claude-based invoice image extraction service (PRD Section 22)."""
+import asyncio
 import base64
 import json
 from typing import Optional
@@ -6,6 +7,19 @@ import anthropic
 from app.config import settings
 
 CONFIDENCE_THRESHOLD = settings.EXTRACTION_CONFIDENCE_THRESHOLD
+
+
+def _anthropic_client() -> anthropic.Anthropic:
+    """Construct a Claude client with bounded timeout/retries.
+
+    Centralised so every call site picks up the same safety limits — a single
+    upstream stall cannot tie up a worker thread for the SDK's 10-minute default.
+    """
+    return anthropic.Anthropic(
+        api_key=settings.ANTHROPIC_API_KEY,
+        timeout=settings.AI_REQUEST_TIMEOUT_SECONDS,
+        max_retries=settings.AI_MAX_RETRIES,
+    )
 
 RD_INVOICE_PROMPT = """You are an invoice data extraction specialist. Extract all line items from this Restaurant Depot invoice image.
 
@@ -37,9 +51,67 @@ Rules:
 - confidence reflects extraction certainty per line (0.0 = uncertain, 1.0 = certain)
 - Return null for fields you cannot read clearly"""
 
-VENDOR_BILL_PROMPT = """You are an invoice data extraction specialist. Extract all line items from this vendor bill/invoice image.
+VENDOR_BILL_PROMPT = """You are an invoice data extraction specialist for a food-service distributor. Your job is to extract ONLY genuine product line items from this vendor bill/invoice image — nothing else.
 
-Return ONLY valid JSON in this exact structure:
+STEP 1 — UNDERSTAND THE BILL FIRST (do this before extracting):
+- Identify the vendor (letterhead/header), the invoice number, and the invoice date.
+- Locate the line-items table: find its column headers (e.g. "Item", "Description", "Qty", "Price/Rate", "Amount/Total") and where the table starts and ends.
+- COUNT the number of distinct PRODUCT rows in the table. Write that count down mentally before extracting — your final "lines" array must have exactly that many entries (no more, no less).
+- A genuine product line has: a product description, a quantity, a unit price/rate, and a line total. Most also have an item code/SKU/UPC.
+
+STEP 2 — EXCLUDE these rows entirely (do NOT put them in "lines"):
+- Subtotals, Totals, Grand Total, Invoice Total, Balance Due, Amount Due, Previous Balance
+- Tax, Sales Tax, VAT, GST
+- Freight, Shipping, Delivery Fee, Fuel Surcharge, Handling Fee, Service Fee
+- Bottle Deposit, CRV, Recycling Fee  (UNLESS the bill clearly treats them as a separately-billed product line tied to a product — when in doubt, exclude)
+- Discount lines that are not tied to a specific product
+- Payment, Payment Received, Credit Applied
+- Column header rows, section labels (e.g. "DAIRY", "PRODUCE"), page totals, "continued on next page"
+- Blank/decorative rows, instructions, terms text, signature lines, driver notes (capture driver notes in the line's "notes" field if they belong to a specific line)
+- Anything without a clear quantity AND a clear unit price — if both are missing, it is not a product line
+- Country-of-origin annotations like "Product of USA", "Product of Mexico", "Grown in California", "Origin: ..." — these are METADATA attached to the product above, never a product on their own. Merge them into the previous line's description (e.g. "BELL PEPPER GREEN - Product of USA") and do NOT emit them as a separate line.
+
+STEP 3 — INCLUDE every genuine product line, even if:
+- It is a credit/void line (keep amounts positive; sign is handled downstream — set bill_type="credit_memo" if the whole document is a credit memo)
+- It is a catch-weight item with individual weights listed (put them in individual_weights)
+- The item code is missing (set bill_item_code=null but still include the line)
+
+STEP 3b — MULTI-LINE PRODUCT ROWS (READ THE WORKED EXAMPLE BELOW — THIS IS THE #1 SOURCE OF EXTRACTION BUGS):
+
+Many produce/food invoices print ONE product row across TWO visual lines:
+    Visual line A: ONLY the product name (e.g. "BELL PEPPER GREEN") — no numbers
+    Visual line B: the country-of-origin tag (e.g. "Product of USA") AND the row's CH / QTY / PRICE / AMOUNT values
+
+The numbers always belong to the product name on the line DIRECTLY ABOVE the continuation line. They do NOT belong to the product name appearing further down.
+
+WORKED EXAMPLE — this is the exact layout you must handle correctly:
+
+    DESCRIPTION              CH       QTY       PRICE       AMOUNT
+    BELL PEPPER GREEN
+      Product of USA                    2       18.00        36.00
+    HONEYDEW
+      Product of MEXICO      55        11       10.50       115.50
+    BELL PEPPER GREEN
+      Product of MEXICO      XLGE       4       20.00        80.00
+
+CORRECT extraction (exactly 3 entries — one per AMOUNT):
+  1. {bill_item_code: null,   description: "BELL PEPPER GREEN Product of USA",     qty:  2, rate: 18.00, total:  36.00}
+  2. {bill_item_code: "55",   description: "HONEYDEW Product of MEXICO",           qty: 11, rate: 10.50, total: 115.50}
+  3. {bill_item_code: "XLGE", description: "BELL PEPPER GREEN Product of MEXICO",  qty:  4, rate: 20.00, total:  80.00}
+
+INCORRECT extractions you MUST NOT produce:
+  X Reusing (qty=2, rate=18, total=36) on the HONEYDEW line — that is the BELL PEPPER row's numbers, not HONEYDEW's.
+  X Pairing HONEYDEW with (11, 10.50, 115.50) but then pairing the third BELL PEPPER row with the SAME (11, 10.50, 115.50). Each AMOUNT belongs to exactly ONE entry.
+  X Emitting a fourth standalone entry whose description is just "Product of MEXICO".
+  X Skipping the third row entirely so the (4, 20, 80) numbers vanish.
+
+HOW TO EXTRACT CORRECTLY:
+1. First, count the distinct AMOUNTS printed in the AMOUNT column (3 in the example above). Your final "lines" array will have exactly this many entries.
+2. For each AMOUNT, the CH (item code), QTY, and PRICE on the SAME horizontal line as that AMOUNT belong to the SAME entry. The bill_item_code comes from the CH column on the numbers line — it is NOT carried over from anywhere else.
+3. For each AMOUNT, the product name is the LAST product-name text printed ABOVE the continuation line. Concatenate the product name with the origin/pack text on the numbers line into one description string.
+4. NO two entries may share the same (qty, rate, total) triple. If you find yourself writing the same three numbers twice, you have misaligned — go back, re-read the AMOUNT column row by row, and fix it.
+
+STEP 4 — RETURN ONLY VALID JSON in this exact structure (no prose, no markdown fences):
 {
   "vendor": "string",
   "invoice_number": "string or null",
@@ -71,15 +143,18 @@ Return ONLY valid JSON in this exact structure:
   ]
 }
 
-Rules:
-- Extract vendor name from letterhead or header
-- If individual weights are listed per item (e.g. for catch-weight items), include them in individual_weights
-- For credit memos, bill_type = "credit_memo" and amounts should be positive (sign handled separately)
-- confidence is the overall line confidence (0.0-1.0)
-- field_confidence reports the per-field certainty so reviewers can highlight only the unsure values
+FIELD RULES:
+- confidence is the overall line confidence (0.0-1.0); field_confidence reports per-field certainty so reviewers can highlight only the unsure values
 - header_confidence reports per-header-field certainty (vendor, invoice_number, invoice_date)
-- Include any handwritten driver notes in the notes field
-- Return null for fields you cannot read clearly"""
+- Return null for any field you cannot read clearly — never guess
+
+FINAL SANITY CHECKS before returning — do all of these:
+1. Every entry in "lines" must have description AND qty AND rate. If any of those three is missing, drop that entry.
+2. For each line, qty × rate should approximately equal total (within $0.05 or 1%). If they do not, you likely pulled the description from the wrong row — re-check and fix or drop.
+3. The "description" of each line must be a real product name (e.g. "BELL PEPPER GREEN", "HONEYDEW MELON", "CHICKEN BREAST"). Drop any line whose description is just a country, an origin tag ("Product of …", "Grown in …"), or a packaging word with no product noun.
+4. Compare your line count to the printed AMOUNT count from STEP 3b. They MUST match. If you have too many, the most likely cause is a wrap line emitted as its own row — find it and merge it back.
+5. NO TWO ENTRIES may share the same (qty, rate, total) triple. If two share, the lower one is wrong — you reused numbers from the row above. Re-read the AMOUNT column carefully, find the correct numbers for the second entry, and fix it. NEVER ship an extraction with duplicate numeric triples.
+6. Every printed AMOUNT in the table must appear as the `total` of exactly one entry. If an AMOUNT is missing from your output, find which entry should carry it and add it back."""
 
 
 def _encode_image(image_bytes: bytes, mime_type: str) -> tuple[str, str]:
@@ -93,10 +168,13 @@ async def extract_rd_invoice(image_bytes: bytes, mime_type: str) -> dict:
     if not settings.ANTHROPIC_API_KEY:
         return _mock_rd_extraction()
 
-    client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+    client = _anthropic_client()
     b64_data, media_type = _encode_image(image_bytes, mime_type)
 
-    message = client.messages.create(
+    # Run the blocking SDK call in a worker thread so the FastAPI event loop
+    # stays responsive to other requests (e.g. page refreshes mid-extraction).
+    message = await asyncio.to_thread(
+        client.messages.create,
         model="claude-opus-4-5",
         max_tokens=4096,
         messages=[
@@ -139,10 +217,11 @@ async def extract_vendor_bill(image_bytes: bytes, mime_type: str) -> dict:
     if not settings.ANTHROPIC_API_KEY:
         return _mock_vendor_extraction()
 
-    client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+    client = _anthropic_client()
     b64_data, media_type = _encode_image(image_bytes, mime_type)
 
-    message = client.messages.create(
+    message = await asyncio.to_thread(
+        client.messages.create,
         model="claude-opus-4-5",
         max_tokens=4096,
         messages=[
@@ -177,6 +256,100 @@ async def extract_vendor_bill(image_bytes: bytes, mime_type: str) -> dict:
         return json.loads(text)
     except json.JSONDecodeError:
         return {"error": "Failed to parse extraction response", "raw": text}
+
+
+PO_MATCH_PROMPT = """You are a QuickBooks purchasing assistant. Your job is to match vendor bill lines to the correct PO (Purchase Order) rows from the PO Bank.
+
+You will be given:
+1. A list of bill lines extracted from a vendor invoice
+2. A list of available PO rows from the PO Bank for the same vendor
+
+Match each bill line to the best PO row based on:
+- Item code (strongest signal — exact or near-exact match)
+- Description similarity (product name, size, weight, packaging)
+- If no reasonable match exists, set po_id to null
+
+Return ONLY valid JSON in this exact structure:
+{
+  "matches": [
+    {
+      "line_id": "exact line id string from the bill lines",
+      "po_id": "exact po id string from the PO rows, or null if no match",
+      "confidence": 0.0-1.0,
+      "reason": "brief explanation"
+    }
+  ]
+}
+
+Rules:
+- Every bill line must have an entry in matches
+- Use the exact id values provided — do not generate or modify ids
+- If a bill line clearly matches a PO row, set confidence >= 0.8
+- If it is a partial/uncertain match, set confidence 0.4-0.79
+- If there is genuinely no match, set po_id to null and confidence < 0.4
+- Do not match the same PO row to more than one bill line"""
+
+
+async def ai_match_bill_lines(bill_lines: list[dict], po_rows: list[dict]) -> dict:
+    """Use Claude to match extracted bill lines to PO Bank rows.
+
+    Returns {"success": True, "matches": [{line_id, po_id, confidence, reason}, ...]}
+    or      {"success": False, "error": "..."}
+    """
+    if not settings.ANTHROPIC_API_KEY:
+        return {"success": False, "error": "No API key configured"}
+
+    if not bill_lines or not po_rows:
+        return {"success": False, "error": "No bill lines or PO rows to match"}
+
+    # Build a compact text representation — only the fields Claude needs
+    lines_text = "\n".join(
+        f"  - line_id={bl['id']} | code={bl.get('bill_item_code') or 'n/a'} | desc={bl.get('description') or 'n/a'}"
+        for bl in bill_lines
+    )
+    po_text = "\n".join(
+        f"  - po_id={po['id']} | code={po.get('item_code') or 'n/a'} | desc={po.get('description') or 'n/a'} | vendor={po.get('vendor') or 'n/a'}"
+        for po in po_rows
+        if po.get("status") == "unprocessed"
+    )
+
+    if not po_text:
+        return {"success": False, "error": "No unprocessed PO rows available"}
+
+    user_message = (
+        f"BILL LINES TO MATCH:\n{lines_text}\n\n"
+        f"AVAILABLE PO ROWS:\n{po_text}\n\n"
+        "Match each bill line to the best PO row. Return only JSON."
+    )
+
+    try:
+        client = _anthropic_client()
+        message = await asyncio.to_thread(
+            client.messages.create,
+            model="claude-opus-4-5",
+            max_tokens=2048,
+            messages=[
+                {"role": "user", "content": [
+                    {"type": "text", "text": PO_MATCH_PROMPT},
+                    {"type": "text", "text": user_message},
+                ]},
+            ],
+        )
+
+        text = message.content[0].text.strip()
+        if text.startswith("```"):
+            text = text.split("```")[1]
+            if text.startswith("json"):
+                text = text[4:]
+            text = text.strip()
+
+        result = json.loads(text)
+        return {"success": True, "matches": result.get("matches", [])}
+
+    except json.JSONDecodeError as e:
+        return {"success": False, "error": f"Claude returned invalid JSON: {e}"}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
 
 
 def flag_low_confidence(extracted: dict, threshold: float = CONFIDENCE_THRESHOLD) -> dict:

@@ -61,7 +61,6 @@ export default function RunsPage() {
   const [allRuns, setAllRuns] = useState<WorkflowRun[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -71,7 +70,7 @@ export default function RunsPage() {
       .then((r) => setAllRuns(r as WorkflowRun[]))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, [type, refreshKey]);
+  }, [type]);
 
   const title = type
     ? WORKFLOW_LABELS[type as WorkflowType] ?? type
@@ -233,7 +232,7 @@ export default function RunsPage() {
                   <RunCard
                     key={run.id}
                     run={run}
-                    onDeleted={() => setRefreshKey((k) => k + 1)}
+                    onDeleted={() => setAllRuns((prev) => prev.filter((r) => r.id !== run.id))}
                   />
                 ))}
               </div>

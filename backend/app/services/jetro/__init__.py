@@ -78,6 +78,9 @@ async def process_run(run_id: str) -> dict:
             "integrity_status": integrity,
         })
 
+        inv_date = inv_data.get("invoice_date")
+        inv_date_str = inv_date.isoformat() if hasattr(inv_date, "isoformat") else (str(inv_date) if inv_date else None)
+
         for row in deduped:
             qty = row.get("qty") or Decimal(0)
             total = row.get("total") or Decimal(0)
@@ -90,7 +93,9 @@ async def process_run(run_id: str) -> dict:
                 "cost": _f(cost),
                 "qty": _f(qty),
                 "total": _f(total),
+                "vendor": "Jetro",
                 "invoice_number": inv_data["invoice_number"],
+                "invoice_date": inv_date_str,
                 "type": "Inventory Part",
             })
 

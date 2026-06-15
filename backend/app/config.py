@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
 
     ANTHROPIC_API_KEY: str = ""
+    # Hard cap on every Claude SDK call so a single slow upstream request
+    # cannot pin a worker thread (SDK default is 600s with 2 retries).
+    AI_REQUEST_TIMEOUT_SECONDS: float = 120.0
+    AI_MAX_RETRIES: int = 2
 
     STORAGE_PATH: str = "./storage"
     ENVIRONMENT: str = "development"

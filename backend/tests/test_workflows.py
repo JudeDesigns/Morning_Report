@@ -878,6 +878,64 @@ def test_vendor_bills_safety_net_infers_weight_when_qty_rate_total_mismatch():
     run_store.delete_run(rid)
 
 
+def test_vendor_bills_no_false_qty_mismatch_when_po_uses_lbs_unit():
+    """R.W. Zant All Issues bug: bill row '2 cases / $2.20 / $440.00' was being
+    compared against a PO row with quantity=200 (lbs) and emitting a fake
+    'qty mismatch (-198)'. With unit-of-measure reconciliation, the matcher
+    must infer that the PO is in lbs (total/rate = 200 ≈ po_qty) and report
+    NO qty mismatch when 2 cases × 100 lbs each == 200 lbs ordered."""
+    run = run_store.create_run("vendor_bill_po_bank", "VB UoM", "2025-06-01")
+    rid = run["id"]
+    result_store.save(rid, "vendor_bills", [{
+        "id": "b-uom", "vendor_confirmed": "R.W. Zant",
+        "vendor_extracted": "R.W. Zant",
+        "invoice_number": "R3407203", "invoice_date": "2025-06-01",
+        "extraction_status": "review",
+        "lines": [
+            # Zant line: 2 cases × $2.20/lb × 200 lbs total = $440.00
+            # individual_weights null (worst case — AI missed /LB tag)
+            {"id": "l1", "bill_item_code": "Z252738",
+             "description": "CHICKEN THIGH MEAT BONELESS",
+             "qty": 2, "rate": 2.20, "total": 440.00,
+             "forced_po_id": "po-thigh",
+             "needs_review": False, "user_confirmed": True},
+            # And a TRUE qty mismatch (PO 5 cases, billed 3 cases, $5/case)
+            {"id": "l2", "bill_item_code": "STD",
+             "description": "STANDARD CASE",
+             "qty": 3, "rate": 5.00, "total": 15.00,
+             "forced_po_id": "po-std",
+             "needs_review": False, "user_confirmed": True},
+        ],
+    }])
+    result_store.save(rid, "po_bank", [
+        # PO orders 200 LBS — different unit than bill's 2 CASES
+        {"id": "po-thigh", "vendor": "R.W. Zant", "item_code": "Z252738",
+         "description": "CHICKEN THIGH MEAT BONELESS", "quantity": 200, "po_cost": 2.20,
+         "ref_number": "PO-1", "status": "unprocessed"},
+        # PO orders 5 cases — same unit as bill, real shortage
+        {"id": "po-std", "vendor": "R.W. Zant", "item_code": "STD",
+         "description": "STANDARD CASE", "quantity": 5, "po_cost": 5.00,
+         "ref_number": "PO-1", "status": "unprocessed"},
+    ])
+    res = asyncio.run(vendor_bills_svc.process_confirmed_bill(rid, "b-uom"))
+    assert res["success"] is True
+    blocks = result_store.load(rid, "vendor_summary_blocks", [])
+    items = [it for b in blocks for it in b.get("items", [])]
+    by_code = {it.get("item_code"): it for it in items}
+    # The UoM-mismatched line must NOT carry a qty mismatch flag
+    if "Z252738" in by_code:
+        thigh = by_code["Z252738"]
+        assert not thigh.get("has_qty_mismatch"), (
+            f"Thigh meat row should not be flagged qty mismatch (UoM reconciled); got {thigh}"
+        )
+        assert thigh.get("section") != "qty_issue"
+    # The genuine shortage must still appear as a qty mismatch
+    assert "STD" in by_code, f"Standard line must reach summary_items; got codes {list(by_code)}"
+    std = by_code["STD"]
+    assert std.get("has_qty_mismatch"), f"Real qty mismatch must still be flagged; got {std}"
+    run_store.delete_run(rid)
+
+
 def test_vendor_bills_zero_shipment_line_is_highlighted_red():
     """OUT / unshipped lines (qty=0, total=$0) used to slip through unmarked
     because their math is technically valid. They must now carry

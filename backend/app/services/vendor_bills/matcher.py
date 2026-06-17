@@ -283,28 +283,45 @@ def compute_discrepancies(
     bill_rate = Decimal(str(bill_line.get("rate") or 0))
     po_cost = Decimal(str(po_row.get("po_cost") or 0))
     bill_qty = Decimal(str(bill_line.get("qty") or 0))
+    bill_total = Decimal(str(bill_line.get("total") or 0))
     po_qty = Decimal(str(po_row.get("quantity") or 0))
 
-    # Catch-weight / weight-priced reconciliation. For these lines the bill's
-    # qty field is the CASE count while the PO's quantity column on most R.W.
-    # Zant / Glen Rose / Maui POs is the WEIGHT (lbs) — comparing those two
-    # directly produced false "qty mismatch" rows (e.g. 2 cases vs 80 lbs).
-    # When the line has individual_weights (catch-weight signal), use total
-    # lbs on the BILL side so units match. We also accept the PO column even
-    # when it's a case count: if the PO quantity is clearly smaller than the
-    # weight (within the case count's order of magnitude), we fall back to
-    # comparing case-to-case instead.
+    # ─── Unit-of-measure reconciliation ───────────────────────────────────
+    # PO Bank rows and bill rows often use DIFFERENT units of measure for the
+    # same item (cases vs lbs vs eaches). Comparing a 2-case bill row to a
+    # 200-lb PO row produces a bogus "qty mismatch (-198)" alarm. We resolve
+    # this BEFORE computing qty_diff using two signals, in priority order:
+    #
+    #   1. Catch-weight bills (R.W. Zant, Glen Rose…): if the bill line carries
+    #      individual_weights, swap bill_qty to the total lbs shipped.
+    #   2. Otherwise reconstruct the bill's unit from total/rate. If that
+    #      "implied qty" is clearly closer to po_qty than the raw case count
+    #      (≥3× closer on a relative basis and within ±2% of po_qty), the PO
+    #      is using that same unit — substitute it on the bill side.
+    #
+    # Either way bill_qty ends up in the SAME unit as po_qty so qty_diff is
+    # meaningful.
     iw = bill_line.get("individual_weights")
     if iw:
         lbs_total = Decimal(str(sum(iw)))
         if lbs_total > 0:
-            # Match the unit of measure used by the PO row. If the PO quantity
-            # is close to the case count (within ±50% and clearly < weight),
-            # the PO is in cases — compare cases. Otherwise the PO is in lbs.
             if po_qty > 0 and po_qty < lbs_total / 2 and abs(po_qty - bill_qty) < bill_qty * Decimal("0.5") + 1:
-                pass  # leave bill_qty as case count, compare cases
+                pass  # PO is in cases too — compare cases
             else:
                 bill_qty = lbs_total
+    elif bill_rate > 0 and bill_total > 0 and po_qty > 0:
+        implied = bill_total / bill_rate
+        if implied > 0 and bill_qty > 0 and implied != bill_qty:
+            # Distance from PO_qty in the two candidate units. Pick whichever
+            # fits the PO_qty meaningfully better. Guard against accidental
+            # near-matches by requiring the implied unit to be within 2% of
+            # PO_qty OR at least 3× closer than the raw bill_qty.
+            dist_raw = abs(bill_qty - po_qty)
+            dist_imp = abs(implied - po_qty)
+            within_2pct = dist_imp <= po_qty * Decimal("0.02")
+            much_closer = dist_imp * 3 < dist_raw
+            if within_2pct or much_closer:
+                bill_qty = implied
 
     rate_diff = bill_rate - po_cost
     qty_diff = bill_qty - po_qty

@@ -826,12 +826,18 @@ def finalize_unbilled_po(run_id: str) -> dict:
 
 def finalize_run(run_id: str) -> dict:
     """Advance run status to 'processed' so the Download Workbook button appears.
-    Safe to call even if more bills arrive later — just reopen after export."""
+    Safe to call even if more bills arrive later — just reopen after export.
+
+    Also clears the ``reopened`` flag (set by reopen_run) so the UI shows the
+    final Download Workbook button again. The flag exists purely so the UI can
+    tell ``status=processed (fresh)`` apart from ``status=processed (reopened)``
+    — without it, Download Workbook would persist post-reopen even while the
+    user is still adding more bills."""
     bills = result_store.load(run_id, "vendor_bills", [])
     processed_count = sum(1 for b in bills if b.get("extraction_status") == "processed")
     if processed_count == 0:
         return {"success": False, "errors": ["No bills have been matched yet."]}
-    update_run(run_id, {"status": "processed"})
+    update_run(run_id, {"status": "processed", "reopened": False})
     return {"success": True, "processed_bills": processed_count}
 
 
@@ -853,7 +859,10 @@ def reopen_run(run_id: str) -> dict:
     if reverted:
         result_store.save(run_id, "po_bank", po_rows)
     result_store.save(run_id, "po_not_charged", [])
-    update_run(run_id, {"status": "processed"})
+    # reopened=True marks this as a reopened run so the UI hides the lingering
+    # Download Workbook button until the user re-finalizes (cleared by
+    # finalize_run).
+    update_run(run_id, {"status": "processed", "reopened": True})
     return {"reverted_pos": reverted}
 
 

@@ -235,14 +235,14 @@ export default function RunDetailPage() {
 
   const fileTypes = WORKFLOW_FILE_TYPES[run.workflow_type] ?? [];
   const canProcess = ["files_uploaded", "ready_to_process", "validation_failed"].includes(run.status);
-  // For vendor-bill runs, the main "Download Workbook" only appears AFTER the
-  // user finalizes (status === "exported"). While the run is still open or has
-  // been reopened, the Vendor Bill Pipeline panel provides "Export Draft"
-  // instead, so the big Download button doesn't sit there indefinitely or
-  // persist after a Reopen. Other workflows keep their original behavior.
+  // For vendor-bill runs, hide the main Download Workbook after a Reopen until
+  // the user clicks Finalize again. This avoids the button "sitting there
+  // permanently" when more bills are still being added post-reopen, while
+  // still showing it normally after the first Finalize. Other workflows keep
+  // their original behavior.
   const canExport =
     run.workflow_type === "vendor_bill_po_bank"
-      ? run.status === "exported"
+      ? ["processed", "exported"].includes(run.status) && !(run as unknown as { reopened?: boolean }).reopened
       : ["processed", "exported"].includes(run.status);
   const canOverride = ["admin", "accounting"].includes(user?.role ?? "");
   const canReopen =
@@ -413,7 +413,13 @@ export default function RunDetailPage() {
 
       {/* Workflow-specific review panel */}
       {run.workflow_type === "vendor_bill_po_bank" && uploadedFiles.length > 0 && (
-        <VendorBillsPanel runId={id} uploadedFiles={uploadedFiles} runStatus={run.status} onChange={refresh} />
+        <VendorBillsPanel
+          runId={id}
+          uploadedFiles={uploadedFiles}
+          runStatus={run.status}
+          runReopened={Boolean((run as unknown as { reopened?: boolean }).reopened)}
+          onChange={refresh}
+        />
       )}
       {run.workflow_type === "combined_price_changes" && (
         <CombinedPricePanel runId={id} disabled={canExport} onProcessed={refresh} />

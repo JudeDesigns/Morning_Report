@@ -50,10 +50,13 @@ interface VendorBillsPanelProps {
   /** Current workflow run status. Used to hide Export Draft / Finalize once
    *  the run has been finalized (status === "exported"). */
   runStatus?: string;
+  /** True after the user has clicked Reopen Run. Re-enables Finalize/Export
+   *  Draft on a previously-exported run so the user can lock it again. */
+  runReopened?: boolean;
   onChange?: () => void;
 }
 
-export function VendorBillsPanel({ runId, uploadedFiles, runStatus, onChange }: VendorBillsPanelProps) {
+export function VendorBillsPanel({ runId, uploadedFiles, runStatus, runReopened, onChange }: VendorBillsPanelProps) {
   const [bills, setBills] = useState<VendorBill[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -265,39 +268,42 @@ export function VendorBillsPanel({ runId, uploadedFiles, runStatus, onChange }: 
               <><PackageOpen className="size-3.5" />Load PO Bank</>
             )}
           </Button>
-          {/* Export Draft: usable while more bills are still expected. Hidden
-              once the run has been finalized (status === "exported") because
-              the main Download Workbook button takes over at that point. */}
-          {matchedBillCount > 0 && runStatus !== "exported" && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExportDraft}
-              disabled={busyId === "draft"}
-              title="Download a draft workbook now (without flagging Missing PO items). Use this while bills are still trickling in."
-            >
-              {busyId === "draft" ? (
-                <><Loader2 className="size-3.5 animate-spin" />Preparing…</>
-              ) : (
-                <><Download className="size-3.5" />Export Draft</>
-              )}
-            </Button>
-          )}
-          {/* Finalize: only useful before the run is locked. After export it
-              disappears so the action bar shows Download Workbook + Reopen. */}
-          {matchedBillCount > 0 && runStatus !== "exported" && (
-            <Button
-              size="sm"
-              onClick={handleFinalize}
-              disabled={busyId === "finalize"}
-              title="Done adding bills for today? Click to lock the run and unlock the final Download Workbook button. You can always Reopen the run later to add more."
-            >
-              {busyId === "finalize" ? (
-                <><Loader2 className="size-3.5 animate-spin" />Finalizing…</>
-              ) : (
-                <><FlagTriangleRight className="size-3.5" />Finalize Run</>
-              )}
-            </Button>
+          {/* Export Draft + Finalize: visible while the run is still open
+              (before the first Download Workbook) OR after the user clicked
+              Reopen. Hidden on a finalized run that hasn't been reopened —
+              the action bar's Download Workbook + Reopen take over there. */}
+          {matchedBillCount > 0 && (runStatus !== "exported") && (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportDraft}
+                disabled={busyId === "draft"}
+                title="Download a draft workbook now (without flagging Missing PO items). Use this while bills are still trickling in."
+              >
+                {busyId === "draft" ? (
+                  <><Loader2 className="size-3.5 animate-spin" />Preparing…</>
+                ) : (
+                  <><Download className="size-3.5" />Export Draft</>
+                )}
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleFinalize}
+                disabled={busyId === "finalize"}
+                title={
+                  runReopened
+                    ? "Lock the run again so the Download Workbook button reappears with the final sweep applied."
+                    : "Done adding bills for today? Click to lock the run and unlock the final Download Workbook button. You can always Reopen the run later to add more."
+                }
+              >
+                {busyId === "finalize" ? (
+                  <><Loader2 className="size-3.5 animate-spin" />Finalizing…</>
+                ) : (
+                  <><FlagTriangleRight className="size-3.5" />{runReopened ? "Re-finalize Run" : "Finalize Run"}</>
+                )}
+              </Button>
+            </>
           )}
         </div>
       </div>

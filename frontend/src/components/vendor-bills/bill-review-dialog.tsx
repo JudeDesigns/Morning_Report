@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Dialog } from "@base-ui/react/dialog";
 import { X, Loader2, Sparkles, ChevronDown, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -149,7 +150,7 @@ export function BillReviewDialog({ runId, billId, open, onOpenChange, onSaved }:
                   flagged={headerReview.has("vendor")}
                 />
                 <HeaderField
-                  label="Invoice #"
+                  label="Bill #"
                   value={invoiceNo}
                   onChange={setInvoiceNo}
                   flagged={headerReview.has("invoice_number")}
@@ -247,11 +248,44 @@ function PoSearchSelect({
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [panelPos, setPanelPos] = useState<{ top: number; left: number; placeAbove: boolean } | null>(null);
+
+  // Compute fixed-position coords for the dropdown panel so it can escape any
+  // overflow:hidden / overflow:auto ancestor (the dialog body and table both
+  // clip absolute children, which is what hid the dropdown to a thin line).
+  useLayoutEffect(() => {
+    if (!open || !btnRef.current) return;
+    function reposition() {
+      const btn = btnRef.current;
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      const panelH = 260; // approx max-h-52 + search input + paddings
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const placeAbove = spaceBelow < panelH && rect.top > spaceBelow;
+      setPanelPos({
+        top: placeAbove ? rect.top - 4 : rect.bottom + 4,
+        left: rect.left,
+        placeAbove,
+      });
+    }
+    reposition();
+    window.addEventListener("scroll", reposition, true);
+    window.addEventListener("resize", reposition);
+    return () => {
+      window.removeEventListener("scroll", reposition, true);
+      window.removeEventListener("resize", reposition);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
     function handler(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (ref.current?.contains(target)) return;
+      if (panelRef.current?.contains(target)) return;
+      setOpen(false);
     }
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -281,6 +315,7 @@ function PoSearchSelect({
   return (
     <div ref={ref} className="relative">
       <button
+        ref={btnRef}
         type="button"
         onClick={() => { setOpen((o) => !o); setSearch(""); }}
         className={cn(
@@ -296,55 +331,67 @@ function PoSearchSelect({
         <ChevronDown className="size-3 shrink-0 opacity-50" />
       </button>
 
-      {open && (
-        <div className="absolute left-0 z-50 mt-1 w-72 rounded-lg border border-border bg-card shadow-xl">
-          <div className="p-1.5 border-b border-border">
-            <input
-              autoFocus
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by description or code…"
-              className="w-full rounded border border-input bg-background px-2 py-1 text-xs outline-none focus:border-ring focus:ring-1 focus:ring-ring/30"
-            />
-          </div>
-          <div className="max-h-52 overflow-y-auto py-1">
-            <button
-              type="button"
-              onClick={() => { onChange(null); setOpen(false); }}
-              className="w-full px-2.5 py-1.5 text-left text-xs text-muted-foreground hover:bg-muted"
-            >
-              — Clear match —
-            </button>
-            <button
-              type="button"
-              onClick={() => { onChange("NOT_ON_PO"); setOpen(false); }}
-              className="w-full px-2.5 py-1.5 text-left text-xs text-rose-600 dark:text-rose-400 hover:bg-muted"
-            >
-              🔴 Not on PO
-            </button>
-            {filtered.length === 0 ? (
-              <p className="px-2.5 py-2 text-xs italic text-muted-foreground">No POs match your search</p>
-            ) : (
-              filtered.map((po) => (
-                <button
-                  key={po.id}
-                  type="button"
-                  onClick={() => { onChange(po.id); setOpen(false); }}
-                  className={cn(
-                    "w-full px-2.5 py-1.5 text-left text-xs hover:bg-muted",
-                    effectiveId === po.id && "bg-primary/10 font-medium text-primary",
-                  )}
-                >
-                  {po.item_code && (
-                    <span className="mr-1 font-mono text-[10px] text-muted-foreground">[{po.item_code}]</span>
-                  )}
-                  {(po.description ?? po.id).slice(0, 65)}
-                </button>
-              ))
-            )}
-          </div>
-        </div>
-      )}
+      {open && panelPos && typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={panelRef}
+            style={{
+              position: "fixed",
+              top: panelPos.placeAbove ? undefined : panelPos.top,
+              bottom: panelPos.placeAbove ? window.innerHeight - panelPos.top : undefined,
+              left: Math.max(8, Math.min(panelPos.left, window.innerWidth - 288 - 8)),
+              width: 288,
+            }}
+            className="z-[100] rounded-lg border border-border bg-card shadow-xl"
+          >
+            <div className="p-1.5 border-b border-border">
+              <input
+                autoFocus
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by description or code…"
+                className="w-full rounded border border-input bg-background px-2 py-1 text-xs outline-none focus:border-ring focus:ring-1 focus:ring-ring/30"
+              />
+            </div>
+            <div className="max-h-52 overflow-y-auto py-1">
+              <button
+                type="button"
+                onClick={() => { onChange(null); setOpen(false); }}
+                className="w-full px-2.5 py-1.5 text-left text-xs text-muted-foreground hover:bg-muted"
+              >
+                — Clear match —
+              </button>
+              <button
+                type="button"
+                onClick={() => { onChange("NOT_ON_PO"); setOpen(false); }}
+                className="w-full px-2.5 py-1.5 text-left text-xs text-rose-600 dark:text-rose-400 hover:bg-muted"
+              >
+                🔴 Not on PO
+              </button>
+              {filtered.length === 0 ? (
+                <p className="px-2.5 py-2 text-xs italic text-muted-foreground">No POs match your search</p>
+              ) : (
+                filtered.map((po) => (
+                  <button
+                    key={po.id}
+                    type="button"
+                    onClick={() => { onChange(po.id); setOpen(false); }}
+                    className={cn(
+                      "w-full px-2.5 py-1.5 text-left text-xs hover:bg-muted",
+                      effectiveId === po.id && "bg-primary/10 font-medium text-primary",
+                    )}
+                  >
+                    {po.item_code && (
+                      <span className="mr-1 font-mono text-[10px] text-muted-foreground">[{po.item_code}]</span>
+                    )}
+                    {(po.description ?? po.id).slice(0, 65)}
+                  </button>
+                ))
+              )}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

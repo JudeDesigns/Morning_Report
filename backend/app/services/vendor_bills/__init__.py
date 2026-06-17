@@ -289,6 +289,9 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
         if not ai_result.get("success"):
             print(f"[AI-MATCH] Failed: {ai_result.get('error')}")
         else:
+            # PO lookup table so we can backfill bill_item_code when the bill
+            # itself has no item number — see fallback below.
+            po_by_id = {p["id"]: p for p in result_store.load(run_id, "po_bank", [])}
             matched_any = False
             for match in ai_result.get("matches", []):
                 po_id = match.get("po_id")
@@ -297,6 +300,15 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
                     for line in bill["lines"]:
                         if line["id"] == match["line_id"]:
                             line["forced_po_id"] = po_id
+                            # Fallback: some vendors (e.g. D&N Produce) print
+                            # no item code on the bill. When the AI match is
+                            # confident enough to apply, copy the PO's item code
+                            # into bill_item_code so the review dialog and Bill
+                            # Import row show a meaningful code.
+                            if not (line.get("bill_item_code") or "").strip():
+                                po_code = (po_by_id.get(po_id) or {}).get("item_code")
+                                if po_code:
+                                    line["bill_item_code"] = po_code
                             # Auto-confirm only on high-confidence AI matches so the
                             # user does not have to tick every OK box manually. They
                             # can still untick in the Review dialog to override.
@@ -489,13 +501,23 @@ async def process_confirmed_bill(run_id: str, bill_id: str) -> dict:
                 "total": sum(iw),
             })
 
+        # PRD §5 Bill Import rule: for weight-based items, Bill Import qty
+        # must be the total lbs shipped (so price × qty = total holds in QB).
+        # Catch-weight lines are identified by the presence of individual_weights
+        # populated by the AI extractor (see ai_extraction.py STEP 3c).
+        import_qty = bl.get("qty")
+        if iw:
+            lbs_total = sum(iw)
+            if lbs_total > 0:
+                import_qty = lbs_total
+
         import_rows.append({
             "line": import_line_num,
             "bill_id": bill_id,
             "item_code": item_code,
             "description": desc,
             "price": bl.get("rate"),
-            "qty": bl.get("qty"),
+            "qty": import_qty,
             "total": bl.get("total"),
             "ref": bill.get("invoice_number"),
             "date": bill.get("invoice_date"),

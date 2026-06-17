@@ -751,3 +751,114 @@ def test_combined_price_with_no_source_runs_is_empty():
     assert result["success"] is True
     assert result["total_changes"] == 0
     run_store.delete_run(rid)
+
+
+def test_vendor_bills_catch_weight_qty_is_total_lbs_not_cases():
+    """PRD §5 Bill Import — for weight-based items, the Bill Import Qty must be
+    the total lbs shipped (so price × qty = total in QuickBooks), not the case
+    count. Catch-weight lines are identified by AI-populated individual_weights."""
+    run = run_store.create_run("vendor_bill_po_bank", "VB Catch-Weight", "2025-06-01")
+    rid = run["id"]
+
+    # Glen Rose chicken-style line: 10 cases shipped, 761 lbs total at $1.35/lb = $1,027.35.
+    # Non-weight line: plain 12 cases @ $5.00 = $60.00.
+    weights = [77.00, 76.00, 76.00, 78.00, 75.00, 73.00, 77.00, 78.00, 75.00, 76.00]
+    assert abs(sum(weights) - 761.00) < 0.01
+    result_store.save(rid, "vendor_bills", [{
+        "id": "b-cw", "vendor_confirmed": "Glen Rose Meat Company",
+        "vendor_extracted": "Glen Rose Meat Company",
+        "invoice_number": "GR-001", "invoice_date": "2025-06-01",
+        "extraction_status": "review",
+        "lines": [
+            # Catch-weight line — qty=10 cases, but Bill Import should use 761 lbs
+            {"id": "l-cw", "bill_item_code": "0031110087-01",
+             "description": "Chicken Wog 20HD 3.5 up (CVP)",
+             "qty": 10, "rate": 1.35, "total": 1027.35,
+             "individual_weights": weights,
+             "needs_review": False, "user_confirmed": True},
+            # Standard case-priced line — Bill Import qty stays as case count
+            {"id": "l-std", "bill_item_code": "STD-1",
+             "description": "Standard case item",
+             "qty": 12, "rate": 5.0, "total": 60.0,
+             "needs_review": False, "user_confirmed": True},
+        ],
+    }])
+    result_store.save(rid, "po_bank", [])  # all lines will be "not_on_po"; that's fine
+
+    res = asyncio.run(vendor_bills_svc.process_confirmed_bill(rid, "b-cw"))
+    assert res["success"] is True, res
+
+    rows = result_store.load(rid, "bill_import_rows", [])
+    rows_by_code = {r["description"].split("\n")[0]: r for r in rows}
+
+    cw_row = next(r for r in rows if "Chicken Wog" in (r.get("description") or ""))
+    std_row = next(r for r in rows if "Standard case item" in (r.get("description") or ""))
+
+    # PRD §5: weight-based qty must be total lbs, not the case count
+    assert cw_row["qty"] == 761.0, (
+        f"Catch-weight qty should be sum(individual_weights)=761.0 lbs, got {cw_row['qty']}"
+    )
+    # And price × qty must reconcile to the printed total (within rounding)
+    assert abs(cw_row["price"] * cw_row["qty"] - cw_row["total"]) < 0.01, (
+        f"price×qty ({cw_row['price']}×{cw_row['qty']}) must equal total ({cw_row['total']})"
+    )
+
+    # Standard line untouched — still case count
+    assert std_row["qty"] == 12
+    assert abs(std_row["price"] * std_row["qty"] - std_row["total"]) < 0.01
+
+    run_store.delete_run(rid)
+
+
+def test_vendor_bills_single_weight_lbs_line_uses_total_lbs_as_qty():
+    """R.W. Zant-style line: one Qty (cases) + one LBS column (no per-piece list).
+    AI prompt converts the single LBS number into individual_weights=[lbs_total]
+    (see ai_extraction.py STEP 3c). Bill Import qty must come out as that lbs total
+    so price × qty = total."""
+    run = run_store.create_run("vendor_bill_po_bank", "VB Single LBS", "2025-06-01")
+    rid = run["id"]
+    # Qty=2 cases, LBS=80.00, Rate=$0.72, Amount=$57.60 — Zant-style row
+    result_store.save(rid, "vendor_bills", [{
+        "id": "b-sl", "vendor_confirmed": "R.W. Zant",
+        "vendor_extracted": "R.W. Zant",
+        "invoice_number": "R3407001", "invoice_date": "2025-06-01",
+        "extraction_status": "review",
+        "lines": [
+            {"id": "l1", "bill_item_code": "Z-101",
+             "description": "Beef cut catch-weight",
+             "qty": 2, "rate": 0.72, "total": 57.60,
+             "individual_weights": [80.00],
+             "needs_review": False, "user_confirmed": True},
+        ],
+    }])
+    result_store.save(rid, "po_bank", [])
+    res = asyncio.run(vendor_bills_svc.process_confirmed_bill(rid, "b-sl"))
+    assert res["success"] is True, res
+    rows = result_store.load(rid, "bill_import_rows", [])
+    assert len(rows) == 1
+    assert rows[0]["qty"] == 80.0, f"Single-LBS qty must equal the total lbs (80.0), got {rows[0]['qty']}"
+    assert abs(rows[0]["price"] * rows[0]["qty"] - rows[0]["total"]) < 0.01
+    run_store.delete_run(rid)
+
+
+def test_vendor_bills_catch_weight_with_empty_weights_keeps_case_qty():
+    """Safety: a line with individual_weights=[] (no actual weights) must NOT
+    overwrite qty with 0 — fall back to the original case count."""
+    run = run_store.create_run("vendor_bill_po_bank", "VB Empty Weights", "2025-06-01")
+    rid = run["id"]
+    result_store.save(rid, "vendor_bills", [{
+        "id": "b-ew", "vendor_confirmed": "X", "vendor_extracted": "X",
+        "extraction_status": "review",
+        "lines": [
+            {"id": "l1", "bill_item_code": "A", "description": "A",
+             "qty": 5, "rate": 2.0, "total": 10.0,
+             "individual_weights": [],
+             "needs_review": False, "user_confirmed": True},
+        ],
+    }])
+    result_store.save(rid, "po_bank", [])
+    res = asyncio.run(vendor_bills_svc.process_confirmed_bill(rid, "b-ew"))
+    assert res["success"] is True
+    rows = result_store.load(rid, "bill_import_rows", [])
+    assert rows[0]["qty"] == 5, "Empty individual_weights must not overwrite original qty"
+    run_store.delete_run(rid)

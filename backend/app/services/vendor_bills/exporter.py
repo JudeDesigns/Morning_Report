@@ -85,7 +85,10 @@ def build_bill_import_sheet(ws, rows: list[dict]):
             row.get("date"), row.get("vendor"), row.get("type", "Inventory Part"),
         ])
         hl = row.get("highlight_status")
-        if hl in ("not_on_po", "missing_po_item"):
+        # zero_shipment = item appeared on the bill with qty 0 and total $0
+        # (vendor printed an OUT / unshipped line). Painted red so reviewers
+        # see it even though the line math is technically valid.
+        if hl in ("not_on_po", "missing_po_item", "zero_shipment"):
             for col in range(1, 12):
                 ws.cell(row_idx, col).fill = LIGHT_RED_FILL
 

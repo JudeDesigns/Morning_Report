@@ -878,6 +878,56 @@ def test_vendor_bills_safety_net_infers_weight_when_qty_rate_total_mismatch():
     run_store.delete_run(rid)
 
 
+def test_vendor_bills_zero_shipment_line_is_highlighted_red():
+    """OUT / unshipped lines (qty=0, total=$0) used to slip through unmarked
+    because their math is technically valid. They must now carry
+    highlight_status='zero_shipment' so the Bill Import sheet paints them red."""
+    run = run_store.create_run("vendor_bill_po_bank", "VB Zero Shipment", "2025-06-01")
+    rid = run["id"]
+    result_store.save(rid, "vendor_bills", [{
+        "id": "b-zs", "vendor_confirmed": "Acme", "vendor_extracted": "Acme",
+        "extraction_status": "review",
+        "lines": [
+            # OUT / unshipped: vendor listed it but shipped none.
+            {"id": "l1", "bill_item_code": "Z1", "description": "Backordered widget",
+             "qty": 0, "rate": 0, "total": 0,
+             "forced_po_id": "po-z1",
+             "needs_review": False, "user_confirmed": True},
+            # Normal line on same bill.
+            {"id": "l2", "bill_item_code": "Z2", "description": "Shipped widget",
+             "qty": 3, "rate": 2.00, "total": 6.00,
+             "forced_po_id": "po-z2",
+             "needs_review": False, "user_confirmed": True},
+            # Unmatched-PO line, also highlighted but as not_on_po (separate case).
+            {"id": "l3", "bill_item_code": "Z3", "description": "Mystery widget",
+             "qty": 0, "rate": 0, "total": 0,
+             "needs_review": False, "user_confirmed": True},
+        ],
+    }])
+    result_store.save(rid, "po_bank", [
+        {"id": "po-z1", "vendor": "Acme", "item_code": "Z1",
+         "description": "Backordered widget", "quantity": 1, "po_cost": 0,
+         "ref_number": "PO-1", "status": "unprocessed"},
+        {"id": "po-z2", "vendor": "Acme", "item_code": "Z2",
+         "description": "Shipped widget", "quantity": 3, "po_cost": 2.00,
+         "ref_number": "PO-1", "status": "unprocessed"},
+    ])
+    res = asyncio.run(vendor_bills_svc.process_confirmed_bill(rid, "b-zs"))
+    assert res["success"] is True
+    rows = result_store.load(rid, "bill_import_rows", [])
+    zs = next(r for r in rows if "Backordered" in (r.get("description") or ""))
+    normal = next(r for r in rows if "Shipped widget" in (r.get("description") or ""))
+    mystery = next(r for r in rows if "Mystery widget" in (r.get("description") or ""))
+    # OUT line matched to a PO → zero_shipment red highlight
+    assert zs["highlight_status"] == "zero_shipment", \
+        f"Matched OUT row should be flagged zero_shipment, got {zs['highlight_status']!r}"
+    # Normal shipped line — no highlight
+    assert normal["highlight_status"] is None
+    # Unmatched OUT line is already red as not_on_po (stronger flag wins)
+    assert mystery["highlight_status"] == "not_on_po"
+    run_store.delete_run(rid)
+
+
 def test_vendor_bills_catch_weight_with_empty_weights_keeps_case_qty():
     """Safety: a line with individual_weights=[] (no actual weights) must NOT
     overwrite qty with 0 — fall back to the original case count."""

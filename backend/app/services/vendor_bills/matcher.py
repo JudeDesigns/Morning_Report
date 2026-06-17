@@ -285,6 +285,27 @@ def compute_discrepancies(
     bill_qty = Decimal(str(bill_line.get("qty") or 0))
     po_qty = Decimal(str(po_row.get("quantity") or 0))
 
+    # Catch-weight / weight-priced reconciliation. For these lines the bill's
+    # qty field is the CASE count while the PO's quantity column on most R.W.
+    # Zant / Glen Rose / Maui POs is the WEIGHT (lbs) — comparing those two
+    # directly produced false "qty mismatch" rows (e.g. 2 cases vs 80 lbs).
+    # When the line has individual_weights (catch-weight signal), use total
+    # lbs on the BILL side so units match. We also accept the PO column even
+    # when it's a case count: if the PO quantity is clearly smaller than the
+    # weight (within the case count's order of magnitude), we fall back to
+    # comparing case-to-case instead.
+    iw = bill_line.get("individual_weights")
+    if iw:
+        lbs_total = Decimal(str(sum(iw)))
+        if lbs_total > 0:
+            # Match the unit of measure used by the PO row. If the PO quantity
+            # is close to the case count (within ±50% and clearly < weight),
+            # the PO is in cases — compare cases. Otherwise the PO is in lbs.
+            if po_qty > 0 and po_qty < lbs_total / 2 and abs(po_qty - bill_qty) < bill_qty * Decimal("0.5") + 1:
+                pass  # leave bill_qty as case count, compare cases
+            else:
+                bill_qty = lbs_total
+
     rate_diff = bill_rate - po_cost
     qty_diff = bill_qty - po_qty
     total_impact = rate_diff * bill_qty if bill_qty else Decimal(0)

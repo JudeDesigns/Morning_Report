@@ -512,6 +512,19 @@ async def process_confirmed_bill(run_id: str, bill_id: str) -> dict:
                     if inferred >= qf * 1.5 and abs(inferred * rf - tf) < 0.02:
                         import_qty = round(inferred, 4)
 
+        # Zero-shipment row: vendor printed the line but shipped 0 and charged
+        # $0 (OUT / unshipped). The math is legitimate but the row still belongs
+        # in red on Bill Import so reviewers see it (per user request). We only
+        # apply this when no stronger highlight is already on the row.
+        if highlight is None:
+            try:
+                _q = float(import_qty) if import_qty is not None else 0.0
+                _t = float(bl.get("total") or 0)
+            except (TypeError, ValueError):
+                _q, _t = 0.0, 0.0
+            if _q == 0 and _t == 0:
+                highlight = "zero_shipment"
+
         import_rows.append({
             "line": import_line_num,
             "bill_id": bill_id,

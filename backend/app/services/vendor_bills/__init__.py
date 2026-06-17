@@ -359,36 +359,16 @@ async def process_confirmed_bill(run_id: str, bill_id: str) -> dict:
             ],
         }
 
-    # Duplicate-invoice guard. Sha256 dedupe at upload catches byte-identical
-    # files; this catches the softer case of the same logical invoice arriving
-    # as two different files (e.g. phone photo + scan of the same paper bill).
-    # Skipped when this bill is itself being re-processed.
-    this_invoice = (bill.get("invoice_number") or "").strip()
-    this_vendor = (bill.get("vendor_confirmed") or bill.get("vendor_extracted") or "").strip()
-    if this_invoice and this_vendor:
-        dup = next(
-            (
-                b for b in bills
-                if b["id"] != bill_id
-                and b.get("extraction_status") == "processed"
-                and (b.get("invoice_number") or "").strip().lower() == this_invoice.lower()
-                and vendors_match(
-                    (b.get("vendor_confirmed") or b.get("vendor_extracted") or ""),
-                    this_vendor,
-                )
-            ),
-            None,
-        )
-        if dup:
-            return {
-                "success": False,
-                "errors": [
-                    f"Invoice #{this_invoice} from {this_vendor} was already "
-                    "matched in this run. If this is actually a different bill, "
-                    "edit the invoice number in the Review dialog. If it is a "
-                    "duplicate, delete this bill."
-                ],
-            }
+    # NOTE: previously this method hard-blocked a second bill with the same
+    # (vendor, invoice_number) as an already-processed bill. That rule was too
+    # strict — a single paper invoice is often photographed across two files
+    # (page 1 + page 2), and both legitimately carry the same invoice number.
+    # The PO-Bank matcher already prevents any given PO row from being matched
+    # twice across bills (matcher.py uses status="unprocessed" gating), so a
+    # truly duplicate line will be flagged "not on PO" on the second bill
+    # instead of double-charging. Byte-identical file re-uploads remain blocked
+    # at the upload endpoint via SHA-256 dedupe. So we allow same-invoice
+    # second bills through here.
 
     po_rows = result_store.load(run_id, "po_bank", [])
 

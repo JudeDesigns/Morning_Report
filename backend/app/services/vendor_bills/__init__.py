@@ -510,6 +510,27 @@ async def process_confirmed_bill(run_id: str, bill_id: str) -> dict:
             lbs_total = sum(iw)
             if lbs_total > 0:
                 import_qty = lbs_total
+        else:
+            # Safety net for R.W. Zant-style bills where the AI may have missed
+            # the "/LB" tag and left individual_weights null. When qty × rate
+            # disagrees with total but total / rate yields a plausible weight
+            # (clearly larger than the case count), the line is weight-priced
+            # — fall back to weight = total / rate so the QB row reconciles.
+            q = bl.get("qty"); r = bl.get("rate"); t = bl.get("total")
+            try:
+                qf = float(q) if q is not None else None
+                rf = float(r) if r is not None else None
+                tf = float(t) if t is not None else None
+            except (TypeError, ValueError):
+                qf = rf = tf = None
+            if qf and rf and tf and rf > 0 and qf > 0:
+                expected_case = qf * rf
+                if abs(expected_case - tf) > 0.01:
+                    inferred = tf / rf
+                    # Must be plausible: clearly bigger than case count (≥ 1.5x)
+                    # and matches total within a cent of rounding.
+                    if inferred >= qf * 1.5 and abs(inferred * rf - tf) < 0.02:
+                        import_qty = round(inferred, 4)
 
         import_rows.append({
             "line": import_line_num,
@@ -836,11 +857,23 @@ def reopen_run(run_id: str) -> dict:
     return {"reverted_pos": reverted}
 
 
-async def export_workbook(run_id: str) -> str:
+async def export_workbook(run_id: str, *, finalize: bool = True) -> str:
+    """Generate the QuickBooks Bill Import workbook.
+
+    When ``finalize=True`` (default) the unbilled-PO sweep runs and any leftover
+    PO rows from vendors that have at least one processed bill are added to the
+    "PO Items Not Charged" sheet; the run is marked exported by the caller.
+
+    When ``finalize=False`` (draft export) the sweep is skipped — POs stay
+    unprocessed, ``po_not_charged`` from this call is empty, and the run stays
+    open so the user can keep adding bills and re-export. Used by the
+    "Export Draft" button so multi-bill vendors are not prematurely flagged.
+    """
     run = get_run(run_id)
     run_ns = types.SimpleNamespace(**run) if run else types.SimpleNamespace(id=run_id)
 
-    finalize_unbilled_po(run_id)
+    if finalize:
+        finalize_unbilled_po(run_id)
 
     po_rows = result_store.load(run_id, "po_bank", [])
     office_tasks = result_store.load(run_id, "office_tasks", [])
@@ -848,7 +881,9 @@ async def export_workbook(run_id: str) -> str:
                          key=lambda r: r.get("line") or 0)
     summary_blocks = result_store.load(run_id, "vendor_summary_blocks", [])
     items_by_block = {b["id"]: b.get("items", []) for b in summary_blocks}
-    po_not_charged = result_store.load(run_id, "po_not_charged", [])
+    # Draft export hides Missing items entirely so the user does not act on
+    # prematurely-flagged vendors. They will appear once the run is finalized.
+    po_not_charged = result_store.load(run_id, "po_not_charged", []) if finalize else []
     weight_rows = result_store.load(run_id, "weight_rows", [])
     cost_comparison = sorted(
         result_store.load(run_id, "cost_comparison", []),

@@ -841,6 +841,43 @@ def test_vendor_bills_single_weight_lbs_line_uses_total_lbs_as_qty():
     run_store.delete_run(rid)
 
 
+def test_vendor_bills_safety_net_infers_weight_when_qty_rate_total_mismatch():
+    """R.W. Zant bill safety net: if AI missed the '/LB' tag and left
+    individual_weights null, but qty*rate != total and total/rate is clearly
+    larger than the case count, derive qty = total/rate so the QB row
+    reconciles. (line: THIGH MEAT 5 cases / 200 lbs / $2.20/lb / $440.00)"""
+    run = run_store.create_run("vendor_bill_po_bank", "VB Safety Net", "2025-06-01")
+    rid = run["id"]
+    result_store.save(rid, "vendor_bills", [{
+        "id": "b-sn", "vendor_confirmed": "R.W. Zant",
+        "vendor_extracted": "R.W. Zant",
+        "invoice_number": "R3407203", "invoice_date": "2025-06-01",
+        "extraction_status": "review",
+        "lines": [
+            # No individual_weights — simulates AI missing the /LB marker
+            {"id": "l1", "bill_item_code": "252738",
+             "description": "THIGH MEAT BL/SL JMBO CVP",
+             "qty": 5, "rate": 2.20, "total": 440.00,
+             "needs_review": False, "user_confirmed": True},
+            # Normal /CS line on the same bill — must NOT be touched
+            {"id": "l2", "bill_item_code": "878676",
+             "description": "BEEF SALISBURY STEAK FC 8",
+             "qty": 1, "rate": 76.99, "total": 76.99,
+             "needs_review": False, "user_confirmed": True},
+        ],
+    }])
+    result_store.save(rid, "po_bank", [])
+    res = asyncio.run(vendor_bills_svc.process_confirmed_bill(rid, "b-sn"))
+    assert res["success"] is True
+    rows = result_store.load(rid, "bill_import_rows", [])
+    thigh = next(r for r in rows if "THIGH" in (r.get("description") or ""))
+    salis = next(r for r in rows if "SALISBURY" in (r.get("description") or ""))
+    assert thigh["qty"] == 200.0, f"Safety net should infer 200 lbs from total/rate, got {thigh['qty']}"
+    assert abs(thigh["price"] * thigh["qty"] - thigh["total"]) < 0.01
+    assert salis["qty"] == 1, "Per-CS line must keep its case count"
+    run_store.delete_run(rid)
+
+
 def test_vendor_bills_catch_weight_with_empty_weights_keeps_case_qty():
     """Safety: a line with individual_weights=[] (no actual weights) must NOT
     overwrite qty with 0 — fall back to the original case count."""

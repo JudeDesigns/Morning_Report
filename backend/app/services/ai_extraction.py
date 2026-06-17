@@ -114,9 +114,29 @@ HOW TO EXTRACT CORRECTLY:
 STEP 3c — CATCH-WEIGHT / WEIGHT-PRICED LINES (poultry, meat, seafood, cheese — many wholesale food bills):
 
 Some bills price by POUND, not by case. The columns typically look like:
-    PRODUCT CODE | DESCRIPTION | ORDERED | SHIPPED | (WEIGHT or LBS or SHIPPED-LBS) | RATE | AMOUNT
+    PRODUCT CODE | DESCRIPTION | ORDERED | SHIPPED | (WEIGHT or LBS or SHIPPED-LBS or EXT WEIGHT or NET WEIGHT) | RATE | AMOUNT
+
+HEADER VARIATIONS to recognise as the WEIGHT column (any of these):
+    "WEIGHT", "WGT", "LBS", "LB", "EXT WEIGHT", "EXT WGT", "EXT LBS",
+    "NET WEIGHT", "TOTAL WEIGHT", "SHIPPED-LBS", "SHIP WT", "WT"
+
+STRONGEST SIGNAL — the rate column. If a row's UNIT PRICE / RATE column shows
+"/LB", "LB", "PER LB" or "$/LB" (even as a small label under the number, or
+in a separate U/M cell), then the line is weight-priced and the WEIGHT column
+value must go into individual_weights. Conversely "/CS" or "/EA" means the
+line is case/each-priced and individual_weights stays null even if a weight
+is printed elsewhere.
 
 For these lines the arithmetic is **weight × rate = amount**, NOT qty × rate = amount.
+
+Example (R.W. Zant style — "EXT WEIGHT" column, per-lb rates with a /LB tag):
+    PRODUCT  DESCRIPTION                  U/M  ORDER  SHIP  EXT WEIGHT   UNIT PRICE    EXT PRICE
+    252738   THIGH MEAT BL/SL JMBO CVP    CS     5     5      200.0000   2.2000 /LB      440.00
+    410847   GLDN DELIGHT SKNLS WHITE     CS     1     1       19.0000   2.8800 /LB       54.72
+    878676   BEEF SALISBURY STEAK FC 8    CS     1     1       15.0000  76.9900 /CS       76.99   ← /CS, NOT catch-weight
+The first two lines must come back with qty=ship-qty (5, 1), rate=2.20/2.88,
+total=440.00/54.72, AND individual_weights=[200.00] / [19.00] respectively.
+The third line (rate marked /CS) is a normal case line: individual_weights=null.
 
 Example (verbatim layout from a real chicken bill):
 

@@ -16,6 +16,7 @@ import {
 import { VendorBillsPanel } from "@/components/vendor-bills/vendor-bills-panel";
 import { ExportConfirmDialog } from "@/components/vendor-bills/export-confirm-dialog";
 import { CombinedPricePanel } from "@/components/combined-price/combined-price-panel";
+import { toast } from "@/components/ui/toast";
 import {
   WorkflowRun,
   UploadedFile,
@@ -160,6 +161,7 @@ export default function RunDetailPage() {
       const fileName = `${run.name.replace(/[^A-Za-z0-9_-]+/g, "_")}.xlsx`;
       await exportsApi.download(id, run.workflow_type, fileName);
       await refresh();
+      toast.success("Workbook downloaded");
     } catch (e) {
       if (e instanceof ApiError && e.status === 409 && e.detail && typeof e.detail === "object") {
         const detail = e.detail as IntegrityMismatchDetail;
@@ -186,8 +188,11 @@ export default function RunDetailPage() {
     try {
       await vendorBills.reopen(id);
       await refresh();
+      toast.success("Run reopened — you can add more bills");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Reopen failed");
+      const msg = e instanceof Error ? e.message : "Reopen failed";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setActionLoading(null);
     }
@@ -230,7 +235,15 @@ export default function RunDetailPage() {
 
   const fileTypes = WORKFLOW_FILE_TYPES[run.workflow_type] ?? [];
   const canProcess = ["files_uploaded", "ready_to_process", "validation_failed"].includes(run.status);
-  const canExport = ["processed", "exported"].includes(run.status);
+  // For vendor-bill runs, the main "Download Workbook" only appears AFTER the
+  // user finalizes (status === "exported"). While the run is still open or has
+  // been reopened, the Vendor Bill Pipeline panel provides "Export Draft"
+  // instead, so the big Download button doesn't sit there indefinitely or
+  // persist after a Reopen. Other workflows keep their original behavior.
+  const canExport =
+    run.workflow_type === "vendor_bill_po_bank"
+      ? run.status === "exported"
+      : ["processed", "exported"].includes(run.status);
   const canOverride = ["admin", "accounting"].includes(user?.role ?? "");
   const canReopen =
     run.workflow_type === "vendor_bill_po_bank" &&
@@ -400,7 +413,7 @@ export default function RunDetailPage() {
 
       {/* Workflow-specific review panel */}
       {run.workflow_type === "vendor_bill_po_bank" && uploadedFiles.length > 0 && (
-        <VendorBillsPanel runId={id} uploadedFiles={uploadedFiles} onChange={refresh} />
+        <VendorBillsPanel runId={id} uploadedFiles={uploadedFiles} runStatus={run.status} onChange={refresh} />
       )}
       {run.workflow_type === "combined_price_changes" && (
         <CombinedPricePanel runId={id} disabled={canExport} onProcessed={refresh} />

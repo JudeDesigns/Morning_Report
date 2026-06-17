@@ -70,8 +70,17 @@ async def process_run(
                 "source": f"Vendor bills ({cc['vendor']})" if cc.get("vendor") else "Vendor bills",
             })
 
-    # Sort by absolute difference descending (largest price moves first)
-    rows.sort(key=lambda r: -abs(r.get("difference") or 0))
+    # Sort: reds (price DECREASES, diff < 0) on top, then greens (INCREASES, diff > 0),
+    # zero/None at the bottom. Within each colour group, largest |diff| first so the
+    # biggest moves appear first inside the section.
+    def _sort_key(r):
+        d = r.get("difference")
+        if d is None or d == 0:
+            return (2, 0.0)            # neutral last
+        if d < 0:
+            return (0, -abs(d))        # reds first, biggest |drop| on top
+        return (1, -abs(d))            # greens after, biggest rise on top
+    rows.sort(key=_sort_key)
 
     # ── Consolidated All Issues (Jetro + Vendor) ──────────────────────────────
     issues = _build_combined_issues_rows(jetro_run_id, vendor_run_id)

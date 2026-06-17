@@ -104,6 +104,25 @@ async def export_vendor_bills(
     return _send(file_path, f"QB_Vendor_Bill_Import_{date_str}_Accumulating.xlsx")
 
 
+@router.post("/vendor-bills/{run_id}/draft")
+async def export_vendor_bills_draft(
+    run_id: str,
+    current_user: dict = Depends(require_roles(*_EXPORT_ROLES)),
+):
+    """Draft export — generates a Bill Import workbook from currently confirmed
+    bills WITHOUT running the unbilled-PO sweep and WITHOUT marking the run as
+    exported. Used while bills are still trickling in from vendors so they're
+    not prematurely flagged as missing. Finalize remains a separate action."""
+    run = _resolve(run_id, "vendor_bill_po_bank", current_user)
+    _check_integrity(run_id, "vendor_bill_po_bank")
+    file_path = await vb_service.export_workbook(run_id, finalize=False)
+    audit_store.log(run_id, "exported_draft",
+                    "Vendor bills draft workbook exported (no PO sweep)",
+                    current_user["id"])
+    date_str = (run.get("run_date") or "").replace("-", "")
+    return _send(file_path, f"QB_Vendor_Bill_Import_{date_str}_Draft.xlsx")
+
+
 @router.post("/combined-price/{run_id}")
 async def export_combined_price(
     run_id: str,

@@ -246,6 +246,23 @@ export const exports = {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   },
+
+  /**
+   * Vendor-bills only: download a draft Bill Import workbook WITHOUT running
+   * the missing-PO sweep and WITHOUT marking the run as exported. Used while
+   * additional bills are still expected so vendors aren't prematurely flagged.
+   */
+  downloadVendorBillsDraft: async (runId: string, suggestedName?: string) => {
+    const blob = await downloadBlob(`/api/v1/exports/vendor-bills/${runId}/draft`);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = suggestedName ?? `export_${runId}_draft.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  },
 };
 
 export const audit = {

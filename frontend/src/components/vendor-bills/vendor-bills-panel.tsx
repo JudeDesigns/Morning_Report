@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { vendorBills as vbApi } from "@/lib/api";
+import { vendorBills as vbApi, exports as exportsApi } from "@/lib/api";
 import { UploadedFile, VendorBill } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { ConfidenceBadge } from "@/components/ui/confidence-badge";
 import { BillReviewDialog } from "@/components/vendor-bills/bill-review-dialog";
+import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import {
   Loader2,
@@ -18,6 +19,8 @@ import {
   TableProperties,
   FlagTriangleRight,
   Trash2,
+  Download,
+  Wand2,
 } from "lucide-react";
 
 const BILL_FILE_TYPES = new Set(["vendor_bill_image", "vendor_bill_pdf"]);
@@ -44,10 +47,13 @@ interface ImportRow {
 interface VendorBillsPanelProps {
   runId: string;
   uploadedFiles: UploadedFile[];
+  /** Current workflow run status. Used to hide Export Draft / Finalize once
+   *  the run has been finalized (status === "exported"). */
+  runStatus?: string;
   onChange?: () => void;
 }
 
-export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBillsPanelProps) {
+export function VendorBillsPanel({ runId, uploadedFiles, runStatus, onChange }: VendorBillsPanelProps) {
   const [bills, setBills] = useState<VendorBill[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -125,11 +131,48 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
       await vbApi.extractBill(runId, fileId);
       await refresh();
       onChange?.();
+      toast.success("Bill extracted");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Extraction failed");
+      const msg = e instanceof Error ? e.message : "Extraction failed";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setBusyId(null);
     }
+  }
+
+  // Sequential bulk extractor. Visible when 2+ files await extraction. Stops on
+  // the first failure so the user can address the issue (e.g. unreadable image)
+  // and resume — the loop reads pendingExtraction afresh on each tick via refresh().
+  const [extractAllProgress, setExtractAllProgress] = useState<{ done: number; total: number } | null>(null);
+  async function handleExtractAll() {
+    const queue = billFiles.filter((f) => !extractedFileIds.has(f.id));
+    if (queue.length === 0) return;
+    setExtractAllProgress({ done: 0, total: queue.length });
+    setError(null);
+    let done = 0;
+    for (const f of queue) {
+      setBusyId(f.id);
+      try {
+        await vbApi.extractBill(runId, f.id);
+        done++;
+        setExtractAllProgress({ done, total: queue.length });
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : "Extraction failed";
+        setError(`Stopped after ${done}/${queue.length}: ${msg}`);
+        toast.error(`Extract all stopped at ${done + 1}/${queue.length}: ${msg}`);
+        setBusyId(null);
+        setExtractAllProgress(null);
+        await refresh();
+        onChange?.();
+        return;
+      }
+    }
+    setBusyId(null);
+    setExtractAllProgress(null);
+    await refresh();
+    onChange?.();
+    toast.success(`Extracted ${done} bill${done === 1 ? "" : "s"}`);
   }
 
   async function handleProcess(billId: string) {
@@ -139,8 +182,11 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
       await vbApi.processBill(runId, billId);
       await refresh();
       onChange?.();
+      toast.success("Bill processed and matched to PO Bank");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Processing failed");
+      const msg = e instanceof Error ? e.message : "Processing failed";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setBusyId(null);
     }
@@ -169,8 +215,29 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
     try {
       await vbApi.finalize(runId);
       onChange?.(); // triggers page refresh → canExport becomes true → Download Workbook appears
+      toast.success("Run finalized — Download Workbook is now available");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Finalize failed");
+      const msg = e instanceof Error ? e.message : "Finalize failed";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  // Export Draft: produces a workbook from confirmed bills without running the
+  // missing-PO sweep and WITHOUT marking the run as exported. Used while more
+  // bills are still expected so vendors aren't prematurely flagged as Missing.
+  async function handleExportDraft() {
+    setBusyId("draft");
+    setError(null);
+    try {
+      await exportsApi.downloadVendorBillsDraft(runId);
+      toast.success("Draft workbook downloaded — Missing items will appear after Finalize");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Draft export failed";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setBusyId(null);
     }
@@ -188,21 +255,7 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
             <span className="font-medium text-foreground/70">Export only when all bills are uploaded.</span>
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          {matchedBillCount > 0 && (
-            <Button
-              size="sm"
-              onClick={handleFinalize}
-              disabled={busyId === "finalize"}
-              title="Done adding bills for today? Click to unlock the Download Workbook button. You can always reopen the run after export to add more."
-            >
-              {busyId === "finalize" ? (
-                <><Loader2 className="size-3.5 animate-spin" />Finalizing…</>
-              ) : (
-                <><FlagTriangleRight className="size-3.5" />Done — Ready to Export</>
-              )}
-            </Button>
-          )}
+        <div className="flex flex-wrap items-center justify-end gap-2">
           <Button variant="outline" size="sm" onClick={handleLoadPo} disabled={busyId === "po"}>
             {busyId === "po" ? (
               <><Loader2 className="size-3.5 animate-spin" />Loading…</>
@@ -212,6 +265,40 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
               <><PackageOpen className="size-3.5" />Load PO Bank</>
             )}
           </Button>
+          {/* Export Draft: usable while more bills are still expected. Hidden
+              once the run has been finalized (status === "exported") because
+              the main Download Workbook button takes over at that point. */}
+          {matchedBillCount > 0 && runStatus !== "exported" && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportDraft}
+              disabled={busyId === "draft"}
+              title="Download a draft workbook now (without flagging Missing PO items). Use this while bills are still trickling in."
+            >
+              {busyId === "draft" ? (
+                <><Loader2 className="size-3.5 animate-spin" />Preparing…</>
+              ) : (
+                <><Download className="size-3.5" />Export Draft</>
+              )}
+            </Button>
+          )}
+          {/* Finalize: only useful before the run is locked. After export it
+              disappears so the action bar shows Download Workbook + Reopen. */}
+          {matchedBillCount > 0 && runStatus !== "exported" && (
+            <Button
+              size="sm"
+              onClick={handleFinalize}
+              disabled={busyId === "finalize"}
+              title="Done adding bills for today? Click to lock the run and unlock the final Download Workbook button. You can always Reopen the run later to add more."
+            >
+              {busyId === "finalize" ? (
+                <><Loader2 className="size-3.5 animate-spin" />Finalizing…</>
+              ) : (
+                <><FlagTriangleRight className="size-3.5" />Finalize Run</>
+              )}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -241,9 +328,31 @@ export function VendorBillsPanel({ runId, uploadedFiles, onChange }: VendorBills
 
       {pendingExtraction.length > 0 && (
         <div className="mb-4">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Awaiting AI Extraction ({pendingExtraction.length})
-          </p>
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Awaiting AI Extraction ({pendingExtraction.length})
+              {extractAllProgress && (
+                <span className="ml-2 text-muted-foreground/80 normal-case tracking-normal">
+                  · Extracting {extractAllProgress.done + 1}/{extractAllProgress.total}…
+                </span>
+              )}
+            </p>
+            {pendingExtraction.length >= 2 && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleExtractAll}
+                disabled={busyId !== null}
+                title="Run AI extraction on all queued bills, one at a time. Stops on the first error so you can fix and resume."
+              >
+                {extractAllProgress ? (
+                  <><Loader2 className="size-3.5 animate-spin" />Extracting all…</>
+                ) : (
+                  <><Wand2 className="size-3.5" />Extract All with Claude</>
+                )}
+              </Button>
+            )}
+          </div>
           <ul className="space-y-1.5">
             {pendingExtraction.map((f) => (
               <li

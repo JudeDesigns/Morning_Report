@@ -73,7 +73,7 @@ def build_office_tasks_sheet(ws, tasks: list[dict]):
 
 def build_bill_import_sheet(ws, rows: list[dict]):
     ws.title = "Bill Import"
-    headers = ["Line", "UPC", "Item Code", "Description", "Price", "Qty", "Total",
+    headers = ["Line", "UPC", "Item", "Description", "Price", "Total", "Qty",
                "Ref", "Date", "Vendor", "Type"]
     ws.append(headers)
     _style_header(ws)
@@ -81,7 +81,7 @@ def build_bill_import_sheet(ws, rows: list[dict]):
         row_idx = ws.max_row + 1
         ws.append([
             row.get("line"), row.get("upc"), row.get("item_code"), row.get("description"),
-            row.get("price"), row.get("qty"), row.get("total"), row.get("ref"),
+            row.get("price"), row.get("total"), row.get("qty"), row.get("ref"),
             row.get("date"), row.get("vendor"), row.get("type", "Inventory Part"),
         ])
         hl = row.get("highlight_status")

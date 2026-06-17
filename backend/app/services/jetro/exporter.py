@@ -105,20 +105,20 @@ def build_summary_sheet(
 
 def build_jetro_import_sheet(ws, import_rows: list[dict]):
     ws.title = "Jetro import"
-    headers = ["Line", "UPC", "Item Code", "Description", "Price", "Qty", "Total", "Vendor", "Ref. #", "Date", "Type"]
+    headers = ["Line", "UPC", "Item", "Description", "Price", "Total", "Qty", "Vendor", "Ref. #", "Date", "Type"]
     ws.append(headers)
     _style_header(ws)
     for row in import_rows:
         ws.append([
             row.get("line"), row.get("upc"), row.get("item_code"),
-            row.get("description"), row.get("cost"), row.get("qty"),
-            row.get("total"), row.get("vendor", "Jetro"),
+            row.get("description"), row.get("cost"), row.get("total"),
+            row.get("qty"), row.get("vendor", "Jetro"),
             row.get("invoice_number"), row.get("invoice_date"),
             row.get("type", "Inventory Part"),
         ])
-    # Format currency cols (Price=col5, Total=col7)
+    # Format currency cols (Price=col5, Total=col6)
     for row_idx in range(2, ws.max_row + 1):
-        for col in [5, 7]:
+        for col in [5, 6]:
             ws.cell(row_idx, col).number_format = "#,##0.00"
 
 

@@ -263,6 +263,25 @@ export const exports = {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   },
+
+  /**
+   * Download a zip archive of the most recent finalized workbook for each
+   * workflow run on the given calendar day (YYYY-MM-DD). The archive is
+   * named `<date>.zip`.
+   */
+  downloadDayArchive: async (date: string) => {
+    const blob = await downloadBlob(
+      `/api/v1/exports/day-archive/${encodeURIComponent(date)}`,
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${date}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  },
 };
 
 export const audit = {

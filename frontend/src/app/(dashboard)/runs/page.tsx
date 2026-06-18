@@ -3,11 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { runs as runsApi } from "@/lib/api";
+import { runs as runsApi, exports as exportsApi, ApiError } from "@/lib/api";
 import { WorkflowRun, WorkflowType, WORKFLOW_LABELS } from "@/lib/types";
 import { RunCard } from "@/components/ui/run-card";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2, Search, X } from "lucide-react";
+import { toast } from "@/components/ui/toast";
+import { Plus, Loader2, Search, X, Archive } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const WORKFLOW_FILTERS: { label: string; value: string }[] = [
@@ -61,6 +62,25 @@ export default function RunsPage() {
   const [allRuns, setAllRuns] = useState<WorkflowRun[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [archivingDay, setArchivingDay] = useState<string | null>(null);
+
+  const downloadDayArchive = async (dayKey: string) => {
+    setArchivingDay(dayKey);
+    try {
+      await exportsApi.downloadDayArchive(dayKey);
+      toast.success(`Archive for ${dayKey} downloaded`);
+    } catch (e) {
+      const msg =
+        e instanceof ApiError
+          ? e.message
+          : e instanceof Error
+            ? e.message
+            : "Failed to download archive";
+      toast.error(msg);
+    } finally {
+      setArchivingDay(null);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -226,6 +246,22 @@ export default function RunsPage() {
                   {group.runs.length} {group.runs.length === 1 ? "run" : "runs"}
                 </span>
                 <div className="h-px flex-1 bg-border" />
+                {group.runs.some((r) => r.status === "exported") && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={archivingDay === group.key}
+                    onClick={() => downloadDayArchive(group.key)}
+                    className="h-7 gap-1.5 text-[11px]"
+                  >
+                    {archivingDay === group.key ? (
+                      <Loader2 className="size-3 animate-spin" />
+                    ) : (
+                      <Archive className="size-3" />
+                    )}
+                    Download Day ZIP
+                  </Button>
+                )}
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {group.runs.map((run) => (

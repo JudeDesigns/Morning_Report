@@ -1,6 +1,8 @@
+import io
+import zipfile
 from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import FileResponse as FastAPIFileResponse
+from fastapi.responses import FileResponse as FastAPIFileResponse, StreamingResponse
 from app.core.auth import get_current_user, require_roles
 from app.store import runs as run_store, results as result_store, audit as audit_store
 from app.services import web_orders as wo_service
@@ -135,3 +137,76 @@ async def export_combined_price(
     audit_store.log(run_id, "exported", "Combined price workbook exported", current_user["id"])
     date_str = (run.get("run_date") or "").replace("-", "")
     return _send(file_path, f"Price_Changes_Both_Sources_{date_str}.xlsx")
+
+
+_WORKFLOW_EXPORTERS = {
+    "web_orders_check": (wo_service.export_workbook, "Web_Orders_Check"),
+    "jetro_reconciliation": (jetro_service.export_workbook, "Jetro_Restaurant_Depot_Reconciliation"),
+    "vendor_bill_po_bank": (vb_service.export_workbook, "QB_Vendor_Bill_Import"),
+    "combined_price_changes": (cp_service.export_workbook, "Price_Changes_Both_Sources"),
+}
+
+
+@router.post("/day-archive/{date}")
+async def export_day_archive(
+    date: str,
+    current_user: dict = Depends(require_roles(*_EXPORT_ROLES)),
+):
+    """Zip archive of the most recent finalized export for each workflow on a
+    given calendar day (YYYY-MM-DD). Only runs in `exported` state are
+    eligible — i.e. the user has actually exported the final workbook at least
+    once. For each workflow_type only the most recently updated qualifying run
+    is included. Filename is `<date>.zip`."""
+    all_runs = run_store.list_runs()
+    # Filter to the requested day, eligible status, and (non-admin) ownership.
+    eligible = []
+    for r in all_runs:
+        if not (r.get("run_date") or "").startswith(date):
+            continue
+        if r.get("status") != "exported":
+            continue
+        if current_user.get("role") != "admin" and r.get("created_by") != current_user["id"]:
+            continue
+        if r.get("workflow_type") not in _WORKFLOW_EXPORTERS:
+            continue
+        eligible.append(r)
+
+    if not eligible:
+        raise HTTPException(404, "No finalized runs found for that date")
+
+    # Most recent per workflow_type by updated_at.
+    latest_by_type: dict[str, dict] = {}
+    for r in eligible:
+        wt = r["workflow_type"]
+        prev = latest_by_type.get(wt)
+        if prev is None or (r.get("updated_at") or "") > (prev.get("updated_at") or ""):
+            latest_by_type[wt] = r
+
+    buf = io.BytesIO()
+    date_compact = date.replace("-", "")
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for wt, run in latest_by_type.items():
+            exporter, prefix = _WORKFLOW_EXPORTERS[wt]
+            try:
+                _check_integrity(run["id"], wt)
+            except HTTPException:
+                # Skip runs that still have unresolved blocking issues.
+                continue
+            file_path = await exporter(run["id"])
+            p = Path(file_path)
+            if not p.exists():
+                continue
+            zf.write(p, arcname=f"{prefix}_{date_compact}.xlsx")
+
+    if not buf.getvalue() or len(buf.getvalue()) < 30:
+        raise HTTPException(404, "No exportable runs found for that date")
+
+    buf.seek(0)
+    audit_store.log("system", "day_archive_exported",
+                    f"Day archive exported for {date} ({len(latest_by_type)} workflow(s))",
+                    current_user["id"])
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{date}.zip"'},
+    )

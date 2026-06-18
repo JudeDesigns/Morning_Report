@@ -9,7 +9,7 @@ import { RunCard } from "@/components/ui/run-card";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { Plus, Loader2, Search, X, Archive } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, BUSINESS_TZ, businessDayKey } from "@/lib/utils";
 
 const WORKFLOW_FILTERS: { label: string; value: string }[] = [
   { label: "All", value: "" },
@@ -29,28 +29,30 @@ const DATE_FILTERS: { label: string; value: DateRange }[] = [
 ];
 
 function toDayKey(iso: string): string {
-  // YYYY-MM-DD in local time; tolerates either date-only or full ISO strings
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso.slice(0, 10);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
+  // YYYY-MM-DD anchored to the business timezone (PST). Tolerates either
+  // date-only ("2025-06-18") or full ISO strings.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso;
+  return businessDayKey(iso);
 }
 
 function formatDayHeader(key: string): string {
-  const today = toDayKey(new Date().toISOString());
+  const today = businessDayKey(new Date());
   const yest = new Date();
   yest.setDate(yest.getDate() - 1);
-  const yKey = toDayKey(yest.toISOString());
+  const yKey = businessDayKey(yest);
   if (key === today) return "Today";
   if (key === yKey) return "Yesterday";
-  const d = new Date(`${key}T00:00:00`);
+  // Render the YYYY-MM-DD as a fixed date in PST so the label cannot drift.
+  const d = new Date(`${key}T12:00:00Z`);
   return d.toLocaleDateString("en-US", {
+    timeZone: BUSINESS_TZ,
     weekday: "short",
     month: "short",
     day: "numeric",
-    year: d.getFullYear() === new Date().getFullYear() ? undefined : "numeric",
+    year:
+      key.slice(0, 4) === businessDayKey(new Date()).slice(0, 4)
+        ? undefined
+        : "numeric",
   });
 }
 

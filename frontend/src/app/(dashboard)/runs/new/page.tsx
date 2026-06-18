@@ -7,7 +7,7 @@ import { WorkflowType, WORKFLOW_LABELS } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { WorkflowIcon } from "@/components/ui/workflow-icon";
 import { ArrowLeft, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, businessDayKey } from "@/lib/utils";
 import Link from "next/link";
 
 const WORKFLOW_TYPES: WorkflowType[] = [
@@ -31,7 +31,7 @@ export default function NewRunPage() {
     (searchParams.get("type") as WorkflowType) ?? "web_orders_check"
   );
   const [name, setName] = useState("");
-  const [runDate, setRunDate] = useState(new Date().toISOString().split("T")[0]);
+  const [runDate, setRunDate] = useState(businessDayKey(new Date()));
   const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

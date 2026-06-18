@@ -8,6 +8,7 @@ import { runs as runsApi } from "@/lib/api";
 import { StatusBadge } from "./status-badge";
 import { WorkflowIcon } from "./workflow-icon";
 import { Calendar, FileStack, ArrowUpRight, Trash2, Loader2 } from "lucide-react";
+import { BUSINESS_TZ } from "@/lib/utils";
 
 interface RunCardProps {
   run: WorkflowRun;
@@ -18,11 +19,17 @@ export function RunCard({ run, onDeleted }: RunCardProps) {
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);
 
-  const date = new Date(run.run_date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  // run_date arrives as "YYYY-MM-DD". Render it as a fixed calendar date in
+  // the business timezone (PST) so it cannot drift across viewer timezones.
+  const date = new Date(`${run.run_date.slice(0, 10)}T12:00:00Z`).toLocaleDateString(
+    "en-US",
+    {
+      timeZone: BUSINESS_TZ,
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
 
   async function handleDelete(e: React.MouseEvent) {
     e.preventDefault();

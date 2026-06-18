@@ -147,3 +147,52 @@ def test_audit_trail_for_run(auth_headers):
     assert audit_r.status_code == 200
     events = audit_r.json()
     assert any(e["event_type"] == "run_created" for e in events)
+
+
+# ---------------------------------------------------------------------------
+# Day archive export
+# ---------------------------------------------------------------------------
+def test_day_archive_returns_404_when_no_exported_runs(auth_headers):
+    """Date with no runs in `exported` state must 404."""
+    r = client.post("/api/v1/exports/day-archive/1999-01-01", headers=auth_headers)
+    assert r.status_code == 404
+
+
+def test_day_archive_zips_only_most_recent_exported_per_workflow(auth_headers):
+    """Only runs in `exported` state are bundled; for each workflow_type only
+    the most recently updated qualifying run is included."""
+    import io
+    import zipfile
+    from app.store import runs as run_store
+    from app.store import results as result_store
+
+    day = "2025-08-15"
+
+    # Combined-price run (eligible — combined_price exporter needs no inputs).
+    cp_old = run_store.create_run("combined_price_changes", "CP old", day)
+    cp_new = run_store.create_run("combined_price_changes", "CP new", day)
+    # An ineligible processed-only run on the same workflow & day must be skipped.
+    cp_processed = run_store.create_run("combined_price_changes", "CP processed", day)
+
+    for rid in (cp_old["id"], cp_new["id"], cp_processed["id"]):
+        result_store.save(rid, "price_change_rows", [])
+        result_store.save(rid, "missing_items", [])
+
+    run_store.update_run(cp_old["id"], {"status": "exported"})
+    run_store.update_run(cp_new["id"], {"status": "exported"})  # newest updated_at
+    run_store.update_run(cp_processed["id"], {"status": "processed"})
+
+    r = client.post(f"/api/v1/exports/day-archive/{day}", headers=auth_headers)
+    assert r.status_code == 200, r.text
+    assert r.headers["content-type"] == "application/zip"
+    assert f'filename="{day}.zip"' in r.headers["content-disposition"]
+
+    with zipfile.ZipFile(io.BytesIO(r.content)) as zf:
+        names = zf.namelist()
+    # Exactly one combined_price entry — the most recent exported run.
+    cp_entries = [n for n in names if n.startswith("Price_Changes_Both_Sources_")]
+    assert len(cp_entries) == 1, f"expected 1 combined_price file, got {names}"
+    assert "20250815" in cp_entries[0]
+
+    for rid in (cp_old["id"], cp_new["id"], cp_processed["id"]):
+        run_store.delete_run(rid)

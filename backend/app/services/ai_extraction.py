@@ -127,6 +127,22 @@ value must go into individual_weights. Conversely "/CS" or "/EA" means the
 line is case/each-priced and individual_weights stays null even if a weight
 is printed elsewhere.
 
+ALWAYS POPULATE the new "pricing_unit" field — this is a HARD requirement, not
+optional. Set "pricing_unit" to:
+  - "LB"  if the rate column shows /LB, LB, PER LB or $/LB
+  - "CS"  if the rate column shows /CS or /CASE
+  - "EA"  if the rate column shows /EA, EACH, /UNIT, /CT
+  - null  ONLY when there is no unit suffix at all on the rate column AND the
+          bill format has no per-line unit indicator
+Bills like R.W. Zant print the unit on its own short line directly under each
+rate (e.g. "2.2000 / LB", "40.2000 / CS"). Read that suffix for EACH ROW
+INDIVIDUALLY — different rows on the same bill can have different units.
+
+The "pricing_unit" field is what the downstream pipeline uses to decide
+whether the Bill Import qty should be lbs or cases. Without it, products with
+an EXT WEIGHT column but a /CS rate (like SOUR CREAM TUB or CHIX BRST NUGGETS
+on R.W. Zant bills) get mis-priced as if they were per-lb.
+
 For these lines the arithmetic is **weight × rate = amount**, NOT qty × rate = amount.
 
 Example (R.W. Zant style — "EXT WEIGHT" column, per-lb rates with a /LB tag):
@@ -190,6 +206,7 @@ STEP 4 — RETURN ONLY VALID JSON in this exact structure (no prose, no markdown
       "rate": number,
       "total": number,
       "individual_weights": [list of numbers] or null,
+      "pricing_unit": "CS" | "LB" | "EA" | null,
       "notes": "string or null",
       "confidence": 0.0-1.0,
       "field_confidence": {

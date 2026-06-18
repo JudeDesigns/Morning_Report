@@ -34,14 +34,20 @@ ALLOWED_MIMES = {
 
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB
 
-_SAFE_FILENAME = re.compile(r"^[\w\-. ]+$")  # no path separators or special chars
+# Characters that are illegal across Windows/macOS/Linux filesystems or that
+# could break HTTP Content-Disposition / shell handling. Everything else
+# (apostrophes, parens, commas, ampersands, accented letters, etc.) is kept
+# verbatim so the displayed name matches what the user uploaded.
+_FORBIDDEN_FILENAME_CHARS = re.compile(r'[\x00-\x1f<>:"/\\|?*]')
 
 
 def _safe_filename(name: str) -> str:
-    name = Path(name).name  # strip any directory component
-    if not _SAFE_FILENAME.match(name):
-        return "upload" + Path(name).suffix
-    return name
+    name = Path(name).name.strip()           # strip any directory component
+    name = _FORBIDDEN_FILENAME_CHARS.sub("_", name)  # neutralise illegal chars
+    name = name.lstrip(".")                  # no leading dots (hidden / traversal)
+    if not name:
+        return "upload"
+    return name[:255]                        # filesystem name length cap
 
 
 @router.post("/upload/{run_id}", status_code=201)

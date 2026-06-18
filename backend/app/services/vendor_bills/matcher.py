@@ -289,33 +289,43 @@ def compute_discrepancies(
     # ─── Unit-of-measure reconciliation ───────────────────────────────────
     # PO Bank rows and bill rows often use DIFFERENT units of measure for the
     # same item (cases vs lbs vs eaches). Comparing a 2-case bill row to a
-    # 200-lb PO row produces a bogus "qty mismatch (-198)" alarm. We resolve
-    # this BEFORE computing qty_diff using two signals, in priority order:
+    # 200-lb PO row produces a bogus "qty mismatch (-198)" alarm.
     #
-    #   1. Catch-weight bills (R.W. Zant, Glen Rose…): if the bill line carries
-    #      individual_weights, swap bill_qty to the total lbs shipped.
-    #   2. Otherwise reconstruct the bill's unit from total/rate. If that
-    #      "implied qty" is clearly closer to po_qty than the raw case count
-    #      (≥3× closer on a relative basis and within ±2% of po_qty), the PO
-    #      is using that same unit — substitute it on the bill side.
+    # Authoritative signal: AI now returns `pricing_unit` ("CS" / "LB" / "EA")
+    # per line, read directly off each row's rate suffix (e.g. R.W. Zant prints
+    # "2.2000 / LB" or "40.2000 / CS"). When pricing_unit == "LB" we compare in
+    # lbs (total/rate is the lbs shipped, equivalent to sum(individual_weights)
+    # when those are present); when "CS"/"EA" we compare in cases/units.
     #
-    # Either way bill_qty ends up in the SAME unit as po_qty so qty_diff is
-    # meaningful.
+    # We then sanity-check by inferring which unit the PO column appears to be
+    # in (close to the bill_qty value or close to the implied lbs value) and
+    # only substitute when the inferred PO unit matches the bill's pricing
+    # unit. This avoids over-correcting when a vendor's PO genuinely uses a
+    # different UoM than the bill.
     iw = bill_line.get("individual_weights")
-    if iw:
-        lbs_total = Decimal(str(sum(iw)))
-        if lbs_total > 0:
+    pricing_unit = (bill_line.get("pricing_unit") or "").upper().strip()
+    lbs_total = Decimal(str(sum(iw))) if iw else Decimal(0)
+    implied = (bill_total / bill_rate) if (bill_rate > 0 and bill_total > 0) else Decimal(0)
+
+    if pricing_unit == "LB":
+        # Weight-priced: prefer summed individual weights, else total/rate.
+        weight_qty = lbs_total if lbs_total > 0 else implied
+        if weight_qty > 0:
+            # Only override when PO_qty looks like it's also in lbs (i.e. closer
+            # to weight_qty than to the raw case count).
+            if po_qty == 0 or abs(weight_qty - po_qty) < abs(bill_qty - po_qty):
+                bill_qty = weight_qty
+    elif pricing_unit in ("CS", "EA"):
+        # Case/each-priced: bill_qty is already in the right unit; do not touch.
+        pass
+    else:
+        # pricing_unit missing — fall back to heuristics for older extracts.
+        if iw and lbs_total > 0:
             if po_qty > 0 and po_qty < lbs_total / 2 and abs(po_qty - bill_qty) < bill_qty * Decimal("0.5") + 1:
-                pass  # PO is in cases too — compare cases
+                pass  # PO is in cases
             else:
                 bill_qty = lbs_total
-    elif bill_rate > 0 and bill_total > 0 and po_qty > 0:
-        implied = bill_total / bill_rate
-        if implied > 0 and bill_qty > 0 and implied != bill_qty:
-            # Distance from PO_qty in the two candidate units. Pick whichever
-            # fits the PO_qty meaningfully better. Guard against accidental
-            # near-matches by requiring the implied unit to be within 2% of
-            # PO_qty OR at least 3× closer than the raw bill_qty.
+        elif implied > 0 and bill_qty > 0 and implied != bill_qty and po_qty > 0:
             dist_raw = abs(bill_qty - po_qty)
             dist_imp = abs(implied - po_qty)
             within_2pct = dist_imp <= po_qty * Decimal("0.02")

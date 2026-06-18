@@ -936,6 +936,60 @@ def test_vendor_bills_no_false_qty_mismatch_when_po_uses_lbs_unit():
     run_store.delete_run(rid)
 
 
+def test_vendor_bills_pricing_unit_drives_uom_reconciliation():
+    """When AI returns pricing_unit per line (CS / LB / EA), the matcher must
+    compare bill_qty in that unit against the PO row:
+      - pricing_unit='LB' → compare lbs vs PO (which is in lbs)
+      - pricing_unit='CS' → compare cases vs PO (which is in cases)
+    A bill with one /LB row and one /CS row on the same vendor must produce
+    no false qty mismatch on either, even though both rows print a weight column."""
+    run = run_store.create_run("vendor_bill_po_bank", "VB PricingUnit", "2025-06-01")
+    rid = run["id"]
+    result_store.save(rid, "vendor_bills", [{
+        "id": "b-pu", "vendor_confirmed": "R.W. Zant",
+        "vendor_extracted": "R.W. Zant",
+        "extraction_status": "review",
+        "lines": [
+            # /LB row — Zant THIGH MEAT (25 cs / 1000 lbs / $2.20/LB / $2200)
+            {"id": "l-lb", "bill_item_code": "Z252738",
+             "description": "THIGH MEAT BL/SL JMBO",
+             "qty": 25, "rate": 2.20, "total": 2200.00,
+             "pricing_unit": "LB",
+             "forced_po_id": "po-thigh",
+             "needs_review": False, "user_confirmed": True},
+            # /CS row — Zant SOUR CREAM (10 cs / 320 lbs ship-weight / $40.20/CS / $402)
+            # PO is in cases too; weight column 320 is shipping info only.
+            {"id": "l-cs", "bill_item_code": "Z110997",
+             "description": "SOUR CREAM TUB SUPER K",
+             "qty": 10, "rate": 40.20, "total": 402.00,
+             "pricing_unit": "CS",
+             "forced_po_id": "po-sc",
+             "needs_review": False, "user_confirmed": True},
+        ],
+    }])
+    result_store.save(rid, "po_bank", [
+        # PO in LBS — same as /LB bill row → no mismatch
+        {"id": "po-thigh", "vendor": "R.W. Zant", "item_code": "Z252738",
+         "description": "THIGH MEAT", "quantity": 1000, "po_cost": 2.20,
+         "ref_number": "PO-1", "status": "unprocessed"},
+        # PO in CASES — same as /CS bill row → no mismatch
+        {"id": "po-sc", "vendor": "R.W. Zant", "item_code": "Z110997",
+         "description": "SOUR CREAM", "quantity": 10, "po_cost": 40.20,
+         "ref_number": "PO-1", "status": "unprocessed"},
+    ])
+    res = asyncio.run(vendor_bills_svc.process_confirmed_bill(rid, "b-pu"))
+    assert res["success"] is True
+    blocks = result_store.load(rid, "vendor_summary_blocks", [])
+    items = {it["item_code"]: it for b in blocks for it in b.get("items", [])}
+    # Both rows reach the summary (matched) but neither flags qty mismatch
+    for code in ("Z252738", "Z110997"):
+        if code in items:
+            assert not items[code].get("has_qty_mismatch"), (
+                f"{code} should not be flagged qty mismatch with pricing_unit driver; got {items[code]}"
+            )
+    run_store.delete_run(rid)
+
+
 def test_vendor_bills_zero_shipment_line_is_highlighted_red():
     """OUT / unshipped lines (qty=0, total=$0) used to slip through unmarked
     because their math is technically valid. They must now carry

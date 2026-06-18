@@ -185,7 +185,7 @@ def test_day_archive_zips_only_most_recent_exported_per_workflow(auth_headers):
     r = client.post(f"/api/v1/exports/day-archive/{day}", headers=auth_headers)
     assert r.status_code == 200, r.text
     assert r.headers["content-type"] == "application/zip"
-    assert f'filename="{day}.zip"' in r.headers["content-disposition"]
+    assert f'filename="Morning Report {day}.zip"' in r.headers["content-disposition"]
 
     with zipfile.ZipFile(io.BytesIO(r.content)) as zf:
         names = zf.namelist()

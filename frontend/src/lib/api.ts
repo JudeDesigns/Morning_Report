@@ -276,7 +276,7 @@ export const exports = {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${date}.zip`;
+    a.download = `Morning Report ${date}.zip`;
     document.body.appendChild(a);
     a.click();
     a.remove();

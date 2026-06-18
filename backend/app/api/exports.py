@@ -208,5 +208,5 @@ async def export_day_archive(
     return StreamingResponse(
         buf,
         media_type="application/zip",
-        headers={"Content-Disposition": f'attachment; filename="{date}.zip"'},
+        headers={"Content-Disposition": f'attachment; filename="Morning Report {date}.zip"'},
     )

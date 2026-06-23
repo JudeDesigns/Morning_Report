@@ -12,6 +12,8 @@ import {
   combinedPrice,
   exports as exportsApi,
   ApiError,
+  downloadSampleTemplate,
+  SAMPLE_TEMPLATE_KEYS,
 } from "@/lib/api";
 import { VendorBillsPanel } from "@/components/vendor-bills/vendor-bills-panel";
 import { ExportConfirmDialog } from "@/components/vendor-bills/export-confirm-dialog";
@@ -47,6 +49,7 @@ import {
   PackageCheck,
   ShieldCheck,
   RotateCcw,
+  FileSpreadsheet,
 } from "lucide-react";
 
 const BILL_FILE_TYPES = new Set(["vendor_bill_image", "vendor_bill_pdf"]);
@@ -366,16 +369,34 @@ export default function RunDetailPage() {
           )}
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {fileTypes.map((ft) => (
-            <FileUpload
-              key={ft}
-              runId={id}
-              fileType={ft}
-              onUploaded={refresh}
-              accept={ft.includes("image") ? "image/*" : ft.includes("pdf") ? ".pdf" : ".xlsx,.xls,.csv"}
-              multiple={BILL_FILE_TYPES.has(ft)}
-            />
-          ))}
+          {fileTypes.map((ft) => {
+            const templateKey = SAMPLE_TEMPLATE_KEYS[ft];
+            return (
+              <div key={ft} className="flex flex-col gap-1">
+                {templateKey && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      downloadSampleTemplate(templateKey).catch((e) =>
+                        toast.error(e instanceof Error ? e.message : "Failed to download template"),
+                      )
+                    }
+                    className="inline-flex items-center gap-1 self-start rounded px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                  >
+                    <FileSpreadsheet className="size-3" />
+                    Download sample template
+                  </button>
+                )}
+                <FileUpload
+                  runId={id}
+                  fileType={ft}
+                  onUploaded={refresh}
+                  accept={ft.includes("image") ? "image/*" : ft.includes("pdf") ? ".pdf" : ".xlsx,.xls,.csv"}
+                  multiple={BILL_FILE_TYPES.has(ft)}
+                />
+              </div>
+            );
+          })}
         </div>
       </section>
 

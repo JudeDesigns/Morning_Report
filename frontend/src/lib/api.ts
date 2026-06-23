@@ -287,3 +287,26 @@ export const exports = {
 export const audit = {
   forRun: (runId: string) => request<unknown[]>(`/api/v1/audit/run/${runId}`),
 };
+
+// Templates — keyed by file_type, value is the template slug on the backend
+export const SAMPLE_TEMPLATE_KEYS: Record<string, string> = {
+  quickbooks_po_export: "qb-po-export",
+  web_orders_spreadsheet: "web-orders-master",
+  jetro_source: "jetro-source",
+};
+
+export async function downloadSampleTemplate(templateKey: string): Promise<void> {
+  const blob = await downloadBlob(
+    `/api/v1/exports/sample-template/${encodeURIComponent(templateKey)}`,
+    { method: "GET" },
+  );
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  // Use the filename from Content-Disposition if possible, otherwise guess
+  a.download = `${templateKey}_template.xlsx`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}

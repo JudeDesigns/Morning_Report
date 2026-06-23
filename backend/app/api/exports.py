@@ -139,6 +139,121 @@ async def export_combined_price(
     return _send(file_path, f"Price_Changes_Both_Sources_{date_str}.xlsx")
 
 
+# ---------------------------------------------------------------------------
+# Sample template download — pre-built XLSX with correct headers / columns
+# ---------------------------------------------------------------------------
+
+_SAMPLE_TEMPLATES: dict[str, tuple[str, list]] = {
+    # QB PO export (cols A-M) ------------------------------------------------
+    # Columns derived from vendor_bills/parser.py classify_po_row + product_lines
+    "qb-po-export": (
+        "QB_PO_Export_Template.xlsx",
+        [
+            "Terms",
+            "Ref #",
+            "TxnDate",
+            "Vendor",
+            "Memo",
+            "TxnLine Amount",
+            "TxnLine Cost",
+            "TxnLine Description",
+            "TxnLine Item",
+            "TxnLine Quantity",
+            "Class",
+            "Case Avg Weight",
+            "Unit Avg Weight",
+        ],
+    ),
+    # Web Orders master spreadsheet (All Orders sheet, cols A-S) -------------
+    # Columns derived from web_orders/parser.py parse_all_orders
+    "web-orders-master": (
+        "Web_Orders_Master_Template.xlsx",
+        [
+            "Product Name",          # A
+            "Code",                  # B
+            "Col C",                 # C (passthrough)
+            "Col D",                 # D (passthrough)
+            "Col E",                 # E (passthrough)
+            "Col F",                 # F (passthrough)
+            "Qty",                   # G
+            "Weight",                # H
+            "Individual Weight Status",  # I
+            "Price",                 # J
+            "Col K",                 # K (passthrough)
+            "Customer Name",         # L
+            "Col M",                 # M (passthrough)
+            "Col N",                 # N (passthrough)
+            "Transaction Date",      # O
+            "Col P",                 # P (passthrough)
+            "Route",                 # Q
+            "Col R",                 # R (passthrough)
+            "Remark",                # S
+        ],
+    ),
+    # Jetro source sheet (cols A-AI key ones) ---------------------------------
+    # Columns derived from jetro/parser.py parse_jetro_source
+    "jetro-source": (
+        "Jetro_Source_Template.xlsx",
+        [
+            "Col A",           # A  (index 0 — unused by parser)
+            "Col B",           # B  (index 1 — unused)
+            "Qty",             # C  (index 2)
+            "Product Name",    # D  (index 3)
+            "Item Code",       # E  (index 4)  — append "U" suffix for unit items
+            "Col F",           # F  (indices 5-13 passthrough)
+            "Col G", "Col H", "Col I", "Col J", "Col K", "Col L", "Col M",
+            "Col N",           # N  (index 13)
+            "Customer",        # O  (index 14)
+            "Col P", "Col Q", "Col R", "Col S", "Col T", "Col U", "Col V", "Col W",  # P-W
+            "Current Cost Price",    # X  (index 23)
+            "Current Selling Price", # Y  (index 24)
+            "Col Z",           # Z  (index 25)
+            "Col AA", "Col AB", "Col AC", "Col AD", "Col AE",  # AA-AE
+            "Case Avg Weight", # AF (index 31)
+            "Col AG", "Col AH",  # AG-AH
+            "Unit",            # AI (index 34)
+        ],
+    ),
+}
+
+
+@router.get("/sample-template/{template}")
+async def download_sample_template(
+    template: str,
+    current_user: dict = Depends(require_roles(*_EXPORT_ROLES)),
+):
+    """Stream a pre-built XLSX sample with the correct column headers for the
+    given template name. Use as a formatting guide before uploading files."""
+    entry = _SAMPLE_TEMPLATES.get(template)
+    if not entry:
+        raise HTTPException(404, f"Unknown template '{template}'. "
+                            f"Valid options: {', '.join(_SAMPLE_TEMPLATES)}")
+    filename, headers = entry
+
+    buf = io.BytesIO()
+    from openpyxl import Workbook as _WB
+    from openpyxl.styles import Font, PatternFill, Alignment
+    wb = _WB()
+    ws = wb.active
+    ws.title = "Template"
+    ws.append(headers)
+    # Style header row
+    header_fill = PatternFill("solid", fgColor="1F4E79")
+    for cell in ws[1]:
+        cell.font = Font(bold=True, color="FFFFFF", size=11)
+        cell.fill = header_fill
+        cell.alignment = Alignment(horizontal="center", wrap_text=True)
+        ws.column_dimensions[cell.column_letter].width = max(len(str(cell.value or "")) + 4, 14)
+    ws.row_dimensions[1].height = 20
+    wb.save(buf)
+    buf.seek(0)
+    return StreamingResponse(
+        buf,
+        media_type=XLSX_MEDIA,
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
 _WORKFLOW_EXPORTERS = {
     "web_orders_check": (wo_service.export_workbook, "Web_Orders_Check"),
     "jetro_reconciliation": (jetro_service.export_workbook, "Jetro_Restaurant_Depot_Reconciliation"),

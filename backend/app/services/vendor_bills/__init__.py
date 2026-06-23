@@ -219,6 +219,7 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
             seen_triples[triple] = i
 
         weights = line.get("individual_weights")
+        weight_breakdown = line.get("individual_weight_breakdown")
         field_needs_review = list(line.get("field_needs_review") or [])
         needs_review = bool(line.get("needs_review"))
         math_warning = _line_math_warning(line)
@@ -252,6 +253,7 @@ async def extract_bill_image(run_id: str, file_id: str) -> dict:
             "total": total_v,
             "is_credit": bool(line.get("is_credit")),
             "individual_weights": [float(w) for w in weights] if weights else None,
+            "individual_weight_breakdown": [float(w) for w in weight_breakdown] if weight_breakdown else None,
             "notes": line.get("notes"),
             "confidence": _f(line.get("confidence")),
             "field_confidence": line.get("field_confidence") or {},
@@ -472,14 +474,23 @@ async def process_confirmed_bill(run_id: str, bill_id: str) -> dict:
         iw = bl.get("individual_weights")
         if iw:
             desc += "\nweights: " + "+".join(f"{w:.2f}" for w in iw)
-            weight_rows.append({
-                "bill_id": bill_id,
-                "item_code_po": item_code,
-                "item_code_bill": bl.get("bill_item_code"),
-                "product_name_po": matched_po.get("description") if matched_po else None,
-                "weights": iw,
-                "total": sum(iw),
-            })
+            sheet_weights = bl.get("individual_weight_breakdown")
+            if not sheet_weights:
+                # Backward compatibility: older extracted bills stored the true
+                # per-piece list directly in `individual_weights` (no separate
+                # breakdown field). Use it whenever no explicit breakdown was
+                # captured so the Individual Weights sheet is never empty for
+                # catch-weight lines.
+                sheet_weights = iw
+            if sheet_weights:
+                weight_rows.append({
+                    "bill_id": bill_id,
+                    "item_code_po": item_code,
+                    "item_code_bill": bl.get("bill_item_code"),
+                    "product_name_po": matched_po.get("description") if matched_po else None,
+                    "weights": sheet_weights,
+                    "total": sum(iw),
+                })
 
         # PRD §5 Bill Import rule: for weight-based items, Bill Import qty
         # must be the total lbs shipped (so price × qty = total holds in QB).

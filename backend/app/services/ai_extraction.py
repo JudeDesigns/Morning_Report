@@ -73,7 +73,7 @@ STEP 2 — EXCLUDE these rows entirely (do NOT put them in "lines"):
 
 STEP 3 — INCLUDE every genuine product line, even if:
 - It is a credit/void line (keep amounts positive; sign is handled downstream — set bill_type="credit_memo" if the whole document is a credit memo)
-- It is a catch-weight item with individual weights listed (put them in individual_weights)
+- It is a catch-weight item with individual weights listed
 - The item code is missing (set bill_item_code=null but still include the line)
 
 STEP 3b — MULTI-LINE PRODUCT ROWS (READ THE WORKED EXAMPLE BELOW — THIS IS THE #1 SOURCE OF EXTRACTION BUGS):
@@ -122,10 +122,12 @@ HEADER VARIATIONS to recognise as the WEIGHT column (any of these):
 
 STRONGEST SIGNAL — the rate column. If a row's UNIT PRICE / RATE column shows
 "/LB", "LB", "PER LB" or "$/LB" (even as a small label under the number, or
-in a separate U/M cell), then the line is weight-priced and the WEIGHT column
-value must go into individual_weights. Conversely "/CS" or "/EA" means the
-line is case/each-priced and individual_weights stays null even if a weight
-is printed elsewhere.
+in a separate U/M cell), then the line is weight-priced. Preserve the
+effective shipped-weight value in individual_weights so downstream math still
+reconciles, and preserve any printed per-piece list in
+individual_weight_breakdown. Conversely "/CS" or "/EA" means the line is
+case/each-priced and both weight fields stay null even if a shipping weight is
+printed elsewhere.
 
 ALWAYS POPULATE the new "pricing_unit" field — this is a HARD requirement, not
 optional. Set "pricing_unit" to:
@@ -143,6 +145,19 @@ whether the Bill Import qty should be lbs or cases. Without it, products with
 an EXT WEIGHT column but a /CS rate (like SOUR CREAM TUB or CHIX BRST NUGGETS
 on R.W. Zant bills) get mis-priced as if they were per-lb.
 
+WEIGHT FIELD CONTRACT — do this exactly:
+- `individual_weights` = the effective weight basis used for downstream math.
+  For a row with a printed total lbs/weight column, store that total as a
+  one-element list, e.g. [761.00] or [80.00].
+- `individual_weight_breakdown` = the true printed per-piece weights, ONLY when
+  the bill explicitly lists them under the product (e.g. "77.00, 76.00, ...").
+- If the bill prints per-piece weights but no separate total-lbs number, copy
+  the per-piece list into both fields so the sum still reconciles downstream.
+- If the bill prints only a total-lbs number and no per-piece list, set
+  `individual_weights` to [total_lbs] and `individual_weight_breakdown` to
+  null.
+- If the row is not weight-priced, both fields must be null.
+
 For these lines the arithmetic is **weight × rate = amount**, NOT qty × rate = amount.
 
 Example (R.W. Zant style — "EXT WEIGHT" column, per-lb rates with a /LB tag):
@@ -152,7 +167,8 @@ Example (R.W. Zant style — "EXT WEIGHT" column, per-lb rates with a /LB tag):
     878676   BEEF SALISBURY STEAK FC 8    CS     1     1       15.0000  76.9900 /CS       76.99   ← /CS, NOT catch-weight
 The first two lines must come back with qty=ship-qty (5, 1), rate=2.20/2.88,
 total=440.00/54.72, AND individual_weights=[200.00] / [19.00] respectively.
-The third line (rate marked /CS) is a normal case line: individual_weights=null.
+The third line (rate marked /CS) is a normal case line: individual_weights=null
+and individual_weight_breakdown=null.
 
 Example (verbatim layout from a real chicken bill):
 
@@ -170,22 +186,33 @@ Example (verbatim layout from a real chicken bill):
 CORRECT extraction for those three rows:
   1. {bill_item_code: "0031110087-01", description: "Chicken Wog 20HD 3.5 up (CVP) Golden Rod",
       qty: 10, rate: 1.35, total: 1027.35,
-      individual_weights: [77.00, 76.00, 76.00, 78.00, 75.00, 73.00, 77.00, 78.00, 75.00, 76.00]}
+      individual_weights: [761.00],
+      individual_weight_breakdown: [77.00, 76.00, 76.00, 78.00, 75.00, 73.00, 77.00, 78.00, 75.00, 76.00]}
   2. {bill_item_code: "0031125087-01", description: "Chicken Wog 28hd 2.50 (CVP) 8 Cut Golden Rod",
       qty:  5, rate: 1.64, total:  623.20,
-      individual_weights: [77.00, 76.00, 75.00, 75.00, 77.00]}
+      individual_weights: [380.00],
+      individual_weight_breakdown: [77.00, 76.00, 75.00, 75.00, 77.00]}
   3. {bill_item_code: "0031190087-01", description: "Chicken Wog 28HD 2.50up (CVP) Split Golden Rod HALAL",
-      qty:  0, rate: 1.69, total:    0.00, individual_weights: null, notes: "OUT — not shipped"}
+      qty:  0, rate: 1.69, total:    0.00, individual_weights: null,
+      individual_weight_breakdown: null, notes: "OUT — not shipped"}
 
 KEY RULES for catch-weight lines:
 - qty is the SHIPPED CASE COUNT (10, 5, 0 in the example) — not the ordered count, not the total pounds.
 - rate is the per-pound price ($1.35, $1.64, $1.69).
 - total is the line amount as printed on the bill.
-- individual_weights captures the per-piece weights listed under the description, IF they are printed (e.g. "77.00, 76.00, 76.00, ..."). If no per-piece list is printed BUT a single total-weight number is printed in the LBS/WEIGHT column (e.g. "80.00" alongside qty 2 and rate 0.72), put that single number into individual_weights as a one-element list (e.g. [80.00]) so downstream math validates. Only leave individual_weights null when there is no weight column at all (standard case-priced bills).
+- individual_weights must keep the effective shipped-weight basis used for
+  downstream math. When a total LBS/WEIGHT value is printed, store it as a
+  one-element list (e.g. [761.00] or [80.00]).
+- individual_weight_breakdown must capture the true per-piece weights listed
+  under the description, if they are printed (e.g. "77.00, 76.00, 76.00, ...").
+  Leave it null when the bill shows only a total-weight column and no per-piece
+  list.
 - Brand names like "Golden Rod", grade tags like "HALAL", and pack notations belong in the description string — they are NOT origin tags and must NOT be dropped.
 - Ignore handwritten ink (dates, checkmarks, initials) overlaying cells unless that is the only source for a printed-but-unreadable value.
 - A "SHIPPED" cell reading "OUT", "0", or blank means qty=0 and total=0. Keep the line so the office sees it; put "OUT — not shipped" in notes.
-- For catch-weight lines, qty × rate will NOT equal total. Do NOT drop the line for that reason. The line is valid when (weight × rate ≈ total) where weight is the printed LBS total or sum(individual_weights).
+- For catch-weight lines, qty × rate will NOT equal total. Do NOT drop the
+  line for that reason. The line is valid when (weight × rate ≈ total) where
+  weight is the printed LBS total or sum(individual_weights).
 
 STEP 4 — RETURN ONLY VALID JSON in this exact structure (no prose, no markdown fences):
 {
@@ -206,6 +233,7 @@ STEP 4 — RETURN ONLY VALID JSON in this exact structure (no prose, no markdown
       "rate": number,
       "total": number,
       "individual_weights": [list of numbers] or null,
+      "individual_weight_breakdown": [list of numbers] or null,
       "pricing_unit": "CS" | "LB" | "EA" | null,
       "notes": "string or null",
       "confidence": 0.0-1.0,
@@ -500,7 +528,8 @@ def _mock_vendor_extraction() -> dict:
         "lines": [
             {"bill_item_code": "SV-001", "description": "Sample Product",
              "qty": 10, "rate": 12.34, "total": 123.40,
-             "individual_weights": None, "notes": None, "confidence": 0.95},
+             "individual_weights": None, "individual_weight_breakdown": None,
+             "notes": None, "confidence": 0.95},
         ],
         "_mock": True,
     }

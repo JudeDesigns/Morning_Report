@@ -469,7 +469,16 @@ async def process_confirmed_bill(run_id: str, bill_id: str) -> dict:
             bl["match_status"] = "not_on_po"
             highlight = "not_on_po"
 
-        desc_parts = [matched_po.get("description", "") if matched_po else "", bl.get("description") or ""]
+        # Build the PO description line — include the PO vendor as a trailing
+        # tag (e.g. "CHICKEN LEG MEAT ... — WAYNE FARM") so the QB Bill Import
+        # Description column carries the full sourcing context the user reads
+        # from their physical bill.
+        po_desc = (matched_po.get("description", "") if matched_po else "") or ""
+        if matched_po:
+            po_vendor = (matched_po.get("vendor") or "").strip()
+            if po_vendor and po_vendor.upper() not in po_desc.upper():
+                po_desc = f"{po_desc} — {po_vendor}".strip(" —")
+        desc_parts = [po_desc, bl.get("description") or ""]
         desc = "\n".join(p for p in desc_parts if p).strip()
         iw = bl.get("individual_weights")
         if iw:
@@ -535,6 +544,28 @@ async def process_confirmed_bill(run_id: str, bill_id: str) -> dict:
                 _q, _t = 0.0, 0.0
             if _q == 0 and _t == 0:
                 highlight = "zero_shipment"
+
+        # Conditional Description annotations — appended only when the row
+        # warrants the tag, so the QB Description column tells the office why
+        # the row stands out without forcing them back to the bill image.
+        if highlight == "not_on_po":
+            desc = f"{desc}\n— BILLED NOT ON PO".strip()
+        elif highlight == "zero_shipment":
+            ordered = None
+            if matched_po:
+                ordered = matched_po.get("quantity")
+            try:
+                ordered_n = float(ordered) if ordered is not None else None
+            except (TypeError, ValueError):
+                ordered_n = None
+            if ordered_n is not None:
+                # Format ordered as int when whole (e.g. "2"), else keep precision.
+                ordered_str = (
+                    str(int(ordered_n)) if ordered_n.is_integer() else f"{ordered_n:g}"
+                )
+                desc = f"{desc}\n— ORDERED {ordered_str} CS, SHIPPED 0 (NOT PROVIDED)".strip()
+            else:
+                desc = f"{desc}\n— SHIPPED 0 (NOT PROVIDED)".strip()
 
         import_rows.append({
             "line": import_line_num,
